@@ -279,29 +279,56 @@ document.addEventListener('DOMContentLoaded', () => {
             } else { alert("Please enter your name."); popupNameInput.focus(); }
         });
 
-        // --- Popup Submission Handling ---
-        popupSubmitButton.addEventListener('click', async () => {
-            const name = localStorage.getItem(STORAGE_KEY_NAME);
-            const email = popupEmailInput.value.trim();
-            if (!email || !/\S+@\S+\.\S+/.test(email)) { alert("Please enter a valid email address."); popupEmailInput.focus(); return; }
-            if (!name) { alert("Name is missing."); return; }
-            console.log("Submitting:", { name, email });
-            popupStep1.style.display = 'none'; popupStep2.style.display = 'none';
-            popupSubmitting.style.display = 'block'; popupSuccess.style.display = 'none'; popupError.style.display = 'none';
-            const endpoint = '/.netlify/functions/gordonkwongnetlinetlify'; // EXAMPLE Placeholder URL - REPLACE WITH YOURS
-            try {
-                await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network
-                console.log('Simulated submission successful.'); // SIMULATED SUCCESS
-                popupSubmitting.style.display = 'none'; popupSuccess.style.display = 'block';
-                localStorage.setItem(STORAGE_KEY_COMPLETED, 'true');
-                if (timerInterval) clearInterval(timerInterval);
-                setTimeout(hidePopup, 2000);
-            } catch (error) {
-                console.error('Submission failed:', error);
-                popupSubmitting.style.display = 'none'; popupError.style.display = 'block';
-                setTimeout(hidePopup, 3000);
+       // --- Popup Submission Handling ---
+       popupSubmitButton.addEventListener('click', async () => {
+        const name = localStorage.getItem(STORAGE_KEY_NAME);
+        const email = popupEmailInput.value.trim();
+        if (!email || !/\S+@\S+\.\S+/.test(email)) { alert("Please enter a valid email address."); popupEmailInput.focus(); return; }
+        if (!name) { alert("Name is missing."); return; } // Ensure name is present
+
+        console.log("Submitting:", { name, email });
+        popupStep1.style.display = 'none'; popupStep2.style.display = 'none';
+        popupSubmitting.style.display = 'block'; popupSuccess.style.display = 'none'; popupError.style.display = 'none';
+
+        const endpoint = '/.netlify/functions/submit-popup'; // Your Netlify function path
+
+        // VVVVV THIS IS THE CORRECT BLOCK VVVVVV
+        try {
+            // ACTUAL FETCH CALL - Make sure simulation lines are removed
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: name, email: email }), // Send name and email
+            });
+
+            if (!response.ok) {
+                // Handle server errors (e.g., function returned an error)
+                const errorBody = await response.text(); // Get error details from function
+                console.error(`Function error! Status: ${response.status}`, errorBody);
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        });
+
+            // Optional: Process success response from function if needed
+            // const result = await response.json();
+            // console.log('Server response:', result);
+
+            // Show success message on frontend
+            popupSubmitting.style.display = 'none'; popupSuccess.style.display = 'block';
+            localStorage.setItem(STORAGE_KEY_COMPLETED, 'true'); // Mark popup as completed
+            if (timerInterval) clearInterval(timerInterval); // Stop timer if running
+            setTimeout(hidePopup, 2000); // Hide popup after success
+
+        } catch (error) {
+            // Handle fetch errors (network issue) or errors thrown above
+            console.error('Submission failed:', error);
+            popupSubmitting.style.display = 'none'; popupError.style.display = 'block'; // Show error message
+            // Optionally, keep the popup open longer on error or re-enable submission
+            setTimeout(hidePopup, 3000);
+        }
+        // ^^^^^ THIS IS THE CORRECT BLOCK ^^^^^^
+    }); // - referring to website/script.js
 
     } else {
          // Only log error if the popup HTML is expected but not found
