@@ -267,6 +267,28 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             // console.log("Popup already completed, timer not started."); // Less verbose
         }
+        
+// --- Add Enter Key Submission for Popup Inputs ---
+if (popupNameInput) {
+    popupNameInput.addEventListener('keydown', function(event) {
+      // Check if the key pressed was 'Enter'
+      if (event.key === 'Enter' || event.keyCode === 13) {
+        event.preventDefault(); // Prevent default Enter behavior (like adding a newline)
+        popupNextButton.click(); // Trigger the 'Continue' button click
+      }
+    });
+  }
+
+  if (popupEmailInput) {
+    popupEmailInput.addEventListener('keydown', function(event) {
+      // Check if the key pressed was 'Enter'
+      if (event.key === 'Enter' || event.keyCode === 13) {
+        event.preventDefault(); // Prevent default Enter behavior
+        popupSubmitButton.click(); // Trigger the 'Submit & Get Coupon' button click
+      }
+    });
+  }
+  // --- End Enter Key Submission ---
 
         // --- Popup Step Handling ---
         popupNextButton.addEventListener('click', () => {
