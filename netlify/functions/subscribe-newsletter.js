@@ -31,7 +31,6 @@ exports.handler = async (event) => {
     // --- Check if Email Exists ---
     let existingRowIndex = -1;
     try {
-      // *** This is the .get call you were missing ***
       const getResponse = await sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
         range: fullEmailRange,
@@ -55,12 +54,12 @@ exports.handler = async (event) => {
 
     // --- Conditional Action ---
     if (existingRowIndex !== -1) {
-      // Email WAS found
-      console.log('Email already subscribed (footer):', email);
+      // Email WAS found - DO NOTHING TO THE SHEET
+      console.log('Email already subscribed (footer), skipping append:', email);
       return {
         statusCode: 200, // Return success, but indicate already subscribed
         body: JSON.stringify({ message: 'Email is already subscribed.' }),
-      };
+      }; // IMPORTANT: This return prevents the append below
     } else {
       // Email NOT found, append new row
       const valuesToAppend = [

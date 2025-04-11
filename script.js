@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
               // Success
               footerEmailInput.value = ''; // Clear input
               footerFormMessage.textContent = 'Thank you for subscribing!';
-              footerFormMessage.style.color = '#008000'; // Green color for success
+              footerFormMessage.style.color = 'var(--color-accent)';
               footerFormMessage.style.display = 'block';
 
           } catch (error) {
@@ -397,11 +397,20 @@ if (popupNameInput) {
             // const result = await response.json();
             // console.log('Server response:', result);
 
-            // Show success message on frontend
-            popupSubmitting.style.display = 'none'; popupSuccess.style.display = 'block';
-            localStorage.setItem(STORAGE_KEY_COMPLETED, 'true'); // Mark popup as completed
-            if (timerInterval) clearInterval(timerInterval); // Stop timer if running
-            setTimeout(hidePopup, 2000); // Hide popup after success
+         // Show success message on frontend (Popup Form)
+         popupSubmitting.style.display = 'none';
+         popupSuccess.style.display = 'block'; // Show the success div
+
+         // VVVVV ADD THIS BLOCK VVVVV
+         const successP = popupSuccess.querySelector('p'); // Get the paragraph inside
+         if (successP) {
+             successP.style.color = 'var(--color-accent)'; // Apply accent color
+         }
+         // ^^^^^ ADD THIS BLOCK ^^^^^
+
+         localStorage.setItem(STORAGE_KEY_COMPLETED, 'true'); // Mark popup as completed
+         if (timerInterval) clearInterval(timerInterval); // Stop timer if running
+         setTimeout(hidePopup, 2000); // Hide popup after success
 
         } catch (error) {
             // Handle fetch errors (network issue) or errors thrown above
