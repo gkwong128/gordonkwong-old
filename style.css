@@ -12,7 +12,7 @@
     --color-background: #fff;
     --color-background-dark: #000;
     --color-accent: #ff8c18;
-    --color-border: #eee;
+    --color-border: #eee; /* Default subtle border color */
     /* --- Standard (1x) Pixel Values --- */
     --navbar-sticky-height: 40px;
     --navbar-gap-initial-desktop: 5rem;
@@ -63,17 +63,39 @@
     display: flex; align-items: center; justify-content: center;
     z-index: 9999; pointer-events: auto;
     opacity: 1; transition: opacity 0.6s ease-out;
+    padding: 1rem; /* Add padding for smaller screens */
   }
+  /* UPDATED: Loading Text Alignment */
   #loading-text {
-    font-size: 2.5rem; width: 30ch; text-align: left;
-    padding-left: 10ch; box-sizing: border-box;
-    overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+    font-size: 2.5rem;
+    /* width: 30ch; */ /* Removed fixed width */
+    text-align: center; /* Center align text */
+    /* padding-left: 10ch; */ /* Removed left padding */
+    box-sizing: border-box;
+    /* overflow: hidden; */ /* Allow wrapping if needed */
+    /* white-space: nowrap; */ /* Allow wrapping */
+    /* text-overflow: ellipsis; */
+    max-width: 90%; /* Prevent text from getting too wide */
   }
   #loading-word { display: inline-block; vertical-align: baseline; color: var(--color-accent, #ff8c18); }
   .accent-word { color: var(--color-accent, #ff8c18); }
   #loading-screen.hidden { opacity: 0; pointer-events: none; }
-  @media (max-width: 767px) { #loading-text { font-size: 1.8rem; width: 28ch; padding-left: 9ch; } }
-  @media (max-width: 480px) { #loading-text { font-size: 1.5rem; width: 25ch; padding-left: 8ch; } }
+
+  /* UPDATED: Mobile Loading Text Alignment */
+  @media (max-width: 767px) {
+    #loading-text {
+      font-size: 1.8rem;
+      /* width: 28ch; */ /* Removed fixed width */
+      /* padding-left: 9ch; */ /* Removed left padding */
+     }
+  }
+  @media (max-width: 480px) {
+    #loading-text {
+      font-size: 1.5rem;
+      /* width: 25ch; */ /* Removed fixed width */
+      /* padding-left: 8ch; */ /* Removed left padding */
+    }
+  }
 
 /* ========================================
    Landing Page Styles (Should be in main style.css)
@@ -91,7 +113,7 @@
   .landing-headline { font-family: var(--font-heading, serif); font-size: 3.5rem; font-weight: 700; line-height: 1.2; margin: 0 0 1.5rem 0; letter-spacing: 0.03em; color: var(--color-text-dark, #000);} /* Headline Black */
   .landing-subheadline { font-family: var(--font-default, sans-serif); font-size: 1.8rem; font-weight: 400; line-height: 1.5; margin: 0; letter-spacing: 0.02em; color: var(--color-text-dark, #000); } /* Subheadline Black */
 
-  /* UPDATED Landing Button Style */
+  /* Landing Button Style (Orange Background) */
   .landing-button {
     position: fixed;
     bottom: 5vh;
@@ -100,17 +122,13 @@
     z-index: 101;
     display: inline-block;
     padding: 0.75rem 2rem;
-    /* UPDATED: Orange Background */
-    background-color: var(--color-accent, #ff8c18);
-    /* UPDATED: White Text */
-    color: var(--color-text-light, #fff);
-    /* Orange Border (adjust if needed) */
-    border: 2px solid var(--color-accent, #ff8c18);
+    background-color: var(--color-accent, #ff8c18); /* Orange Background */
+    color: var(--color-text-light, #fff); /* White Text */
+    border: 2px solid var(--color-accent, #ff8c18); /* Orange Border */
     border-radius: 50px;
     text-decoration: none;
     font-family: var(--font-heading, serif); /* Or var(--font-default) for Manrope */
     font-size: 0.9rem;
-    /* Bolder Text */
     font-weight: 700; /* Check if Italiana font supports this weight */
     letter-spacing: 0.05em;
     backdrop-filter: blur(5px);
@@ -121,12 +139,12 @@
       border-color 0.3s ease;
   }
 
-  /* UPDATED: Hover state for Landing Button */
+  /* Landing Button Hover state (Semi-transparent White BG, White Text/Border) */
   .landing-button:hover,
   .landing-button:focus {
-    background-color: var(--color-text-light, #fff); /* White background */
-    border-color: var(--color-accent, #ff8c18); /* Orange border */
-    color: var(--color-accent, #ff8c18); /* Orange text */
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+    border-color: var(--color-text-light, #fff); /* White border */
+    color: var(--color-text-light, #fff); /* White text */
   }
   @media (max-width: 767px) { .landing-headline { font-size: 2.5rem; } .landing-subheadline { font-size: 1.4rem; } .landing-text-overlay { width: 90%; } }
   @media (max-width: 480px) { .landing-headline { font-size: 2rem; } .landing-subheadline { font-size: 1.2rem; } }
@@ -222,26 +240,27 @@
   font-size: 0.85rem;
 }
 
-/* UPDATED: Popup Input Borders */
+/* Popup Input Borders (Black) */
 .popup-input-group input[type="text"],
 .popup-input-group input[type="email"] {
   width: 100%;
   padding: 0.6rem 0.8rem;
-  /* CHANGED BORDER */
-  border: 1px solid var(--color-accent, #ff8c18); /* Orange border */
+  border: 1px solid var(--color-text-dark, #000); /* Black border */
   border-radius: 4px;
   font-size: 0.95rem;
   font-family: var(--font-default);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  /* REVERTED: Default caret color */
+  caret-color: auto; /* Or explicitly var(--color-text-dark) */
 }
 
-/* UPDATED: Popup Input Focus Style */
+/* Popup Input Focus Style (Orange Glow) */
 .popup-input-group input[type="text"]:focus,
 .popup-input-group input[type="email"]:focus {
   outline: none;
-  border-color: #e07b15; /* Darker orange on focus */
-  /* Optional: Add a subtle box-shadow for focus */
-  box-shadow: 0 0 0 2px rgba(255, 140, 24, 0.4);
+  border-color: var(--color-text-dark, #000); /* Keep border black */
+  /* Orange Glow */
+  box-shadow: 0 0 0 3px rgba(255, 140, 24, 0.5); /* Orange glow (using accent color) */
 }
 
 /* General Popup Button Style (Default Orange Background) */
@@ -256,12 +275,12 @@
   font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.03em;
-  /* cursor: pointer; */ /* Handled by global custom cursor rule */
+  /* cursor: pointer; */ /* Handled by general custom cursor rule */
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   margin-top: 0.5rem;
 }
 
-/* General Popup Button Hover */
+/* General Popup Button Hover - Keep darker orange as default hover */
 .popup-content button:hover,
 .popup-content button:focus {
   background-color: #e07b15; /* Darker accent color */
@@ -269,7 +288,7 @@
   border: none;
 }
 
-/* UPDATED: Specific style for the 'Continue' button hover/focus */
+/* Specific style for the 'Continue' button hover/focus (White bg, Black text/border) */
 #popup-next-step:hover,
 #popup-next-step:focus {
   background-color: var(--color-text-light, #fff); /* White background */
@@ -279,18 +298,14 @@
   padding: calc(0.7rem - 2px) calc(1.8rem - 2px);
 }
 
-/* Ensure final submit button retains orange background */
-#popup-submit {
-   background-color: var(--color-accent, #ff8c18);
-   color: var(--color-text-light, #fff);
-   border: none;
-}
-/* Ensure final submit button hover is darker orange */
+/* Specific style for the 'Submit' button hover/focus (White bg, Black text/border) */
 #popup-submit:hover,
 #popup-submit:focus {
-   background-color: #e07b15;
-   color: var(--color-text-light, #fff);
-   border: none;
+   background-color: var(--color-text-light, #fff); /* White background */
+   color: var(--color-text-dark, #000); /* Black text */
+   border: 2px solid var(--color-text-dark, #000); /* Black border */
+   /* Adjust padding slightly because border adds width */
+   padding: calc(0.7rem - 2px) calc(1.8rem - 2px);
 }
 
 
@@ -411,6 +426,13 @@
    /* Footer form styling */
    #footer-newsletter-form { display: flex; flex-direction: column; align-items: flex-start; } /* Adjust alignment */
    #footer-email-input { padding: 0.5rem; width: 100%; max-width: var(--form-input-max-width); border: 1px solid #ccc; box-sizing: border-box; margin-bottom: 0.5rem; /* Add margin */ }
+   /* ADDED: Footer Input Focus Style (Orange Glow) */
+   #footer-email-input:focus {
+       outline: none;
+       border-color: #ccc; /* Keep original border color */
+       box-shadow: 0 0 0 3px rgba(255, 140, 24, 0.5); /* Orange glow */
+       transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Add transition */
+   }
    #footer-subscribe-button { margin-top: 0; /* Remove top margin */ padding: 0.5rem 1rem; background-color: var(--color-text-dark); color: var(--color-text-light); border: none; /* cursor: pointer; */ font-size: 0.6rem; transition: background-color 0.3s ease; }
    #footer-subscribe-button:hover { background-color: var(--color-text-subtle); }
    #form-message { margin-top: 0.5rem; font-size: 0.6rem; display: none; } /* Style is set by JS */
@@ -442,9 +464,9 @@ a, button, [onclick], [role="button"], input[type="button"], input[type="submit"
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><circle cx='8' cy='8' r='6' fill='%23ff8c18'/></svg>") 8 8, pointer;
 }
 
-/* Text input cursor (CHANGED to Orange dot) */
+/* Text input cursor (REVERTED to default text cursor) */
 input[type="text"], input[type="email"], input[type="password"], input[type="search"], input[type="tel"], input[type="url"], textarea {
-    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><circle cx='8' cy='8' r='6' fill='%23ff8c18'/></svg>") 8 8, pointer; /* Orange dot */
+    cursor: text; /* Default I-beam cursor */
 }
 
 /* Ensure landing button retains its specific cursor if needed */
@@ -512,9 +534,9 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
         }
          #loading-text { /* Responsive loading text */
             font-size: 1.8rem;
-            width: 28ch;
-            padding-left: 9ch;
-        }
+            /* width: 28ch; */ /* Removed fixed width */
+            /* padding-left: 9ch; */ /* Removed left padding */
+         }
     }
 
     @media (max-width: 480px) {
@@ -535,8 +557,8 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
       }
        #loading-text { /* Responsive loading text */
             font-size: 1.5rem;
-            width: 25ch;
-            padding-left: 8ch;
+            /* width: 25ch; */ /* Removed fixed width */
+            /* padding-left: 8ch; */ /* Removed left padding */
         }
    }
 
@@ -723,4 +745,3 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
   .sticky-navbar .nav-links { max-width: var(--navbar-links-max-width); }
   .video-pin-wrapper { top: 10vh; }
 }
-
