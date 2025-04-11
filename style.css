@@ -90,6 +90,8 @@
   .landing-text-overlay { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 1200px; text-align: center; /* Removed default color here */ z-index: 100; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); }
   .landing-headline { font-family: var(--font-heading, serif); font-size: 3.5rem; font-weight: 700; line-height: 1.2; margin: 0 0 1.5rem 0; letter-spacing: 0.03em; color: var(--color-text-dark, #000);} /* Headline Black */
   .landing-subheadline { font-family: var(--font-default, sans-serif); font-size: 1.8rem; font-weight: 400; line-height: 1.5; margin: 0; letter-spacing: 0.02em; color: var(--color-text-dark, #000); } /* Subheadline Black */
+
+  /* UPDATED Landing Button Style */
   .landing-button {
     position: fixed;
     bottom: 5vh;
@@ -98,17 +100,17 @@
     z-index: 101;
     display: inline-block;
     padding: 0.75rem 2rem;
-    /* UPDATED: White Background */
-    background-color: var(--color-text-light, #fff);
-    /* UPDATED: Orange Text */
-    color: var(--color-accent, #ff8c18);
-    /* UPDATED: Thicker Orange Border */
+    /* UPDATED: Orange Background */
+    background-color: var(--color-accent, #ff8c18);
+    /* UPDATED: White Text */
+    color: var(--color-text-light, #fff);
+    /* Orange Border (adjust if needed) */
     border: 2px solid var(--color-accent, #ff8c18);
     border-radius: 50px;
     text-decoration: none;
     font-family: var(--font-heading, serif); /* Or var(--font-default) for Manrope */
     font-size: 0.9rem;
-    /* UPDATED: Bolder Text */
+    /* Bolder Text */
     font-weight: 700; /* Check if Italiana font supports this weight */
     letter-spacing: 0.05em;
     backdrop-filter: blur(5px);
@@ -119,12 +121,12 @@
       border-color 0.3s ease;
   }
 
-  /* UPDATED: Hover state for consistency */
+  /* UPDATED: Hover state for Landing Button */
   .landing-button:hover,
   .landing-button:focus {
-    background-color: var(--color-accent, #ff8c18); /* Orange background */
+    background-color: var(--color-text-light, #fff); /* White background */
     border-color: var(--color-accent, #ff8c18); /* Orange border */
-    color: var(--color-text-light, #fff); /* White text */
+    color: var(--color-accent, #ff8c18); /* Orange text */
   }
   @media (max-width: 767px) { .landing-headline { font-size: 2.5rem; } .landing-subheadline { font-size: 1.4rem; } .landing-text-overlay { width: 90%; } }
   @media (max-width: 480px) { .landing-headline { font-size: 2rem; } .landing-subheadline { font-size: 1.2rem; } }
