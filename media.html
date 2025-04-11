@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gordon Kwong - Media (Corrected Form)</title> <link href="favicon.svg" rel="icon" type="image/svg+xml" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav id="navbar" role="navigation" aria-label="Primary Navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo-link" aria-label="Gordon Kwong Homepage">
+      <img alt="Gordon Kwong Logo Inverted" class="nav-logo" src="logo-inverted.svg" width="120" height="40"/>
+    </a>
+    <button class="mobile-menu-toggle" aria-label="Toggle Menu" aria-expanded="false" aria-controls="initial-nav-links"> ☰ </button>
+    <div class="nav-links mobile-nav-menu" id="initial-nav-links">
+      <div class="nav-item"> <span>Collections</span> <div class="mega-menu"> <a href="#">Fall/Winter</a> <a href="#">Spring/Summer</a> </div> </div>
+      <div class="nav-item"> <span>Projects</span>
+        <div class="mega-menu">
+          <a href="#">Editorials</a>
+          <a href="#">Collaborations</a>
+          <a href="media.html">Media</a>
+        </div>
+      </div>
+      <div class="nav-item"> <span>Studio</span> <div class="mega-menu"> <a href="#">About</a> <a href="#">Contact</a> </div> </div>
+    </div>
+  </div>
+</nav>
+
+<nav class="sticky-navbar" id="sticky-navbar" role="navigation" aria-label="Sticky Primary Navigation">
+    <div class="container">
+      <a href="index.html" class="nav-logo-link" aria-label="Gordon Kwong Homepage">
+         <img alt="Gordon Kwong Logo" class="nav-logo" src="logo.svg" width="80" height="24"/>
+      </a>
+      <div class="nav-links mobile-nav-menu" id="sticky-nav-links">
+         <div class="nav-item"> <span>Collections</span> <div class="mega-menu"> <a href="#">Fall/Winter</a> <a href="#">Spring/Summer</a> </div> </div>
+         <div class="nav-item"> <span>Projects</span>
+           <div class="mega-menu">
+               <a href="#">Editorials</a>
+               <a href="#">Collaborations</a>
+               <a href="media.html">Media</a>
+           </div>
+         </div>
+         <div class="nav-item"> <span>Studio</span> <div class="mega-menu"> <a href="#">About</a> <a href="#">Contact</a> </div> </div>
+       </div>
+       <button class="mobile-menu-toggle" aria-label="Toggle Menu" aria-expanded="false" aria-controls="sticky-nav-links"> ☰ </button>
+       <div class="nav-utility-placeholder" aria-hidden="true">
+           <span> </span>
+       </div>
+    </div>
+  </nav>
+
+<main role="main">
+    <div class="container">
+        <h1 style="font-family: var(--font-heading); margin-top: 3rem; margin-bottom: 2rem; text-align: center; letter-spacing: 0.03em;">Media Showcase</h1>
+        <p style="text-align: center; margin-bottom: 3rem;">Get to know us.</p>
+        <div class="video-responsive-wrapper">
+            <iframe
+              src="https://www.youtube.com/embed/lXLBTBBil2U" title="Replace with descriptive video title"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+     <div class="container">
+        <div class="footer-section"> <strong>Services</strong> <a href="#">Design</a> <a href="#">Photography</a> <a href="#">Styling</a> </div>
+        <div class="footer-section"> <strong>Legals</strong> <a href="#">Privacy Policy</a> <a href="#">Terms of Use</a> <a href="#">Cookie Policy</a> <a href="#">Accessibility</a> <a href="#">Disclaimer</a> </div>
+        <div class="footer-section">
+          <strong>Subscribe to our Newsletter</strong>
+           <form action="https://formspree.io/f/xjkyayjq" method="POST">
+              <input name="email" placeholder="Your email address" required="" type="email"/>
+              <button type="submit">Subscribe</button>
+              <p id="form-message" style="display: none;">Thank you for subscribing!</p>
+           </form>
+          <div class="social-icons"> <a href="#"><img alt="Instagram" src="instagramicon.webp" loading="lazy" width="24" height="24" decoding="async"/></a> <a href="#"><img alt="Facebook" src="facebookicon.webp" loading="lazy" width="24" height="24" decoding="async"/></a> <a href="#"><img alt="YouTube" src="youtubeicon.webp" loading="lazy" width="24" height="24" decoding="async"/></a> </div>
+        </div>
+      </div>
+</footer>
+
+<script src="script.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ready-to-Wear - Gordon Kwong</title>
+    <link href="favicon.svg" rel="icon" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+    <script defer src="script.js"></script>
+    <style>
+        /* Styles specific to product page - copied from previous example */
+        .product-detail-section {
+            margin: var(--section-vertical-margin) auto;
+            padding: 0 var(--container-padding);
+            max-width: var(--container-max-width);
+            box-sizing: border-box;
+            min-height: 60vh; /* Ensure content pushes footer down */
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Stack on mobile */
+            gap: 2rem;
+            align-items: start;
+        }
+        .product-image-column img {
+            width: 100%;
+            height: auto;
+            /* Let aspect ratio be natural or set as needed */
+            /* aspect-ratio: 1 / 1; */
+            object-fit: cover;
+            border: 1px solid var(--color-border); /* Optional border */
+        }
+        .product-info-column h1 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem; /* Adjust as needed */
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.03em;
+        }
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--color-text-subtle);
+        }
+        .product-description p,
+        .product-description ul {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+         .product-description ul {
+            padding-left: 1.2rem;
+            list-style: disc;
+         }
+        .add-to-cart-button {
+            display: inline-block;
+            background-color: var(--color-text-dark);
+            color: var(--color-text-light);
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+        .add-to-cart-button:hover {
+            background-color: var(--color-accent);
+            color: var(--color-text-light);
+        }
+
+        /* Desktop layout for product grid */
+        @media (min-width: 768px) { /* Adjust breakpoint as needed */
+            .product-grid {
+                grid-template-columns: 1fr 1fr; /* Side-by-side */
+                gap: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar" role="navigation" aria-label="Primary Navigation">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo-link" aria-label="Gordon Kwong Homepage">
+          <img alt="Gordon Kwong Logo Inverted" class="nav-logo" src="logo-inverted.svg" width="120" height="40"/>
+        </a>
+        <button class="mobile-menu-toggle" aria-label="Toggle Menu" aria-expanded="false" aria-controls="initial-nav-links"> ☰ </button>
+        <div class="nav-links mobile-nav-menu" id="initial-nav-links">
+          <div class="nav-item"> <span>Collections</span> <div class="mega-menu"> <a href="#">Fall/Winter</a> <a href="#">Spring/Summer</a> </div> </div>
+          <div class="nav-item"> <span>Projects</span>
+            <div class="mega-menu">
+              <a href="#">Editorials</a>
+              <a href="#">Collaborations</a>
+              <a href="media.html">Media</a>
+            </div>
+          </div>
+          <div class="nav-item"> <span>Studio</span> <div class="mega-menu"> <a href="#">About</a> <a href="#">Contact</a> </div> </div>
+        </div>
+      </div>
+    </nav>
+
+    <nav class="sticky-navbar" id="sticky-navbar" role="navigation" aria-label="Sticky Primary Navigation">
+        <div class="container">
+          <a href="index.html" class="nav-logo-link" aria-label="Gordon Kwong Homepage">
+              <img alt="Gordon Kwong Logo" class="nav-logo" src="logo.svg" width="80" height="24"/>
+          </a>
+          <div class="nav-links mobile-nav-menu" id="sticky-nav-links">
+              <div class="nav-item"> <span>Collections</span> <div class="mega-menu"> <a href="#">Fall/Winter</a> <a href="#">Spring/Summer</a> </div> </div>
+              <div class="nav-item"> <span>Projects</span>
+                <div class="mega-menu">
+                    <a href="#">Editorials</a>
+                    <a href="#">Collaborations</a>
+                    <a href="media.html">Media</a>
+                </div>
+              </div>
+              <div class="nav-item"> <span>Studio</span> <div class="mega-menu"> <a href="#">About</a> <a href="#">Contact</a> </div> </div>
+            </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle Menu" aria-expanded="false" aria-controls="sticky-nav-links"> ☰ </button>
+            <div class="nav-utility-placeholder" aria-hidden="true">
+                <span> </span>
+            </div>
+        </div>
+      </nav>
+    <main>
+        <section class="product-detail-section">
+            <div class="product-grid">
+                <div class="product-image-column">
+                    <img src="photo1.webp" alt="Ready-to-Wear Product Example">
+                    </div>
+
+                <div class="product-info-column">
+                    <h1>Silk Blend Blouse</h1>
+                    <div class="product-price">$249.99</div>
+                    <div class="product-description">
+                        <p>An exquisite example of our Ready-to-Wear collection. This blouse features a luxurious silk blend fabric with meticulous tailoring.</p>
+                        <p>Perfect for transitioning from day to evening wear, offering both comfort and sophisticated style.</p>
+                        <ul>
+                            <li>Material: 70% Silk, 30% Cotton</li>
+                            <li>Fit: Regular</li>
+                            <li>Care: Dry Clean Only</li>
+                            <li>Origin: Made in Italy</li>
+                        </ul>
+                    </div>
+                    <button class="add-to-cart-button">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-section"> <strong>Services</strong> <a href="#">Design</a> <a href="#">Photography</a> <a href="#">Styling</a> </div>
+            <div class="footer-section"> <strong>Legals</strong> <a href="#">Privacy Policy</a> <a href="#">Terms of Use</a> <a href="#">Cookie Policy</a> <a href="#">Accessibility</a> <a href="#">Disclaimer</a> </div>
+            <div class="footer-section">
+              <strong>Subscribe to our Newsletter</strong>
+              <form action="https://formspree.io/f/xjkyayjq" method="POST">
+                  <input name="email" placeholder="Your email address" required="" type="email"/>
+                  <button type="submit">Subscribe</button>
+                  <p id="form-message" style="display: none;">Thank you for subscribing!</p>
+              </form>
+              <div class="social-icons"> <a href="#"><img alt="Instagram" src="instagramicon.webp" loading="lazy" width="24" height="24" decoding="async"/></a> <a href="#"><img alt="Facebook" src="facebookicon.webp" loading="lazy" width="24" height="24" decoding="async"/></a> <a href="#"><img alt="YouTube" src="youtubeicon.webp" loading="lazy" width="24" height="24" decoding="async"/></a> </div>
+            </div>
+          </div>
+    </footer>
+    </body>
+</html>

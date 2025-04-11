@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gordon Kwong - Welcome</title> <link href="favicon.svg" rel="icon" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@400;600&display=swap" rel="stylesheet" />
+
+</head>
+<body class="landing-page-body">
+
+  <div id="loading-screen" role="status" aria-hidden="true">
+    <div id="loading-text">
+      You are <span id="loading-word">friend</span>
+    </div>
+  </div>
+  <header class="landing-header">
+    <a href="index.html" class="landing-logo-link" aria-label="Gordon Kwong Homepage">
+      <img alt="Gordon Kwong Logo" class="landing-logo" src="logo.svg" width="120" height="40"/>
+    </a>
+    <button class="landing-menu-toggle" aria-label="Toggle Menu" aria-expanded="false" aria-controls="landing-navigation">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+    </header>
+
+  <div class="video-background-container">
+    <video autoplay loop muted playsinline id="landing-video">
+      <source src="home.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <div class="landing-text-overlay">
+    <h1 class="landing-headline">This is THYS, the world's 1st motorized high heels</h1>
+    <p class="landing-subheadline">Heels that work as hard as you do.</p>
+  </div>
+  <a href="learnmore.html" class="landing-button">Learn More</a>
+
+  <script src="script.js" defer></script>
+  <div id="timer-popup" style="display: none;">
+    <div class="popup-content">
+      <div id="popup-step-1">
+        <h2>You seem to be a fan!</h2>
+        <p>Please enter your name so we can improve your experience.</p>
+        <div class="popup-input-group">
+          <label for="popup-name">Name:</label>
+          <input type="text" id="popup-name" name="name" required>
+        </div>
+        <button type="button" id="popup-next-step">Continue</button>
+      </div>
+  
+      <div id="popup-step-2" style="display: none;">
+        <h2>Almost there!</h2>
+        <p>Please enter your email so we can send a pre-order coupon and exclusive access to our VIP community.</p>
+        <div class="popup-input-group">
+          <label for="popup-email">Email:</label>
+          <input type="email" id="popup-email" name="email" required>
+        </div>
+        <button type="submit" id="popup-submit">Submit & Get Coupon</button>
+      </div>
+  
+       <div id="popup-submitting" style="display: none;">
+          <p>Submitting...</p>
+       </div>
+        <div id="popup-success" style="display: none;">
+          <p>Thank you! Your details have been submitted.</p>
+        </div>
+         <div id="popup-error" style="display: none;">
+          <p>Sorry, there was an error. Please try again later.</p>
+        </div>
+  
+    </div> </div> 
+</body>
+</html>
