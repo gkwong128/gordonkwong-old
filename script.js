@@ -27,6 +27,67 @@ document.addEventListener('DOMContentLoaded', () => {
 } else {
      console.log("Lenis not found.");
 }
+  // ===== Footer Newsletter Form Handling =====
+  const footerForm = document.getElementById('footer-newsletter-form');
+  const footerEmailInput = document.getElementById('footer-email-input');
+  const footerSubscribeButton = document.getElementById('footer-subscribe-button');
+  const footerFormMessage = document.getElementById('form-message'); // Reuse existing message element
+
+  if (footerForm && footerEmailInput && footerSubscribeButton && footerFormMessage) {
+      footerForm.addEventListener('submit', async (event) => {
+          event.preventDefault(); // Prevent default form submission
+
+          const emailValue = footerEmailInput.value.trim();
+          if (!emailValue || !/\S+@\S+\.\S+/.test(emailValue)) {
+              alert('Please enter a valid email address.');
+              footerEmailInput.focus();
+              return;
+          }
+
+          // Disable button and show temporary message
+          footerSubscribeButton.disabled = true;
+          footerSubscribeButton.textContent = 'Submitting...';
+          footerFormMessage.style.display = 'none'; // Hide previous message
+
+          const endpoint = '/.netlify/functions/subscribe-newsletter'; // New function endpoint
+
+          try {
+              const response = await fetch(endpoint, {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ email: emailValue }), // Only send email
+              });
+
+              if (!response.ok) {
+                  // Handle server errors from the function
+                  const errorData = await response.json();
+                  throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+              }
+
+              // Success
+              footerEmailInput.value = ''; // Clear input
+              footerFormMessage.textContent = 'Thank you for subscribing!';
+              footerFormMessage.style.color = '#008000'; // Green color for success
+              footerFormMessage.style.display = 'block';
+
+          } catch (error) {
+              console.error('Footer subscription failed:', error);
+              footerFormMessage.textContent = error.message || 'Subscription failed. Please try again.';
+              footerFormMessage.style.color = '#dc3545'; // Red color for error
+              footerFormMessage.style.display = 'block';
+          } finally {
+              // Re-enable button after a short delay
+              setTimeout(() => {
+                  footerSubscribeButton.disabled = false;
+                  footerSubscribeButton.textContent = 'Subscribe';
+              }, 2000); // Re-enable after 2 seconds
+          }
+      });
+  }
+  // ===== End Footer Newsletter Form Handling =====
+  
     // ===== Loading Screen Logic (Runs Once Per Session for Landing Page) Start =====
     // ... (keep existing loading screen logic) ...
     const loadingScreen = document.getElementById('loading-screen');
@@ -267,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             // console.log("Popup already completed, timer not started."); // Less verbose
         }
-        
+
 // --- Add Enter Key Submission for Popup Inputs ---
 if (popupNameInput) {
     popupNameInput.addEventListener('keydown', function(event) {
