@@ -87,9 +87,9 @@
   .landing-logo { height: 30px; width: auto; }
   .landing-menu-toggle { background: none; border: none; padding: 0.5rem; color: var(--color-text-light, #fff); line-height: 0; }
   .landing-menu-toggle svg { display: block; width: 28px; height: 28px; stroke: currentColor; stroke-width: 1.5; }
-  .landing-text-overlay { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 1200px; text-align: center; color: var(--color-text-light, #000000); z-index: 100; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); }
-  .landing-headline { font-family: var(--font-heading, serif); font-size: 3.5rem; font-weight: 700; line-height: 1.2; margin: 0 0 1.5rem 0; letter-spacing: 0.03em; color: var(--color-text-dark, #000);}
-  .landing-subheadline { font-family: var(--font-default, sans-serif); font-size: 1.8rem; font-weight: 400; line-height: 1.5; margin: 0; letter-spacing: 0.02em; color: var(--color-text-dark, #000); }
+  .landing-text-overlay { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 1200px; text-align: center; /* Removed default color here */ z-index: 100; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); }
+  .landing-headline { font-family: var(--font-heading, serif); font-size: 3.5rem; font-weight: 700; line-height: 1.2; margin: 0 0 1.5rem 0; letter-spacing: 0.03em; color: var(--color-text-dark, #000);} /* Headline Black */
+  .landing-subheadline { font-family: var(--font-default, sans-serif); font-size: 1.8rem; font-weight: 400; line-height: 1.5; margin: 0; letter-spacing: 0.02em; color: var(--color-text-dark, #000); } /* Subheadline Black */
   .landing-button {
     position: fixed;
     bottom: 5vh;
@@ -98,16 +98,18 @@
     z-index: 101;
     display: inline-block;
     padding: 0.75rem 2rem;
-    /* Change 1: Make background accent color */
-    background-color: var(--color-accent, #ff8c18);
-    /* Change 2: Set text color to white */
-    color: var(--color-text-light, #fff);
+    /* UPDATED: White Background */
+    background-color: var(--color-text-light, #fff);
+    /* UPDATED: Orange Text */
+    color: var(--color-accent, #ff8c18);
+    /* UPDATED: Thicker Orange Border */
     border: 2px solid var(--color-accent, #ff8c18);
     border-radius: 50px;
     text-decoration: none;
-    font-family: var(--font-heading, serif);
+    font-family: var(--font-heading, serif); /* Or var(--font-default) for Manrope */
     font-size: 0.9rem;
-    font-weight: 700; /* Keep or increase font weight */
+    /* UPDATED: Bolder Text */
+    font-weight: 700; /* Check if Italiana font supports this weight */
     letter-spacing: 0.05em;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
@@ -116,13 +118,13 @@
       color 0.3s ease,
       border-color 0.3s ease;
   }
-  
+
+  /* UPDATED: Hover state for consistency */
   .landing-button:hover,
   .landing-button:focus {
-    /* Change hover to have a transparent background */
-    background-color: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.8);
-    color: #fff;
+    background-color: var(--color-accent, #ff8c18); /* Orange background */
+    border-color: var(--color-accent, #ff8c18); /* Orange border */
+    color: var(--color-text-light, #fff); /* White text */
   }
   @media (max-width: 767px) { .landing-headline { font-size: 2.5rem; } .landing-subheadline { font-size: 1.4rem; } .landing-text-overlay { width: 90%; } }
   @media (max-width: 480px) { .landing-headline { font-size: 2rem; } .landing-subheadline { font-size: 1.2rem; } }
@@ -141,26 +143,23 @@
    ======================================== */
 
 #timer-popup {
-  /* Initially hidden - JS controls visibility via class */
-  display: none; /* Hide by default */
+  display: none;
   position: fixed;
-  inset: 0; /* Cover viewport */
-  background-color: rgba(0, 0, 0, 0.8); /* Dark semi-transparent overlay */
-  z-index: 10000; /* Above everything else */
-  /* display: flex; */ /* Changed: Use class to set display */
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 10000;
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  opacity: 0; /* Start faded out */
-  pointer-events: none; /* Initially ignore pointer */
+  opacity: 0;
+  pointer-events: none;
   transition: opacity 0.4s ease-in-out;
 }
 
-/* Class added by JS to show the popup */
 #timer-popup.popup-visible {
-  display: flex; /* Show popup */
+  display: flex;
   opacity: 1;
-  pointer-events: auto; /* Allow interaction when visible */
+  pointer-events: auto;
 }
 
 .popup-content {
@@ -173,7 +172,26 @@
   text-align: center;
   font-family: var(--font-default);
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  position: relative; /* Needed for absolute positioning of close button */
 }
+
+/* Optional: Close Button */
+#popup-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0.25rem 0.5rem;
+  color: var(--color-text-subtle);
+  /* cursor: pointer; */ /* Handled by general button cursor rule */
+}
+#popup-close-button:hover {
+  color: var(--color-text-dark);
+}
+
 
 .popup-content h2 {
   font-family: var(--font-heading);
@@ -202,46 +220,95 @@
   font-size: 0.85rem;
 }
 
+/* UPDATED: Popup Input Borders */
 .popup-input-group input[type="text"],
 .popup-input-group input[type="email"] {
   width: 100%;
   padding: 0.6rem 0.8rem;
-  border: 1px solid var(--color-border, #ccc);
+  /* CHANGED BORDER */
+  border: 1px solid var(--color-accent, #ff8c18); /* Orange border */
   border-radius: 4px;
   font-size: 0.95rem;
   font-family: var(--font-default);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* UPDATED: Popup Input Focus Style */
+.popup-input-group input[type="text"]:focus,
+.popup-input-group input[type="email"]:focus {
+  outline: none;
+  border-color: #e07b15; /* Darker orange on focus */
+  /* Optional: Add a subtle box-shadow for focus */
+  box-shadow: 0 0 0 2px rgba(255, 140, 24, 0.4);
+}
+
+/* General Popup Button Style (Default Orange Background) */
 .popup-content button {
   display: inline-block;
   padding: 0.7rem 1.8rem;
-  border: none;
+  border: none; /* Default no border */
   border-radius: 50px; /* Pill shape */
-  background-color: var(--color-accent, #ff8c18);
-  color: var(--color-text-light, #fff);
+  background-color: var(--color-accent, #ff8c18); /* Orange Background */
+  color: var(--color-text-light, #fff); /* White Text */
   font-family: var(--font-default);
   font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.03em;
   /* cursor: pointer; */ /* Handled by global custom cursor rule */
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   margin-top: 0.5rem;
 }
 
+/* General Popup Button Hover */
 .popup-content button:hover,
 .popup-content button:focus {
   background-color: #e07b15; /* Darker accent color */
+  color: var(--color-text-light, #fff);
+  border: none;
 }
 
-#popup-submitting p,
-#popup-success p,
-#popup-error p {
+/* UPDATED: Specific style for the 'Continue' button hover/focus */
+#popup-next-step:hover,
+#popup-next-step:focus {
+  background-color: var(--color-text-light, #fff); /* White background */
+  color: var(--color-text-dark, #000); /* Black text */
+  border: 2px solid var(--color-text-dark, #000); /* Black border */
+  /* Adjust padding slightly because border adds width */
+  padding: calc(0.7rem - 2px) calc(1.8rem - 2px);
+}
+
+/* Ensure final submit button retains orange background */
+#popup-submit {
+   background-color: var(--color-accent, #ff8c18);
+   color: var(--color-text-light, #fff);
+   border: none;
+}
+/* Ensure final submit button hover is darker orange */
+#popup-submit:hover,
+#popup-submit:focus {
+   background-color: #e07b15;
+   color: var(--color-text-light, #fff);
+   border: none;
+}
+
+
+#popup-submitting p {
     font-size: 1rem;
     margin-bottom: 0;
     font-weight: 600;
 }
-#popup-success p { color: #28a745; } /* Green */
-#popup-error p { color: #dc3545; } /* Red */
+#popup-success p {
+    font-size: 1rem;
+    margin-bottom: 0;
+    font-weight: 600;
+    color: var(--color-accent); /* Accent color for success */
+}
+#popup-error p {
+    font-size: 1rem;
+    margin-bottom: 0;
+    font-weight: 600;
+    color: #dc3545; /* Red */
+}
 
 
 /* ========================================
@@ -339,10 +406,13 @@
   .social-icons { display: flex; gap: 1.5rem; margin-top: 1rem; }
   .social-icons img { width: var(--social-icon-size); height: var(--social-icon-size); display: block; }
    .footer form input, .footer form button { font-family: inherit; }
-   .footer form input[type="email"] { padding: 0.5rem; width: 100%; max-width: var(--form-input-max-width); border: 1px solid #ccc; box-sizing: border-box; }
-    .footer form button { margin-top: 0.5rem; padding: 0.5rem 1rem; background-color: var(--color-text-dark); color: var(--color-text-light); border: none; /* cursor: pointer; */ font-size: 0.6rem; transition: background-color 0.3s ease; }
-    .footer form button:hover { background-color: var(--color-text-subtle); }
-   #form-message { margin-top: 0.5rem; color: #008000; font-size: 0.6rem; display: none; }
+   /* Footer form styling */
+   #footer-newsletter-form { display: flex; flex-direction: column; align-items: flex-start; } /* Adjust alignment */
+   #footer-email-input { padding: 0.5rem; width: 100%; max-width: var(--form-input-max-width); border: 1px solid #ccc; box-sizing: border-box; margin-bottom: 0.5rem; /* Add margin */ }
+   #footer-subscribe-button { margin-top: 0; /* Remove top margin */ padding: 0.5rem 1rem; background-color: var(--color-text-dark); color: var(--color-text-light); border: none; /* cursor: pointer; */ font-size: 0.6rem; transition: background-color 0.3s ease; }
+   #footer-subscribe-button:hover { background-color: var(--color-text-subtle); }
+   #form-message { margin-top: 0.5rem; font-size: 0.6rem; display: none; } /* Style is set by JS */
+
   /* Responsive Video Embed (for media.html) */
   .video-responsive-wrapper { position: relative; overflow: hidden; width: 100%; max-width: 1400px; margin: 3rem auto; padding-top: 56.25%; }
   .video-responsive-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
@@ -360,32 +430,31 @@
    Custom Cursor Styles (Consolidated & Updated)
    ======================================== */
 
-/* Default Cursor: Black dot with white outline */
+/* Default cursor */
 html {
-  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><circle cx='8' cy='8' r='6' fill='%23000' stroke='%23fff' stroke-width='1.5'/></svg>") 8 8, auto !important;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><circle cx='8' cy='8' r='6' fill='%23000' stroke='%23fff' stroke-width='1.5'/></svg>") 8 8, auto;
 }
 
-/* Interactive Cursor: Orange dot - General */
+/* Interactive elements cursor (Orange dot) */
 a, button, [onclick], [role="button"], input[type="button"], input[type="submit"], input[type="reset"], select, label:hover {
-  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><circle cx='8' cy='8' r='6' fill='%23ff8c18'/></svg>") 8 8, pointer !important;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><circle cx='8' cy='8' r='6' fill='%23ff8c18'/></svg>") 8 8, pointer;
 }
 
-/* Specific Overrides for Interactive Elements */
+/* Text input cursor (CHANGED to Orange dot) */
+input[type="text"], input[type="email"], input[type="password"], input[type="search"], input[type="tel"], input[type="url"], textarea {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><circle cx='8' cy='8' r='6' fill='%23ff8c18'/></svg>") 8 8, pointer; /* Orange dot */
+}
+
+/* Ensure landing button retains its specific cursor if needed */
 .landing-menu-toggle,
 .landing-button,
 #navbar .nav-item span,
 .sticky-navbar .nav-item span,
 .carousel-indicator,
-.carousel-button /* Added carousel buttons */
- {
-   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><circle cx='8' cy='8' r='6' fill='%23ff8c18'/></svg>") 8 8, pointer !important;
+.carousel-button {
+   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><circle cx='8' cy='8' r='6' fill='%23ff8c18'/></svg>") 8 8, pointer;
 }
 
-
-/* Text Selection Cursor: Keep default */
-input[type="text"], input[type="email"], input[type="password"], input[type="search"], input[type="tel"], input[type="url"], textarea {
-    cursor: text !important;
-}
 
   /* ========================================
      Media Queries (Tablet & Mobile)
