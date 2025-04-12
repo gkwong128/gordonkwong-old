@@ -43,7 +43,7 @@
       margin: 0;
       padding: 0;
   }
-  /* NEW: Style to prevent scrolling when popup is open */
+  /* Style to prevent scrolling when popup is open */
   html.popup-open, body.popup-open {
       overflow: hidden;
       height: 100%;
@@ -63,37 +63,37 @@
     display: flex; align-items: center; justify-content: center;
     z-index: 9999; pointer-events: auto;
     opacity: 1; transition: opacity 0.6s ease-out;
-    padding: 1rem; /* Add padding for smaller screens */
+    padding: 1rem; /* General padding */
   }
-  /* UPDATED: Loading Text Alignment */
+  /* Base Loading Text Style */
   #loading-text {
     font-size: 2.5rem;
-    /* width: 30ch; */ /* Removed fixed width */
-    text-align: center; /* Center align text */
-    /* padding-left: 10ch; */ /* Removed left padding */
+    width: 30ch; /* Restore width */
+    text-align: left; /* Restore left align */
+    padding-left: 10ch; /* Restore padding */
     box-sizing: border-box;
-    /* overflow: hidden; */ /* Allow wrapping if needed */
-    /* white-space: nowrap; */ /* Allow wrapping */
-    /* text-overflow: ellipsis; */
-    max-width: 90%; /* Prevent text from getting too wide */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 90%;
   }
   #loading-word { display: inline-block; vertical-align: baseline; color: var(--color-accent, #ff8c18); }
   .accent-word { color: var(--color-accent, #ff8c18); }
   #loading-screen.hidden { opacity: 0; pointer-events: none; }
 
-  /* UPDATED: Mobile Loading Text Alignment */
+  /* Mobile Loading Text Alignment (Restored Padding/Width) */
   @media (max-width: 767px) {
     #loading-text {
       font-size: 1.8rem;
-      /* width: 28ch; */ /* Removed fixed width */
-      /* padding-left: 9ch; */ /* Removed left padding */
+      width: 28ch; /* Restore width */
+      padding-left: 9ch; /* Restore padding */
      }
   }
   @media (max-width: 480px) {
     #loading-text {
       font-size: 1.5rem;
-      /* width: 25ch; */ /* Removed fixed width */
-      /* padding-left: 8ch; */ /* Removed left padding */
+      width: 25ch; /* Restore width */
+      padding-left: 8ch; /* Restore padding */
     }
   }
 
@@ -146,6 +146,8 @@
     border-color: var(--color-text-light, #fff); /* White border */
     color: var(--color-text-light, #fff); /* White text */
   }
+
+  /* Mobile Shadow Removal */
   @media (max-width: 767px) {
     .landing-headline { font-size: 2.5rem; }
     .landing-subheadline { font-size: 1.4rem; }
@@ -153,6 +155,14 @@
         width: 90%;
         /* REMOVE text shadow on mobile */
         text-shadow: none;
+    }
+    /* Remove popup shadow on mobile */
+    .popup-content {
+        box-shadow: none;
+    }
+    /* Remove expanded mobile nav shadow */
+    .sticky-navbar .nav-links.mobile-nav-menu {
+        box-shadow: none;
     }
   }
   @media (max-width: 480px) {
@@ -558,8 +568,8 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
         }
          #loading-text { /* Responsive loading text */
             font-size: 1.8rem;
-            /* width: 28ch; */ /* Removed fixed width */
-            /* padding-left: 9ch; */ /* Removed left padding */
+            width: 28ch; /* Restore width */
+            padding-left: 9ch; /* Restore padding */
          }
     }
 
@@ -581,8 +591,8 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
       }
        #loading-text { /* Responsive loading text */
             font-size: 1.5rem;
-            /* width: 25ch; */ /* Removed fixed width */
-            /* padding-left: 8ch; */ /* Removed left padding */
+            width: 25ch; /* Restore width */
+            padding-left: 8ch; /* Restore padding */
         }
    }
 

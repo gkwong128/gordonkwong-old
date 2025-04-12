@@ -227,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
+        // *** MODIFIED showPopup function ***
         const showPopup = () => {
             console.log("Showing Popup");
             // 1. Apply CSS classes first to hide overflow
@@ -246,21 +247,30 @@ document.addEventListener('DOMContentLoaded', () => {
             popupSubmitButton.style.display = 'none';
             popupNameInput.value = localStorage.getItem(STORAGE_KEY_NAME) || '';
 
+            // Check if NOT on landing page before setting focus
+            const isLandingPage = document.body.classList.contains('landing-page-body');
+
             if (localStorage.getItem(STORAGE_KEY_NAME)) {
                 popupStep1.style.display = 'none';
                 popupStep2.style.display = 'block';
                 popupNextButton.style.display = 'none';
                 popupSubmitButton.style.display = 'block';
-                requestAnimationFrame(() => popupEmailInput.focus()); // Focus email input
+                // Only focus if not landing page
+                if (!isLandingPage) {
+                    requestAnimationFrame(() => popupEmailInput.focus());
+                }
             } else {
-                 requestAnimationFrame(() => popupNameInput.focus()); // Focus name input
+                 // Only focus if not landing page
+                 if (!isLandingPage) {
+                     requestAnimationFrame(() => popupNameInput.focus());
+                 }
             }
 
             popup.style.display = 'flex';
             setTimeout(() => { popup.classList.add('popup-visible'); }, 10); // Fade in
         };
 
-        // *** MODIFIED hidePopup function ***
+        // MODIFIED hidePopup function (Stays the same as previous version)
         const hidePopup = () => {
             // Check if lenis exists AND if we are NOT on the landing page
             if (lenis && !document.body.classList.contains('landing-page-body')) {
@@ -362,7 +372,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem(STORAGE_KEY_NAME, name);
                     popupStep1.style.display = 'none'; popupStep2.style.display = 'block';
                     popupNextButton.style.display = 'none'; popupSubmitButton.style.display = 'block';
-                    popupEmailInput.focus();
+                     // Only focus if not landing page
+                    if (!document.body.classList.contains('landing-page-body')) {
+                        popupEmailInput.focus();
+                    }
                 } else { alert("Please enter your name."); popupNameInput.focus(); }
             });
         }
