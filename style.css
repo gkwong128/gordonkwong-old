@@ -146,8 +146,19 @@
     border-color: var(--color-text-light, #fff); /* White border */
     color: var(--color-text-light, #fff); /* White text */
   }
-  @media (max-width: 767px) { .landing-headline { font-size: 2.5rem; } .landing-subheadline { font-size: 1.4rem; } .landing-text-overlay { width: 90%; } }
-  @media (max-width: 480px) { .landing-headline { font-size: 2rem; } .landing-subheadline { font-size: 1.2rem; } }
+  @media (max-width: 767px) {
+    .landing-headline { font-size: 2.5rem; }
+    .landing-subheadline { font-size: 1.4rem; }
+    .landing-text-overlay {
+        width: 90%;
+        /* REMOVE text shadow on mobile */
+        text-shadow: none;
+    }
+  }
+  @media (max-width: 480px) {
+    .landing-headline { font-size: 2rem; }
+    .landing-subheadline { font-size: 1.2rem; }
+  }
 
 /* ========================================
    Announcement Banner Styles (Should be in main style.css)
@@ -516,6 +527,18 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
      section h2 { font-size: 1.4rem; letter-spacing: 0.03em; }
       /* Video section stacking & NO pinning */
       /* Base styles handle mobile layout now */
+
+      /* Mobile Shadow Removal */
+      .landing-text-overlay {
+          text-shadow: none;
+      }
+      .popup-content {
+          box-shadow: none;
+      }
+      .sticky-navbar .nav-links.mobile-nav-menu {
+          box-shadow: none; /* Remove shadow from expanded mobile nav */
+      }
+
   }
 
     /* Media query for explore section stacking */
@@ -531,6 +554,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
         }
         .landing-text-overlay {
             width: 90%; /* Ensure it doesn't hit edges */
+            /* text-shadow: none; */ /* Already applied in max-width: 1023px */
         }
          #loading-text { /* Responsive loading text */
             font-size: 1.8rem;
