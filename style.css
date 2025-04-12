@@ -101,33 +101,41 @@
     letter-spacing: inherit;
   }
 
-  .accent-word { /* Style for the final "human" word */
+  .accent-word { /* Base style for the final "human" word */
      color: var(--color-accent, #ff8c18);
      font-size: inherit;
      font-family: inherit;
      letter-spacing: inherit;
+     display: inline; /* Default display */
+     vertical-align: baseline;
   }
   #loading-screen.hidden { opacity: 0; pointer-events: none; }
 
-  /* UPDATED: Mobile Loading Text Adjustments (Two Lines, Centered) */
+  /* Mobile Loading Text Adjustments */
   @media (max-width: 767px) {
+    /* UPDATED: Move block up slightly */
+    #loading-screen {
+        align-items: flex-start; /* Align block to top */
+        padding-top: 30vh; /* Add padding to push down from top */
+    }
     #loading-text {
-      font-size: 1.8rem;
+      font-size: 2.2rem; /* Increased font size */
       /* Override positioning and sizing for mobile */
-      position: static; /* Use flex centering from parent */
+      position: static;
       top: auto;
       left: auto;
       transform: none;
       width: auto; /* Allow natural width */
       padding-left: 0; /* Remove desktop padding */
       padding-right: 0;
-      max-width: 90%; /* Limit width */
+      max-width: 95%; /* Limit width */
       /* Center align the text itself */
       text-align: center;
-      /* Allow normal wrapping (though word span will force break) */
+      /* Allow normal wrapping */
       white-space: normal;
       overflow: visible;
       text-overflow: clip;
+      margin: 0 auto; /* Center block horizontally */
      }
      /* Force word onto new line on mobile */
      #loading-word {
@@ -136,22 +144,25 @@
         /* Ensure word break works if needed */
         overflow-wrap: break-word;
         word-break: break-word;
+        font-size: 2.2rem; /* Match parent */
      }
-     /* Adjust font size for final word if needed */
+     /* UPDATED: Force final word onto new line on mobile */
      .accent-word {
-        font-size: 1.8rem;
+        display: block; /* Force onto new line */
+        font-size: 2.2rem; /* Match parent */
      }
   }
   @media (max-width: 480px) {
+     #loading-screen {
+        padding-top: 25vh; /* Adjust vertical position for smaller screens */
+    }
     #loading-text {
-      font-size: 1.5rem; /* Smaller font */
+      font-size: 1.8rem; /* Increased smaller mobile font size */
     }
-     #loading-word {
-       /* Inherits display: block */
+     #loading-word,
+     .accent-word {
+        font-size: 1.8rem; /* Match parent */
      }
-    .accent-word {
-        font-size: 1.5rem;
-    }
   }
 
 /* ========================================
