@@ -546,10 +546,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Scroll Logic Handler (Handles Sticky Nav) ---
     const handleScroll = () => {
         // Only run scroll handling if Lenis is active (i.e., not on landing page)
-        if (!lenis) return;
-
-        const scrollY = window.scrollY || window.pageYOffset; // Use native scrollY if Lenis not present? Or rely on Lenis event?
-                                                            // Let's stick to native scrollY for simplicity here, might need adjustment if Lenis takes over completely
+        // If Lenis is active, its scroll event handles ScrollTrigger updates.
+        // If not active (landing page), this function might still be called by native scroll events
+        // but the conditions inside likely won't apply or matter on the non-scrolling page.
+        const scrollY = window.scrollY || window.pageYOffset;
 
          if (nonStickyNavbar && stickyNavbar && window.innerWidth >= desktopBreakpoint) {
            const nonStickyNavHeight = nonStickyNavbar.offsetHeight;
@@ -560,11 +560,7 @@ document.addEventListener('DOMContentLoaded', () => {
            } else { stickyNavbar.classList.remove('show'); }
          } else if (stickyNavbar && window.innerWidth < desktopBreakpoint) { stickyNavbar.classList.remove('show'); }
     };
-    // Add scroll listener only if not landing page? Or let Lenis handle it?
-    // If Lenis is initialized, its 'scroll' event is already updating ScrollTrigger.
-    // If Lenis is NOT initialized (landing page), we might need a native listener IF sticky nav was intended there (it isn't).
-    // Let's assume sticky nav is only for scrollable pages. If handleScroll was needed on landing, it wouldn't work without Lenis.
-    // We'll keep the listener but it might not fire if body overflow is hidden.
+    // Add listeners regardless, they might be needed if Lenis fails or for resize.
     if (stickyNavbar || nonStickyNavbar) {
         handleScroll(); // Initial check
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -579,16 +575,15 @@ document.addEventListener('DOMContentLoaded', () => {
         mainMmenuToggles.forEach(toggle => {
             toggle.addEventListener('click', () => {
                 // This toggle logic should work regardless of page type (landing or other)
-                // if (window.innerWidth < mainHamburgerBreakpoint) { // This check might be redundant if button is hidden via CSS
-                    const targetMenuId = toggle.getAttribute('aria-controls');
-                    const targetMenu = document.getElementById(targetMenuId);
-                    if (targetMenu) {
-                        const isOpen = targetMenu.classList.toggle('is-open');
-                        toggle.setAttribute('aria-expanded', isOpen);
-                        toggle.innerHTML = isOpen ? '×' : '☰';
-                        if (!isOpen) { targetMenu.querySelectorAll('.nav-item.submenu-open').forEach(item => item.classList.remove('submenu-open')); }
-                    }
-                // }
+                const targetMenuId = toggle.getAttribute('aria-controls');
+                const targetMenu = document.getElementById(targetMenuId);
+                if (targetMenu) {
+                    const isOpen = targetMenu.classList.toggle('is-open');
+                    toggle.setAttribute('aria-expanded', isOpen);
+                    // Simple text change for toggle button (replace with SVG swap if needed)
+                    toggle.innerHTML = isOpen ? '×' : '☰';
+                    if (!isOpen) { targetMenu.querySelectorAll('.nav-item.submenu-open').forEach(item => item.classList.remove('submenu-open')); }
+                }
             });
         });
      }
