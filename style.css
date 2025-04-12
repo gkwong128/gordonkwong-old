@@ -69,7 +69,7 @@
     overflow: hidden; /* Prevent potential overflow issues */
   }
 
-  /* Absolute Position Centering */
+  /* Base (Desktop) Loading Text Style - Absolute Position Centering */
   #loading-text {
     /* Positioning */
     position: absolute;
@@ -85,14 +85,11 @@
     text-overflow: ellipsis; /* Show ... if too long */
 
     /* Sizing */
-    width: 30ch; /* Keep fixed width */
-    padding-left: 9ch; /* UPDATED PADDING (intermediate value) */
+    width: 30ch; /* Fixed width for desktop */
+    padding-left: 9ch; /* Adjust left padding for desktop */
     box-sizing: border-box;
     color: var(--color-text-light); /* Make "You are a " visible */
   }
-
-  /* Remove ::before rule */
-  /* #loading-text::before { ... } */
 
   /* Style for the changing word span */
   #loading-word {
@@ -114,35 +111,36 @@
   }
   #loading-screen.hidden { opacity: 0; pointer-events: none; }
 
-  /* Mobile Loading Text Adjustments */
+  /* UPDATED: Mobile Loading Text Adjustments (Using Absolute Positioning) */
   @media (max-width: 767px) {
     #loading-text {
       font-size: 1.8rem;
-      width: 90vw; /* Use viewport width on mobile */
-      padding-left: 1.5rem; /* Reset padding for mobile */
-      padding-right: 1.5rem;
-      white-space: normal; /* Allow wrapping */
-      overflow: visible;
-      text-overflow: clip;
-      position: relative; /* Override absolute for mobile */
-      top: auto;
-      left: auto;
-      transform: none;
-      text-align: center; /* Center align on mobile */
-      margin: 0 auto; /* Center block */
+      /* Apply absolute positioning like desktop */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      /* Adjust width and remove padding for mobile */
+      width: 90vw; /* Use viewport width */
+      padding-left: 0; /* Remove specific padding */
+      padding-right: 0;
+      /* Keep text alignment and overflow */
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      /* Remove properties not needed for absolute */
+      /* margin: 0 auto; */
+      /* overflow: visible; */
+      /* text-overflow: clip; */
      }
-     /* Ensure word wraps correctly on mobile */
-     #loading-word {
-        overflow-wrap: break-word;
-        word-break: break-word;
-     }
+     /* Word wrapping styles aren't needed if nowrap is active */
+     /* #loading-word { ... } */
   }
   @media (max-width: 480px) {
     #loading-text {
       font-size: 1.5rem;
       width: 95vw; /* Adjust width */
-      padding-left: 1rem; /* Adjust padding */
-      padding-right: 1rem; /* Adjust padding */
     }
   }
 
