@@ -61,8 +61,7 @@
     background-color: #000; color: #fff;
     font-family: var(--font-heading, serif); /* Base font for children */
     letter-spacing: 0.03em; /* Base letter spacing */
-    /* Removed flex centering from parent */
-    /* display: flex; align-items: center; justify-content: center; */
+    display: flex; align-items: center; justify-content: center; /* Center content block */
     z-index: 9999; pointer-events: auto;
     opacity: 1; transition: opacity 0.6s ease-out;
     padding: 1rem; /* General padding for screen edges */
@@ -91,9 +90,9 @@
     color: var(--color-text-light); /* Make "You are a " visible */
   }
 
-  /* Style for the changing word span */
+  /* Base style for the changing word span */
   #loading-word {
-    display: inline; /* Keep inline */
+    display: inline; /* Default display */
     vertical-align: baseline;
     color: var(--color-accent, #ff8c18);
     /* Ensure font styles match */
@@ -104,43 +103,54 @@
 
   .accent-word { /* Style for the final "human" word */
      color: var(--color-accent, #ff8c18);
-     /* Ensure font styles match if #loading-text styles change */
-     font-size: inherit; /* Inherit size from #loading-text */
+     font-size: inherit;
      font-family: inherit;
      letter-spacing: inherit;
   }
   #loading-screen.hidden { opacity: 0; pointer-events: none; }
 
-  /* UPDATED: Mobile Loading Text Adjustments (Using Absolute Positioning) */
+  /* UPDATED: Mobile Loading Text Adjustments (Two Lines, Centered) */
   @media (max-width: 767px) {
     #loading-text {
       font-size: 1.8rem;
-      /* Apply absolute positioning like desktop */
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      /* Adjust width and remove padding for mobile */
-      width: 90vw; /* Use viewport width */
-      padding-left: 0; /* Remove specific padding */
+      /* Override positioning and sizing for mobile */
+      position: static; /* Use flex centering from parent */
+      top: auto;
+      left: auto;
+      transform: none;
+      width: auto; /* Allow natural width */
+      padding-left: 0; /* Remove desktop padding */
       padding-right: 0;
-      /* Keep text alignment and overflow */
-      text-align: left;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      /* Remove properties not needed for absolute */
-      /* margin: 0 auto; */
-      /* overflow: visible; */
-      /* text-overflow: clip; */
+      max-width: 90%; /* Limit width */
+      /* Center align the text itself */
+      text-align: center;
+      /* Allow normal wrapping (though word span will force break) */
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
      }
-     /* Word wrapping styles aren't needed if nowrap is active */
-     /* #loading-word { ... } */
+     /* Force word onto new line on mobile */
+     #loading-word {
+        display: block; /* Force onto new line */
+        margin-left: 0; /* Remove any inherited margin */
+        /* Ensure word break works if needed */
+        overflow-wrap: break-word;
+        word-break: break-word;
+     }
+     /* Adjust font size for final word if needed */
+     .accent-word {
+        font-size: 1.8rem;
+     }
   }
   @media (max-width: 480px) {
     #loading-text {
-      font-size: 1.5rem;
-      width: 95vw; /* Adjust width */
+      font-size: 1.5rem; /* Smaller font */
+    }
+     #loading-word {
+       /* Inherits display: block */
+     }
+    .accent-word {
+        font-size: 1.5rem;
     }
   }
 
