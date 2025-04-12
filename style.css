@@ -113,13 +113,13 @@
 
   /* Mobile Loading Text Adjustments */
   @media (max-width: 767px) {
-    /* UPDATED: Move block up slightly */
+    /* UPDATED: Move block down slightly using padding */
     #loading-screen {
         align-items: flex-start; /* Align block to top */
-        padding-top: 30vh; /* Add padding to push down from top */
+        padding-top: 35vh; /* Increased padding to push down more */
     }
     #loading-text {
-      font-size: 2.2rem; /* Increased font size */
+      font-size: 2.2rem; /* Keep increased font size */
       /* Override positioning and sizing for mobile */
       position: static;
       top: auto;
@@ -146,18 +146,19 @@
         word-break: break-word;
         font-size: 2.2rem; /* Match parent */
      }
-     /* UPDATED: Force final word onto new line on mobile */
+     /* Force final word onto new line on mobile */
      .accent-word {
         display: block; /* Force onto new line */
         font-size: 2.2rem; /* Match parent */
      }
   }
   @media (max-width: 480px) {
+     /* UPDATED: Move block down slightly */
      #loading-screen {
-        padding-top: 25vh; /* Adjust vertical position for smaller screens */
+        padding-top: 30vh; /* Adjust vertical position for smaller screens */
     }
     #loading-text {
-      font-size: 1.8rem; /* Increased smaller mobile font size */
+      font-size: 1.8rem; /* Keep increased smaller mobile font size */
     }
      #loading-word,
      .accent-word {
