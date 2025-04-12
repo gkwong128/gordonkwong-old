@@ -68,14 +68,14 @@
   /* Base Loading Text Style */
   #loading-text {
     font-size: 2.5rem;
-    width: 30ch; /* Restore width */
-    text-align: left; /* Restore left align */
-    padding-left: 10ch; /* Restore padding */
+    /* width: 30ch; */ /* Removed fixed width */
+    text-align: left; /* Keep left align */
+    padding-left: 10ch; /* Keep base padding */
     box-sizing: border-box;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    max-width: 90%;
+    max-width: 90%; /* Prevent overflow */
   }
   #loading-word { display: inline-block; vertical-align: baseline; color: var(--color-accent, #ff8c18); }
   .accent-word { color: var(--color-accent, #ff8c18); }
@@ -85,15 +85,17 @@
   @media (max-width: 767px) {
     #loading-text {
       font-size: 1.8rem;
-      width: 28ch; /* Restore width */
-      padding-left: 9ch; /* Restore padding */
+      /* Removed fixed width */
+      padding-left: 4ch; /* Reduced padding */
+      padding-right: 2ch; /* Added right padding */
      }
   }
   @media (max-width: 480px) {
     #loading-text {
       font-size: 1.5rem;
-      width: 25ch; /* Restore width */
-      padding-left: 8ch; /* Restore padding */
+      /* Removed fixed width */
+      padding-left: 2ch; /* Further reduced padding */
+      padding-right: 1ch; /* Added right padding */
     }
   }
 
@@ -147,22 +149,19 @@
     color: var(--color-text-light, #fff); /* White text */
   }
 
-  /* Mobile Shadow Removal */
+  /* Mobile Shadow Removal & Text Alignment */
   @media (max-width: 767px) {
     .landing-headline { font-size: 2.5rem; }
     .landing-subheadline { font-size: 1.4rem; }
     .landing-text-overlay {
         width: 90%;
-        /* REMOVE text shadow on mobile */
-        text-shadow: none;
+        text-shadow: none; /* Remove text shadow on mobile */
     }
-    /* Remove popup shadow on mobile */
     .popup-content {
-        box-shadow: none;
+        box-shadow: none; /* Remove popup shadow on mobile */
     }
-    /* Remove expanded mobile nav shadow */
     .sticky-navbar .nav-links.mobile-nav-menu {
-        box-shadow: none;
+        box-shadow: none; /* Remove shadow from expanded mobile nav */
     }
   }
   @media (max-width: 480px) {
@@ -301,13 +300,15 @@
   margin-top: 0.5rem;
 }
 
-/* General Popup Button Hover - Keep darker orange as default hover */
+/* Remove General Popup Button Hover (now handled by specific IDs) */
+/*
 .popup-content button:hover,
 .popup-content button:focus {
-  background-color: #e07b15; /* Darker accent color */
+  background-color: #e07b15;
   color: var(--color-text-light, #fff);
   border: none;
 }
+*/
 
 /* Specific style for the 'Continue' button hover/focus (White bg, Black text/border) */
 #popup-next-step:hover,
@@ -319,7 +320,14 @@
   padding: calc(0.7rem - 2px) calc(1.8rem - 2px);
 }
 
-/* Specific style for the 'Submit' button hover/focus (White bg, Black text/border) */
+/* Ensure final submit button retains orange background */
+#popup-submit {
+   background-color: var(--color-accent, #ff8c18);
+   color: var(--color-text-light, #fff);
+   border: none;
+   padding: 0.7rem 1.8rem; /* Ensure padding is consistent */
+}
+/* UPDATED: Specific style for the 'Submit' button hover/focus (White bg, Black text/border) */
 #popup-submit:hover,
 #popup-submit:focus {
    background-color: var(--color-text-light, #fff); /* White background */
@@ -568,8 +576,9 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
         }
          #loading-text { /* Responsive loading text */
             font-size: 1.8rem;
-            width: 28ch; /* Restore width */
-            padding-left: 9ch; /* Restore padding */
+            /* Removed fixed width */
+            padding-left: 4ch; /* Reduced padding */
+            padding-right: 2ch; /* Added right padding */
          }
     }
 
@@ -591,8 +600,9 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
       }
        #loading-text { /* Responsive loading text */
             font-size: 1.5rem;
-            width: 25ch; /* Restore width */
-            padding-left: 8ch; /* Restore padding */
+            /* Removed fixed width */
+            padding-left: 2ch; /* Further reduced padding */
+            padding-right: 1ch; /* Added right padding */
         }
    }
 

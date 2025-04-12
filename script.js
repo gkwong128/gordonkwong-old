@@ -1,39 +1,47 @@
 // script.js - Combined script for landing page and learnmore page
 
-let lenis; // Declare lenis in a scope accessible by popup functions
+let lenis = null; // Initialize lenis as null
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded and parsed"); // General check
 
-    // --- Initialize Lenis Smooth Scroll ---
-    // Check if the Lenis library is loaded
-    if (typeof Lenis !== 'undefined') {
-        // Assign the instance to the globally scoped variable
-        lenis = new Lenis({ lerp: 0.1 });
+    // --- Conditionally Initialize Lenis Smooth Scroll ---
+    // ONLY initialize if it's NOT the landing page
+    if (!document.body.classList.contains('landing-page-body')) {
+        // Check if the Lenis library is loaded
+        if (typeof Lenis !== 'undefined') {
+            // Assign the instance to the globally scoped variable
+            lenis = new Lenis({ lerp: 0.1 });
 
-        // Integrate with GSAP ScrollTrigger if available
-        if (typeof ScrollTrigger !== 'undefined' && typeof gsap !== 'undefined') {
-           lenis.on('scroll', ScrollTrigger.update);
-           gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-           gsap.ticker.lagSmoothing(0);
-           console.log("Lenis/GSAP Integrated.");
-        } else {
-             // Fallback animation loop if GSAP isn't present
-             lenis.on('scroll', (e) => {}); // Basic scroll event listener
-             function raf(time) {
-                 lenis.raf(time);
+            // Integrate with GSAP ScrollTrigger if available
+            if (typeof ScrollTrigger !== 'undefined' && typeof gsap !== 'undefined') {
+               lenis.on('scroll', ScrollTrigger.update);
+               gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+               gsap.ticker.lagSmoothing(0);
+               console.log("Lenis/GSAP Integrated.");
+            } else {
+                 // Fallback animation loop if GSAP isn't present
+                 lenis.on('scroll', (e) => {}); // Basic scroll event listener
+                 function raf(time) {
+                     // Check if lenis still exists (might be destroyed)
+                     if (lenis) {
+                        lenis.raf(time);
+                     }
+                     requestAnimationFrame(raf);
+                 }
                  requestAnimationFrame(raf);
-             }
-             requestAnimationFrame(raf);
-             console.log("Lenis Initialized (no GSAP).");
+                 console.log("Lenis Initialized (no GSAP).");
+            }
+        } else {
+             // Log error if Lenis library is not found (on non-landing pages)
+             console.error("Lenis library not found. Smooth scrolling disabled.");
+             lenis = null; // Ensure lenis is null if library not found
         }
     } else {
-         // Log error if Lenis library is not found
-         console.error("Lenis library not found. Smooth scrolling disabled.");
-         // Assign null or a dummy object to lenis to prevent errors later if needed
-         lenis = null;
+        console.log("On landing page, Lenis initialization skipped.");
+        lenis = null; // Ensure lenis is null on landing page
     }
-    // --- End Lenis Initialization ---
+    // --- End Conditional Lenis Initialization ---
 
     // ===== Footer Newsletter Form Handling =====
     const footerForm = document.getElementById('footer-newsletter-form');
@@ -121,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const loadingWordSpan = document.getElementById('loading-word');
 
             if (loadingWordSpan) {
-                const wordsSequence = [ // Using latest sequence
+                const wordsSequence = [ /* ... words sequence ... */
                     { word: "dreamer", delay: 600 }, { word: "leader", delay: 560 },
                     { word: "storyteller", delay: 520 }, { word: "lover", delay: 470 },
                     { word: "rebel", delay: 420 }, { word: "collaborator", delay: 360 },
@@ -227,14 +235,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        // *** MODIFIED showPopup function ***
+        // MODIFIED showPopup function
         const showPopup = () => {
             console.log("Showing Popup");
             // 1. Apply CSS classes first to hide overflow
             document.documentElement.classList.add('popup-open');
             document.body.classList.add('popup-open');
-            // 2. Then stop Lenis scrolling (if lenis exists)
-            if (lenis) { // Check if lenis was initialized successfully
+            // 2. Then stop Lenis scrolling (if lenis exists and was initialized)
+            if (lenis) {
                 lenis.stop();
             }
             // 3. Continue with the rest of the popup display logic
@@ -270,13 +278,13 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => { popup.classList.add('popup-visible'); }, 10); // Fade in
         };
 
-        // MODIFIED hidePopup function (Stays the same as previous version)
+        // MODIFIED hidePopup function
         const hidePopup = () => {
             // Check if lenis exists AND if we are NOT on the landing page
             if (lenis && !document.body.classList.contains('landing-page-body')) {
                 lenis.start(); // Start Lenis scrolling only if not on landing page
             }
-            // Always remove classes to allow default overflow (landing page relies on its own class)
+            // Always remove classes to allow default overflow
             document.documentElement.classList.remove('popup-open');
             document.body.classList.remove('popup-open');
             // Hide popup element
@@ -537,7 +545,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Scroll Logic Handler (Handles Sticky Nav) ---
     const handleScroll = () => {
-        const scrollY = window.scrollY || window.pageYOffset;
+        // Only run scroll handling if Lenis is active (i.e., not on landing page)
+        if (!lenis) return;
+
+        const scrollY = window.scrollY || window.pageYOffset; // Use native scrollY if Lenis not present? Or rely on Lenis event?
+                                                            // Let's stick to native scrollY for simplicity here, might need adjustment if Lenis takes over completely
+
          if (nonStickyNavbar && stickyNavbar && window.innerWidth >= desktopBreakpoint) {
            const nonStickyNavHeight = nonStickyNavbar.offsetHeight;
            const triggerOffset = 35;
@@ -547,7 +560,17 @@ document.addEventListener('DOMContentLoaded', () => {
            } else { stickyNavbar.classList.remove('show'); }
          } else if (stickyNavbar && window.innerWidth < desktopBreakpoint) { stickyNavbar.classList.remove('show'); }
     };
-    if (stickyNavbar || nonStickyNavbar) { handleScroll(); window.addEventListener('scroll', handleScroll, { passive: true }); window.addEventListener('resize', handleScroll, { passive: true }); }
+    // Add scroll listener only if not landing page? Or let Lenis handle it?
+    // If Lenis is initialized, its 'scroll' event is already updating ScrollTrigger.
+    // If Lenis is NOT initialized (landing page), we might need a native listener IF sticky nav was intended there (it isn't).
+    // Let's assume sticky nav is only for scrollable pages. If handleScroll was needed on landing, it wouldn't work without Lenis.
+    // We'll keep the listener but it might not fire if body overflow is hidden.
+    if (stickyNavbar || nonStickyNavbar) {
+        handleScroll(); // Initial check
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener('resize', handleScroll, { passive: true });
+     }
+
 
     // --- Mobile/Tablet Menu Toggle Logic (for main nav) ---
     const mainMmenuToggles = document.querySelectorAll('#navbar .mobile-menu-toggle, .sticky-navbar .mobile-menu-toggle');
@@ -555,7 +578,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mainMmenuToggles.length > 0) {
         mainMmenuToggles.forEach(toggle => {
             toggle.addEventListener('click', () => {
-                if (window.innerWidth < mainHamburgerBreakpoint) {
+                // This toggle logic should work regardless of page type (landing or other)
+                // if (window.innerWidth < mainHamburgerBreakpoint) { // This check might be redundant if button is hidden via CSS
                     const targetMenuId = toggle.getAttribute('aria-controls');
                     const targetMenu = document.getElementById(targetMenuId);
                     if (targetMenu) {
@@ -564,7 +588,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         toggle.innerHTML = isOpen ? '×' : '☰';
                         if (!isOpen) { targetMenu.querySelectorAll('.nav-item.submenu-open').forEach(item => item.classList.remove('submenu-open')); }
                     }
-                }
+                // }
             });
         });
      }
@@ -592,40 +616,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrubVideoElement = document.getElementById("heel-scrub-video");
     const scrubSection = document.querySelector(".video-scrub-section");
     const scrubContentToPin = scrubSection ? scrubSection.querySelector(".video-content-wrapper") : null;
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && scrubVideoElement && scrubSection && scrubContentToPin) {
+    // Only run if NOT landing page AND necessary elements/libs exist
+    if (!document.body.classList.contains('landing-page-body') && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && scrubVideoElement && scrubSection && scrubContentToPin) {
         gsap.registerPlugin(ScrollTrigger);
         let videoSetupComplete = false;
         scrubVideoElement.onloadedmetadata = function() {
              if (videoSetupComplete || isNaN(scrubVideoElement.duration) || scrubVideoElement.duration <= 0) { return; }
              let startOffset = 0;
-             if (stickyNavbar && window.getComputedStyle(stickyNavbar).position === 'fixed') { // Check if sticky nav is actually sticky
-                 const navHeight = stickyNavbar.offsetHeight;
+             // Recalculate stickyNavbar height here as it might not be ready earlier
+             const currentStickyNavbar = document.getElementById('sticky-navbar');
+             if (currentStickyNavbar && window.getComputedStyle(currentStickyNavbar).position === 'fixed') {
+                 const navHeight = currentStickyNavbar.offsetHeight;
                  const oneRem = parseFloat(getComputedStyle(document.documentElement).fontSize);
                  startOffset = navHeight + oneRem;
              } else {
-                 startOffset = 16; // Default offset if sticky nav isn't active/present
+                 startOffset = 16; // Default offset
              }
              const videoTimeline = gsap.timeline({
                  scrollTrigger: {
                      trigger: scrubSection,
                      start: `top top+=${startOffset}px`,
-                     end: () => "+=" + (scrubSection.offsetHeight - scrubContentToPin.offsetHeight), // Ensure end calculation is correct
-                     scrub: 1.0, // Smooth scrubbing
+                     end: () => "+=" + (scrubSection.offsetHeight - scrubContentToPin.offsetHeight),
+                     scrub: 1.0,
                      pin: scrubContentToPin,
-                     pinSpacing: false, // Important for layout
-                     invalidateOnRefresh: true, // Recalculate on resize
-                     markers: false // Set to true for debugging scroll points
+                     pinSpacing: false,
+                     invalidateOnRefresh: true,
+                     markers: false
                  },
                  defaults: { ease: "none" }
              });
-             // Animate video time based on scroll progress
              videoTimeline.fromTo(scrubVideoElement, { currentTime: 0 }, { currentTime: scrubVideoElement.duration });
              videoSetupComplete = true;
-             ScrollTrigger.refresh(); // Refresh ScrollTrigger calculations
+             ScrollTrigger.refresh();
         };
         scrubVideoElement.onerror = function() { console.error("Error loading scrub video."); };
-        // Ensure video is ready to play for scrubbing
-        scrubVideoElement.load(); // May help ensure metadata loads
+        scrubVideoElement.load();
     }
 
     // --- Resize Handler for Desktop State Cleanup (for main nav) ---
@@ -641,7 +666,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     openMenu.querySelectorAll('.nav-item.submenu-open').forEach(item => item.classList.remove('submenu-open'));
                 });
             }
-            if (typeof ScrollTrigger !== 'undefined') { ScrollTrigger.refresh(); }
+            // Refresh ScrollTrigger only if it exists and Lenis is active
+            if (lenis && typeof ScrollTrigger !== 'undefined') {
+                 ScrollTrigger.refresh();
+            }
+            // Recalculate sticky nav visibility on resize
             if (stickyNavbar || nonStickyNavbar) { handleScroll(); }
         }, 150);
      }, { passive: true });
