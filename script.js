@@ -4,92 +4,101 @@ let lenis; // Declare lenis in a scope accessible by popup functions
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded and parsed"); // General check
-   // --- Initialize Lenis Smooth Scroll ---
-   if (typeof Lenis !== 'undefined') {
-    // Assign the instance to the globally scoped variable
-    lenis = new Lenis({ lerp: 0.1 }); // << MODIFIED: Assign to outer scope 'lenis'
 
-    if (typeof ScrollTrigger !== 'undefined' && typeof gsap !== 'undefined') {
-       lenis.on('scroll', ScrollTrigger.update);
-       gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-       gsap.ticker.lagSmoothing(0);
-       console.log("Lenis/GSAP Integrated.");
-    } else {
-        // Fallback if GSAP/ScrollTrigger not present
-         lenis.on('scroll', (e) => {});
-         function raf(time) {
-             lenis.raf(time);
+    // --- Initialize Lenis Smooth Scroll ---
+    // Check if the Lenis library is loaded
+    if (typeof Lenis !== 'undefined') {
+        // Assign the instance to the globally scoped variable
+        lenis = new Lenis({ lerp: 0.1 });
+
+        // Integrate with GSAP ScrollTrigger if available
+        if (typeof ScrollTrigger !== 'undefined' && typeof gsap !== 'undefined') {
+           lenis.on('scroll', ScrollTrigger.update);
+           gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+           gsap.ticker.lagSmoothing(0);
+           console.log("Lenis/GSAP Integrated.");
+        } else {
+             // Fallback animation loop if GSAP isn't present
+             lenis.on('scroll', (e) => {}); // Basic scroll event listener
+             function raf(time) {
+                 lenis.raf(time);
+                 requestAnimationFrame(raf);
+             }
              requestAnimationFrame(raf);
-         }
-         requestAnimationFrame(raf);
-         console.log("Lenis Initialized (no GSAP).");
+             console.log("Lenis Initialized (no GSAP).");
+        }
+    } else {
+         // Log error if Lenis library is not found
+         console.error("Lenis library not found. Smooth scrolling disabled.");
+         // Assign null or a dummy object to lenis to prevent errors later if needed
+         lenis = null;
     }
-} else {
-     console.log("Lenis not found.");
-}
-  // ===== Footer Newsletter Form Handling =====
-  const footerForm = document.getElementById('footer-newsletter-form');
-  const footerEmailInput = document.getElementById('footer-email-input');
-  const footerSubscribeButton = document.getElementById('footer-subscribe-button');
-  const footerFormMessage = document.getElementById('form-message'); // Reuse existing message element
+    // --- End Lenis Initialization ---
 
-  if (footerForm && footerEmailInput && footerSubscribeButton && footerFormMessage) {
-      footerForm.addEventListener('submit', async (event) => {
-          event.preventDefault(); // Prevent default form submission
+    // ===== Footer Newsletter Form Handling =====
+    const footerForm = document.getElementById('footer-newsletter-form');
+    const footerEmailInput = document.getElementById('footer-email-input');
+    const footerSubscribeButton = document.getElementById('footer-subscribe-button');
+    const footerFormMessage = document.getElementById('form-message'); // Reuse existing message element
 
-          const emailValue = footerEmailInput.value.trim();
-          if (!emailValue || !/\S+@\S+\.\S+/.test(emailValue)) {
-              alert('Please enter a valid email address.');
-              footerEmailInput.focus();
-              return;
-          }
+    if (footerForm && footerEmailInput && footerSubscribeButton && footerFormMessage) {
+        footerForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission
 
-          // Disable button and show temporary message
-          footerSubscribeButton.disabled = true;
-          footerSubscribeButton.textContent = 'Submitting...';
-          footerFormMessage.style.display = 'none'; // Hide previous message
+            const emailValue = footerEmailInput.value.trim();
+            if (!emailValue || !/\S+@\S+\.\S+/.test(emailValue)) {
+                alert('Please enter a valid email address.');
+                footerEmailInput.focus();
+                return;
+            }
 
-          const endpoint = '/.netlify/functions/subscribe-newsletter'; // New function endpoint
+            // Disable button and show temporary message
+            footerSubscribeButton.disabled = true;
+            footerSubscribeButton.textContent = 'Submitting...';
+            footerFormMessage.style.display = 'none'; // Hide previous message
 
-          try {
-              const response = await fetch(endpoint, {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({ email: emailValue }), // Only send email
-              });
+            const endpoint = '/.netlify/functions/subscribe-newsletter'; // New function endpoint
 
-              if (!response.ok) {
-                  // Handle server errors from the function
-                  const errorData = await response.json();
-                  throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
-              }
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: emailValue }), // Only send email
+                });
 
-              // Success
-              footerEmailInput.value = ''; // Clear input
-              footerFormMessage.textContent = 'Thank you for subscribing!';
-              footerFormMessage.style.color = 'var(--color-accent)';
-              footerFormMessage.style.display = 'block';
+                const result = await response.json(); // Always try to parse JSON
 
-          } catch (error) {
-              console.error('Footer subscription failed:', error);
-              footerFormMessage.textContent = error.message || 'Subscription failed. Please try again.';
-              footerFormMessage.style.color = '#dc3545'; // Red color for error
-              footerFormMessage.style.display = 'block';
-          } finally {
-              // Re-enable button after a short delay
-              setTimeout(() => {
-                  footerSubscribeButton.disabled = false;
-                  footerSubscribeButton.textContent = 'Subscribe';
-              }, 2000); // Re-enable after 2 seconds
-          }
-      });
-  }
-  // ===== End Footer Newsletter Form Handling =====
-  
+                if (!response.ok) {
+                    // Handle server errors from the function
+                    throw new Error(result.error || `HTTP error! status: ${response.status}`);
+                }
+
+                // Success
+                footerEmailInput.value = ''; // Clear input
+                footerFormMessage.textContent = result.message || 'Thank you for subscribing!'; // Use message from function if available
+                footerFormMessage.style.color = 'var(--color-accent)'; // Apply accent color
+                footerFormMessage.style.display = 'block';
+
+            } catch (error) {
+                console.error('Footer subscription failed:', error);
+                // Display the error message from the function or a generic one
+                footerFormMessage.textContent = error.message.includes('HTTP error') ? 'Subscription failed. Please try again.' : error.message;
+                footerFormMessage.style.color = '#dc3545'; // Red color for error
+                footerFormMessage.style.display = 'block';
+            } finally {
+                // Re-enable button after a short delay
+                setTimeout(() => {
+                    footerSubscribeButton.disabled = false;
+                    footerSubscribeButton.textContent = 'Subscribe';
+                }, 2000); // Re-enable after 2 seconds
+            }
+        });
+    }
+    // ===== End Footer Newsletter Form Handling =====
+
     // ===== Loading Screen Logic (Runs Once Per Session for Landing Page) Start =====
-    // ... (keep existing loading screen logic) ...
     const loadingScreen = document.getElementById('loading-screen');
     const loadingTextElement = document.getElementById('loading-text');
     const loadingSessionKey = 'hasVisitedLandingPage'; // Use the specific key
@@ -100,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadingScreen.style.opacity = '0';
                 loadingScreen.style.pointerEvents = 'none';
                 setTimeout(() => { loadingScreen.style.display = 'none'; }, 0);
-                // console.log("Landing page session active, skipping loading screen."); // Less verbose log
             }
         } else if (loadingScreen && loadingTextElement) {
             console.log("First visit to landing page this session, showing loading screen.");
@@ -147,10 +155,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (loadingScreen) loadingScreen.classList.add('hidden');
                     await delay(600);
                     if (loadingScreen) loadingScreen.style.display = 'none';
-                    // console.log("Loading animation complete."); // Less verbose log
                   } catch (error) {
                       console.error("Error loading anim:", error);
-                      if (loadingScreen) { /* Hide screen on error */
+                      if (loadingScreen) {
                           loadingScreen.style.opacity = '0';
                           loadingScreen.style.pointerEvents = 'none';
                           loadingScreen.style.display = 'none';
@@ -163,18 +170,15 @@ document.addEventListener('DOMContentLoaded', () => {
                  if (loadingScreen) loadingScreen.style.display = 'none';
             }
         } else {
-             // Handle missing loading screen elements only if on landing page
              let missing = [];
              if (!loadingScreen) missing.push("#loading-screen");
              if (!loadingTextElement) missing.push("#loading-text");
-             // Only log error if elements are actually expected on landing page
              if (missing.length > 0 && document.body.classList.contains('landing-page-body')) {
                 console.error(`Loading screen HTML elements not found: ${missing.join(', ')}`);
              }
-             if (loadingScreen) loadingScreen.style.display = 'none'; // Ensure hidden if logic fails
+             if (loadingScreen) loadingScreen.style.display = 'none';
         }
     } else {
-        // If not on landing page, ensure loading screen is hidden if it somehow exists in HTML
         if (loadingScreen) {
              loadingScreen.style.display = 'none';
         }
@@ -183,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ===== Timer Popup Logic Start =====
-    // This logic runs on ALL pages where this script is included
     const popup = document.getElementById('timer-popup');
     const popupStep1 = document.getElementById('popup-step-1');
     const popupStep2 = document.getElementById('popup-step-2');
@@ -194,26 +197,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const popupSubmitting = document.getElementById('popup-submitting');
     const popupSuccess = document.getElementById('popup-success');
     const popupError = document.getElementById('popup-error');
+    const popupCloseButton = document.getElementById('popup-close-button'); // Get close button
 
     // Only proceed if the popup HTML exists on the page
     if (popup && popupStep1 && popupStep2 && popupNameInput && popupEmailInput && popupNextButton && popupSubmitButton && popupSubmitting && popupSuccess && popupError) {
 
         const TIME_THRESHOLD = 60 * 1000; // 60 seconds
         const STORAGE_KEY_ELAPSED = 'popupTotalElapsedTime';
-        const STORAGE_KEY_START = 'popupTimerStartTime'; // Tracks session start
+        const STORAGE_KEY_START = 'popupTimerStartTime';
         const STORAGE_KEY_TRIGGERED = 'popupTriggered';
         const STORAGE_KEY_COMPLETED = 'popupCompleted';
         const STORAGE_KEY_NAME = 'popupCurrentName';
 
         let timerInterval = null;
-        let pageLoadTime = Date.now(); // Time when this specific page loaded
+        let pageLoadTime = Date.now();
 
         const checkTimerAndShowPopup = () => {
             let totalElapsed = parseInt(localStorage.getItem(STORAGE_KEY_ELAPSED) || '0', 10);
             let timeSincePageLoad = Date.now() - pageLoadTime;
             let currentTotalTime = totalElapsed + timeSincePageLoad;
-
-            // console.log(`Popup Check: Total Elapsed = ${currentTotalTime / 1000}s`); // Debug log
 
             if (currentTotalTime > TIME_THRESHOLD && !localStorage.getItem(STORAGE_KEY_COMPLETED)) {
                 if (!popup.classList.contains('popup-visible')) {
@@ -225,56 +227,52 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-     // MODIFIED showPopup function - Try applying classes BEFORE stopping Lenis
-    const showPopup = () => {
-        console.log("Showing Popup"); // Keep log for checking execution
+        const showPopup = () => {
+            console.log("Showing Popup");
+            // 1. Apply CSS classes first to hide overflow
+            document.documentElement.classList.add('popup-open');
+            document.body.classList.add('popup-open');
+            // 2. Then stop Lenis scrolling (if lenis exists)
+            if (lenis) { // Check if lenis was initialized successfully
+                lenis.stop();
+            }
+            // 3. Continue with the rest of the popup display logic
+            popupStep1.style.display = 'block';
+            popupStep2.style.display = 'none';
+            popupSubmitting.style.display = 'none';
+            popupSuccess.style.display = 'none';
+            popupError.style.display = 'none';
+            popupNextButton.style.display = 'block';
+            popupSubmitButton.style.display = 'none';
+            popupNameInput.value = localStorage.getItem(STORAGE_KEY_NAME) || '';
 
-        // 1. Apply CSS classes first to hide overflow
-        document.documentElement.classList.add('popup-open');
-        document.body.classList.add('popup-open');
+            if (localStorage.getItem(STORAGE_KEY_NAME)) {
+                popupStep1.style.display = 'none';
+                popupStep2.style.display = 'block';
+                popupNextButton.style.display = 'none';
+                popupSubmitButton.style.display = 'block';
+                requestAnimationFrame(() => popupEmailInput.focus()); // Focus email input
+            } else {
+                 requestAnimationFrame(() => popupNameInput.focus()); // Focus name input
+            }
 
-        // 2. Then stop Lenis scrolling
-        if (typeof lenis !== 'undefined' && lenis !== null) {
-            lenis.stop();
-        }
+            popup.style.display = 'flex';
+            setTimeout(() => { popup.classList.add('popup-visible'); }, 10); // Fade in
+        };
 
-        // 3. Continue with the rest of the popup display logic
-        popupStep1.style.display = 'block';
-        popupStep2.style.display = 'none';
-        // ... (rest of your existing style changes for popup steps) ...
-        popupSubmitting.style.display = 'none';
-        popupSuccess.style.display = 'none';
-        popupError.style.display = 'none';
-        popupNextButton.style.display = 'block';
-        popupSubmitButton.style.display = 'none';
-        popupNameInput.value = localStorage.getItem(STORAGE_KEY_NAME) || '';
-
-        if (localStorage.getItem(STORAGE_KEY_NAME)) {
-            popupStep1.style.display = 'none';
-            popupStep2.style.display = 'block';
-            popupNextButton.style.display = 'none';
-            popupSubmitButton.style.display = 'block';
-            // Maybe add focus logic here after popup is potentially stable
-            // requestAnimationFrame(() => popupEmailInput.focus());
-        } else {
-             // Maybe add focus logic here after popup is potentially stable
-             // requestAnimationFrame(() => popupNameInput.focus());
-        }
-
-        popup.style.display = 'flex';
-        setTimeout(() => { popup.classList.add('popup-visible'); }, 10); // Fade in
-    };
-
-    // Ensure hidePopup still starts Lenis BEFORE removing classes
-    const hidePopup = () => {
-        if (typeof lenis !== 'undefined' && lenis !== null) {
-            lenis.start(); // Start Lenis first
-        }
-        document.documentElement.classList.remove('popup-open');
-        document.body.classList.remove('popup-open'); // Then allow overflow
-        popup.classList.remove('popup-visible');
-        setTimeout(() => { popup.style.display = 'none'; }, 400);
-    };
+        // *** MODIFIED hidePopup function ***
+        const hidePopup = () => {
+            // Check if lenis exists AND if we are NOT on the landing page
+            if (lenis && !document.body.classList.contains('landing-page-body')) {
+                lenis.start(); // Start Lenis scrolling only if not on landing page
+            }
+            // Always remove classes to allow default overflow (landing page relies on its own class)
+            document.documentElement.classList.remove('popup-open');
+            document.body.classList.remove('popup-open');
+            // Hide popup element
+            popup.classList.remove('popup-visible');
+            setTimeout(() => { popup.style.display = 'none'; }, 400); // Wait for fade out
+        };
 
         // --- Timer Initialization ---
         if (!localStorage.getItem(STORAGE_KEY_COMPLETED)) {
@@ -297,8 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     let totalElapsed = parseInt(localStorage.getItem(STORAGE_KEY_ELAPSED) || '0', 10);
                     let timeSincePageLoad = Date.now() - pageLoadTime;
                     localStorage.setItem(STORAGE_KEY_ELAPSED, (totalElapsed + timeSincePageLoad).toString());
-                    // console.log("Saved elapsed time."); // Less verbose
-                    pageLoadTime = Date.now();
+                    pageLoadTime = Date.now(); // Reset page load time when saving
                 }
             };
 
@@ -310,14 +307,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (timerInterval) clearInterval(timerInterval);
                         console.log("Tab hidden, timer paused.");
                     } else {
-                        pageLoadTime = Date.now();
-                        if (timerInterval) clearInterval(timerInterval);
+                        pageLoadTime = Date.now(); // Reset timer on becoming visible
+                        if (timerInterval) clearInterval(timerInterval); // Clear just in case
                         if (localStorage.getItem(STORAGE_KEY_TRIGGERED) !== 'true') {
                            timerInterval = setInterval(checkTimerAndShowPopup, 5000);
-                           // console.log("Tab visible, timer resumed."); // Less verbose
                         } else {
-                            // console.log("Tab visible, but popup already triggered."); // Less verbose
-                             if (localStorage.getItem(STORAGE_KEY_TRIGGERED) === 'true' && !localStorage.getItem(STORAGE_KEY_COMPLETED)) {
+                             // If already triggered but not completed, show it immediately on visibility change
+                             if (!localStorage.getItem(STORAGE_KEY_COMPLETED)) {
                                  if (!popup.classList.contains('popup-visible')) { showPopup(); }
                              }
                         }
@@ -326,120 +322,117 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
         } else {
-            // console.log("Popup already completed, timer not started."); // Less verbose
+             console.log("Popup already completed according to localStorage.");
         }
 
-// --- Add Enter Key Submission for Popup Inputs ---
-if (popupNameInput) {
-    popupNameInput.addEventListener('keydown', function(event) {
-      // Check if the key pressed was 'Enter'
-      if (event.key === 'Enter' || event.keyCode === 13) {
-        event.preventDefault(); // Prevent default Enter behavior (like adding a newline)
-        popupNextButton.click(); // Trigger the 'Continue' button click
-      }
-    });
-  }
+        // --- Add Enter Key Submission for Popup Inputs ---
+        if (popupNameInput && popupNextButton) {
+          popupNameInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' || event.keyCode === 13) {
+              event.preventDefault();
+              popupNextButton.click();
+            }
+          });
+        }
+        if (popupEmailInput && popupSubmitButton) {
+          popupEmailInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' || event.keyCode === 13) {
+              event.preventDefault();
+              popupSubmitButton.click();
+            }
+          });
+        }
+        // --- End Enter Key Submission ---
 
-  if (popupEmailInput) {
-    popupEmailInput.addEventListener('keydown', function(event) {
-      // Check if the key pressed was 'Enter'
-      if (event.key === 'Enter' || event.keyCode === 13) {
-        event.preventDefault(); // Prevent default Enter behavior
-        popupSubmitButton.click(); // Trigger the 'Submit & Get Coupon' button click
-      }
-    });
-  }
-  // --- End Enter Key Submission ---
+        // --- Add Popup Close Button Listener ---
+        if (popupCloseButton) {
+            popupCloseButton.addEventListener('click', () => {
+                hidePopup();
+                // Optional: Decide if dismissing should also prevent future popups
+                // localStorage.setItem(STORAGE_KEY_COMPLETED, 'true'); // Uncomment to prevent future popups on close
+            });
+        }
+        // --- End Popup Close Button Listener ---
 
         // --- Popup Step Handling ---
-        popupNextButton.addEventListener('click', () => {
-            const name = popupNameInput.value.trim();
-            if (name) {
-                localStorage.setItem(STORAGE_KEY_NAME, name);
-                popupStep1.style.display = 'none'; popupStep2.style.display = 'block';
-                popupNextButton.style.display = 'none'; popupSubmitButton.style.display = 'block';
-                popupEmailInput.focus();
-            } else { alert("Please enter your name."); popupNameInput.focus(); }
-        });
-
-       // --- Popup Submission Handling ---
-       popupSubmitButton.addEventListener('click', async () => {
-        const name = localStorage.getItem(STORAGE_KEY_NAME);
-        const email = popupEmailInput.value.trim();
-        if (!email || !/\S+@\S+\.\S+/.test(email)) { alert("Please enter a valid email address."); popupEmailInput.focus(); return; }
-        if (!name) { alert("Name is missing."); return; } // Ensure name is present
-
-        console.log("Submitting:", { name, email });
-        popupStep1.style.display = 'none'; popupStep2.style.display = 'none';
-        popupSubmitting.style.display = 'block'; popupSuccess.style.display = 'none'; popupError.style.display = 'none';
-
-        const endpoint = '/.netlify/functions/submit-popup'; // Your Netlify function path
-
-        // VVVVV THIS IS THE CORRECT BLOCK VVVVVV
-        try {
-            // ACTUAL FETCH CALL - Make sure simulation lines are removed
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name: name, email: email }), // Send name and email
+        if (popupNextButton) {
+            popupNextButton.addEventListener('click', () => {
+                const name = popupNameInput.value.trim();
+                if (name) {
+                    localStorage.setItem(STORAGE_KEY_NAME, name);
+                    popupStep1.style.display = 'none'; popupStep2.style.display = 'block';
+                    popupNextButton.style.display = 'none'; popupSubmitButton.style.display = 'block';
+                    popupEmailInput.focus();
+                } else { alert("Please enter your name."); popupNameInput.focus(); }
             });
-
-            if (!response.ok) {
-                // Handle server errors (e.g., function returned an error)
-                const errorBody = await response.text(); // Get error details from function
-                console.error(`Function error! Status: ${response.status}`, errorBody);
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            // Optional: Process success response from function if needed
-            // const result = await response.json();
-            // console.log('Server response:', result);
-
-         // Show success message on frontend (Popup Form)
-         popupSubmitting.style.display = 'none';
-         popupSuccess.style.display = 'block'; // Show the success div
-
-         // VVVVV ADD THIS BLOCK VVVVV
-         const successP = popupSuccess.querySelector('p'); // Get the paragraph inside
-         if (successP) {
-             successP.style.color = 'var(--color-accent)'; // Apply accent color
-         }
-         // ^^^^^ ADD THIS BLOCK ^^^^^
-
-         localStorage.setItem(STORAGE_KEY_COMPLETED, 'true'); // Mark popup as completed
-         if (timerInterval) clearInterval(timerInterval); // Stop timer if running
-         setTimeout(hidePopup, 2000); // Hide popup after success
-
-        } catch (error) {
-            // Handle fetch errors (network issue) or errors thrown above
-            console.error('Submission failed:', error);
-            popupSubmitting.style.display = 'none'; popupError.style.display = 'block'; // Show error message
-            // Optionally, keep the popup open longer on error or re-enable submission
-            setTimeout(hidePopup, 3000);
         }
-        // ^^^^^ THIS IS THE CORRECT BLOCK ^^^^^^
-    }); // - referring to website/script.js
+
+        // --- Popup Submission Handling ---
+        if (popupSubmitButton) {
+            popupSubmitButton.addEventListener('click', async () => {
+                const name = localStorage.getItem(STORAGE_KEY_NAME);
+                const email = popupEmailInput.value.trim();
+                if (!email || !/\S+@\S+\.\S+/.test(email)) { alert("Please enter a valid email address."); popupEmailInput.focus(); return; }
+                if (!name) { alert("Name is missing."); /* Optionally handle missing name better */ return; }
+
+                console.log("Submitting:", { name, email });
+                popupStep1.style.display = 'none'; popupStep2.style.display = 'none';
+                popupSubmitting.style.display = 'block'; popupSuccess.style.display = 'none'; popupError.style.display = 'none';
+
+                const endpoint = '/.netlify/functions/submit-popup';
+
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: name, email: email }),
+                    });
+
+                    const result = await response.json(); // Try parsing JSON regardless of status
+
+                    if (!response.ok) {
+                        console.error(`Function error! Status: ${response.status}`, result);
+                        throw new Error(result.error || `HTTP error! status: ${response.status}`);
+                    }
+
+                    // Success
+                    popupSubmitting.style.display = 'none';
+                    popupSuccess.style.display = 'block';
+                    const successP = popupSuccess.querySelector('p');
+                    if (successP) {
+                        successP.style.color = 'var(--color-accent)';
+                    }
+                    localStorage.setItem(STORAGE_KEY_COMPLETED, 'true');
+                    if (timerInterval) clearInterval(timerInterval);
+                    setTimeout(hidePopup, 2000);
+
+                } catch (error) {
+                    console.error('Submission failed:', error);
+                    popupSubmitting.style.display = 'none';
+                    popupError.style.display = 'block';
+                    const errorP = popupError.querySelector('p');
+                    if (errorP) {
+                        errorP.textContent = error.message.includes('HTTP error') ? 'Sorry, there was an error. Please try again later.' : error.message; // Show specific error if available
+                        errorP.style.color = '#dc3545';
+                    }
+                    setTimeout(hidePopup, 3000);
+                }
+            });
+        }
 
     } else {
-         // Only log error if the popup HTML is expected but not found
-         if (document.getElementById('timer-popup')) { // Check if the main div exists
+         if (document.getElementById('timer-popup')) {
             console.error("Timer popup inner elements not found. Popup logic cannot run.");
-         } else {
-            // console.log("Timer popup HTML not found on this page."); // Normal if not included everywhere
          }
     }
     // ===== Timer Popup Logic End =====
 
 
     // ===== Marquee Banner JS Animation Start =====
-    // ... (keep existing marquee logic) ...
     const banner = document.getElementById('announcement-banner');
     const marqueeText = banner ? banner.querySelector('.marquee-text') : null;
-
-    if (banner && marqueeText) { // Only run if banner exists on the current page
-        console.log("Initializing JS Marquee Banner"); // DEBUG LOG
+    if (banner && marqueeText) { // Only run if banner exists
+        // ... (keep existing marquee logic) ...
         let animationFrameId = null;
         let position = 0;
         let speed = 0.5;
@@ -448,28 +441,24 @@ if (popupNameInput) {
         let originalContent = '';
         let isSetupComplete = false;
         let repetitionCount = 1;
-
         const setupAndStartMarquee = () => {
             if (isSetupComplete) { if (!animationFrameId && !isPaused) animateMarquee(); return; }
-            console.log("Running Marquee Setup..."); // DEBUG LOG
             originalContent = marqueeText.innerHTML; repetitionCount = 1;
             const containerWidth = banner.offsetWidth;
-            if (containerWidth <= 0) { console.error("Marquee container width invalid."); return; }
+            if (containerWidth <= 0) { return; }
             let currentScrollWidth = marqueeText.scrollWidth;
             while (currentScrollWidth < containerWidth * 2) {
                 marqueeText.innerHTML += originalContent; repetitionCount++;
                 currentScrollWidth = marqueeText.scrollWidth;
-                if (repetitionCount > 10) { console.warn("Marquee duplication limit."); break; }
+                if (repetitionCount > 10) { break; }
             }
-            console.log(`Marquee duplicated content ${repetitionCount} times.`); // DEBUG LOG
             requestAnimationFrame(() => {
                 contentWidth = marqueeText.scrollWidth / repetitionCount;
-                if (contentWidth <= 0) { console.error("Marquee contentWidth invalid after duplication."); marqueeText.innerHTML = originalContent; return; }
+                if (contentWidth <= 0) { marqueeText.innerHTML = originalContent; return; }
                 isSetupComplete = true; position = 0;
                 marqueeText.style.transform = `translateX(${position}px)`;
                 if (animationFrameId) cancelAnimationFrame(animationFrameId);
-                animateMarquee(); // Start the animation loop
-                console.log("Marquee animation started. Width:", contentWidth); // DEBUG LOG
+                animateMarquee();
             });
         };
         const animateMarquee = () => {
@@ -480,33 +469,30 @@ if (popupNameInput) {
             marqueeText.style.transform = `translateX(${position}px)`;
             animationFrameId = requestAnimationFrame(animateMarquee);
         };
-        banner.addEventListener('mouseenter', () => { isPaused = true; /* console.log("Marquee paused"); */ }); // Less verbose
+        banner.addEventListener('mouseenter', () => { isPaused = true; });
         banner.addEventListener('mouseleave', () => {
-            if (isPaused) { isPaused = false; if (!animationFrameId) { animateMarquee(); /* console.log("Marquee resumed"); */ } } // Less verbose
+            if (isPaused) { isPaused = false; if (!animationFrameId) { animateMarquee(); } }
         });
+        // Use setTimeout to ensure layout is stable before calculating widths
         setTimeout(setupAndStartMarquee, 300);
-    } else {
-        // console.log("Marquee banner elements not found on this page."); // Normal if banner not present
     }
     // ===== Marquee Banner JS Animation End =====
 
 
     // ===== Landing Page Hamburger Menu Toggle Start =====
-    // ... (keep existing landing page menu toggle logic) ...
-     const menuToggle = document.querySelector('.landing-menu-toggle');
-    if (menuToggle && document.body.classList.contains('landing-page-body')) { // Check if on landing page
+    const menuToggle = document.querySelector('.landing-menu-toggle');
+    if (menuToggle && document.body.classList.contains('landing-page-body')) {
         menuToggle.addEventListener('click', () => {
             const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
             menuToggle.setAttribute('aria-expanded', !isExpanded);
-            // console.log("Landing menu toggled. Expanded:", !isExpanded); // Less verbose
-            // Add logic to show/hide actual menu
+            // Add logic to show/hide actual menu if implemented
         });
     }
     // ===== Landing Page Hamburger Menu Toggle End =====
 
 
     // ===== Original script.js Logic (Carousel, Sticky Nav, Video Scrub, etc.) Start =====
-    // ... (keep most existing logic here) ...
+    // Add checks for element existence before running logic
 
     // --- Variable Setup ---
     const stickyNavbar = document.getElementById('sticky-navbar');
@@ -519,13 +505,9 @@ if (popupNameInput) {
     let indicators = []; let currentSlide = 0; let slideInterval;
     const desktopBreakpoint = 1024;
 
- 
-
-
     // --- Carousel Logic ---
-    if (slides && slides.length > 0 && prevBtn && nextBtn && indicatorContainer) {
-        // ... (keep existing carousel logic) ...
-         const updateIndicators = (index) => { indicators.forEach((ind, i) => { ind.classList.toggle('active', i === index); ind.setAttribute('aria-current', i === index); }); };
+    if (heroCarousel && slides && slides.length > 0 && prevBtn && nextBtn && indicatorContainer) {
+        const updateIndicators = (index) => { indicators.forEach((ind, i) => { ind.classList.toggle('active', i === index); ind.setAttribute('aria-current', i === index); }); };
         const showSlide = (index) => { slides.forEach((s, i) => s.classList.toggle('active', i === index)); updateIndicators(index); };
         const changeSlide = (dir) => { if (slides.length <= 1) return; clearInterval(slideInterval); currentSlide = (currentSlide + dir + slides.length) % slides.length; showSlide(currentSlide); startCarousel(); };
         const goToSlide = (index) => { if (index === currentSlide || index < 0 || index >= slides.length) return; clearInterval(slideInterval); currentSlide = index; showSlide(currentSlide); startCarousel(); };
@@ -533,17 +515,16 @@ if (popupNameInput) {
         prevBtn.addEventListener('click', () => changeSlide(-1)); nextBtn.addEventListener('click', () => changeSlide(1));
         indicatorContainer.innerHTML = ''; indicators = [];
         slides.forEach((s, i) => { const ind = document.createElement('button'); ind.className = 'carousel-indicator'; ind.dataset.slideTo = i; ind.setAttribute('aria-label', `Go to slide ${i + 1}`); ind.setAttribute('role', 'tab'); ind.addEventListener('click', () => goToSlide(i)); indicatorContainer.appendChild(ind); indicators.push(ind); });
-        indicatorContainer.setAttribute('role', 'tablist'); showSlide(currentSlide); startCarousel(); // console.log("Carousel initialized.");
+        indicatorContainer.setAttribute('role', 'tablist'); showSlide(currentSlide); startCarousel();
         let touchstartX = 0, touchstartY = 0, touchendX = 0, touchendY = 0; const swipeThreshold = 50;
         heroCarousel.addEventListener('touchstart', (e) => { touchstartX = e.changedTouches[0].screenX; touchstartY = e.changedTouches[0].screenY; clearInterval(slideInterval); }, { passive: true });
         heroCarousel.addEventListener('touchend', (e) => { touchendX = e.changedTouches[0].screenX; touchendY = e.changedTouches[0].screenY; handleSwipe(); startCarousel(); }, { passive: true });
         function handleSwipe() { const dX = touchendX - touchstartX; const dY = touchendY - touchstartY; if (Math.abs(dX) > swipeThreshold && Math.abs(dX) > Math.abs(dY)) { if (dX < 0) changeSlide(1); else changeSlide(-1); } }
-    } else { /* if (document.querySelector('.hero-carousel')) console.error("Carousel setup failed."); */ }
+    }
 
     // --- Scroll Logic Handler (Handles Sticky Nav) ---
     const handleScroll = () => {
-        // ... (keep existing sticky nav logic) ...
-         const scrollY = window.scrollY || window.pageYOffset;
+        const scrollY = window.scrollY || window.pageYOffset;
          if (nonStickyNavbar && stickyNavbar && window.innerWidth >= desktopBreakpoint) {
            const nonStickyNavHeight = nonStickyNavbar.offsetHeight;
            const triggerOffset = 35;
@@ -559,8 +540,7 @@ if (popupNameInput) {
     const mainMmenuToggles = document.querySelectorAll('#navbar .mobile-menu-toggle, .sticky-navbar .mobile-menu-toggle');
     const mainHamburgerBreakpoint = 1024;
     if (mainMmenuToggles.length > 0) {
-        // ... (keep existing mobile menu logic) ...
-         mainMmenuToggles.forEach(toggle => {
+        mainMmenuToggles.forEach(toggle => {
             toggle.addEventListener('click', () => {
                 if (window.innerWidth < mainHamburgerBreakpoint) {
                     const targetMenuId = toggle.getAttribute('aria-controls');
@@ -579,8 +559,7 @@ if (popupNameInput) {
     // --- Mobile/Tablet Submenu Toggle Logic (for main nav) ---
     const mainSubmenuTriggers = document.querySelectorAll('.sticky-navbar .mobile-nav-menu .nav-item > span');
      if (mainSubmenuTriggers.length > 0) {
-        // ... (keep existing submenu logic) ...
-         mainSubmenuTriggers.forEach(trigger => {
+        mainSubmenuTriggers.forEach(trigger => {
             const parentItem = trigger.closest('.nav-item');
             const submenu = parentItem.querySelector('.mega-menu');
             if (submenu) {
@@ -601,27 +580,45 @@ if (popupNameInput) {
     const scrubSection = document.querySelector(".video-scrub-section");
     const scrubContentToPin = scrubSection ? scrubSection.querySelector(".video-content-wrapper") : null;
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && scrubVideoElement && scrubSection && scrubContentToPin) {
-        // ... (keep existing video scrub logic) ...
-         gsap.registerPlugin(ScrollTrigger);
+        gsap.registerPlugin(ScrollTrigger);
         let videoSetupComplete = false;
         scrubVideoElement.onloadedmetadata = function() {
-             if (videoSetupComplete || isNaN(scrubVideoElement.duration) || scrubVideoElement.duration <= 0) { /* ... error check ... */ return; }
-             // console.log("Scrub video metadata loaded."); // Less verbose
+             if (videoSetupComplete || isNaN(scrubVideoElement.duration) || scrubVideoElement.duration <= 0) { return; }
              let startOffset = 0;
-             if (stickyNavbar) { const navHeight = stickyNavbar.offsetHeight; const oneRem = parseFloat(getComputedStyle(document.documentElement).fontSize); startOffset = navHeight + oneRem; } else { startOffset = 16; }
-             const videoTimeline = gsap.timeline({ scrollTrigger: { trigger: scrubSection, start: `top top+=${startOffset}px`, end: () => "+=" + (scrubSection.offsetHeight - scrubContentToPin.offsetHeight), scrub: 1.0, pin: scrubContentToPin, pinSpacing: false, invalidateOnRefresh: true, markers: false }, defaults: { ease: "none" } });
+             if (stickyNavbar && window.getComputedStyle(stickyNavbar).position === 'fixed') { // Check if sticky nav is actually sticky
+                 const navHeight = stickyNavbar.offsetHeight;
+                 const oneRem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+                 startOffset = navHeight + oneRem;
+             } else {
+                 startOffset = 16; // Default offset if sticky nav isn't active/present
+             }
+             const videoTimeline = gsap.timeline({
+                 scrollTrigger: {
+                     trigger: scrubSection,
+                     start: `top top+=${startOffset}px`,
+                     end: () => "+=" + (scrubSection.offsetHeight - scrubContentToPin.offsetHeight), // Ensure end calculation is correct
+                     scrub: 1.0, // Smooth scrubbing
+                     pin: scrubContentToPin,
+                     pinSpacing: false, // Important for layout
+                     invalidateOnRefresh: true, // Recalculate on resize
+                     markers: false // Set to true for debugging scroll points
+                 },
+                 defaults: { ease: "none" }
+             });
+             // Animate video time based on scroll progress
              videoTimeline.fromTo(scrubVideoElement, { currentTime: 0 }, { currentTime: scrubVideoElement.duration });
-             videoSetupComplete = true; // console.log("GSAP video scrub setup complete.");
-             ScrollTrigger.refresh();
+             videoSetupComplete = true;
+             ScrollTrigger.refresh(); // Refresh ScrollTrigger calculations
         };
         scrubVideoElement.onerror = function() { console.error("Error loading scrub video."); };
-    } else { /* if (document.querySelector(".video-scrub-section")) console.log("Video scrub elements/libs missing."); */ }
+        // Ensure video is ready to play for scrubbing
+        scrubVideoElement.load(); // May help ensure metadata loads
+    }
 
     // --- Resize Handler for Desktop State Cleanup (for main nav) ---
     let mainResizeTimeout;
     window.addEventListener('resize', () => {
-        // ... (keep existing resize logic) ...
-         clearTimeout(mainResizeTimeout);
+        clearTimeout(mainResizeTimeout);
         mainResizeTimeout = setTimeout(() => {
             if (window.innerWidth >= mainHamburgerBreakpoint) {
                 document.querySelectorAll('.sticky-navbar .mobile-nav-menu.is-open').forEach(openMenu => {
