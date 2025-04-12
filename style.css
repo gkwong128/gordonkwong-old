@@ -59,43 +59,90 @@
    #loading-screen {
     position: fixed; inset: 0; width: 100%; height: 100vh;
     background-color: #000; color: #fff;
-    font-family: var(--font-heading, serif); letter-spacing: 0.03em;
-    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-heading, serif); /* Base font for children */
+    letter-spacing: 0.03em; /* Base letter spacing */
+    /* Removed flex centering from parent */
+    /* display: flex; align-items: center; justify-content: center; */
     z-index: 9999; pointer-events: auto;
     opacity: 1; transition: opacity 0.6s ease-out;
-    padding: 1rem; /* General padding */
+    padding: 1rem; /* General padding for screen edges */
+    overflow: hidden; /* Prevent potential overflow issues */
   }
-  /* Base Loading Text Style */
+
+  /* Absolute Position Centering */
   #loading-text {
-    font-size: 2.5rem;
-    /* width: 30ch; */ /* Removed fixed width */
-    text-align: left; /* Keep left align */
-    padding-left: 10ch; /* Keep base padding */
+    /* Positioning */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the block */
+
+    /* Text properties */
+    font-size: 2.5rem; /* Base font size */
+    text-align: left; /* Align text left within the block */
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Show ... if too long */
+
+    /* Sizing */
+    width: 30ch; /* Keep fixed width */
+    padding-left: 9ch; /* UPDATED PADDING (intermediate value) */
     box-sizing: border-box;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-width: 90%; /* Prevent overflow */
+    color: var(--color-text-light); /* Make "You are a " visible */
   }
-  #loading-word { display: inline-block; vertical-align: baseline; color: var(--color-accent, #ff8c18); }
-  .accent-word { color: var(--color-accent, #ff8c18); }
+
+  /* Remove ::before rule */
+  /* #loading-text::before { ... } */
+
+  /* Style for the changing word span */
+  #loading-word {
+    display: inline; /* Keep inline */
+    vertical-align: baseline;
+    color: var(--color-accent, #ff8c18);
+    /* Ensure font styles match */
+    font-size: inherit;
+    font-family: inherit;
+    letter-spacing: inherit;
+  }
+
+  .accent-word { /* Style for the final "human" word */
+     color: var(--color-accent, #ff8c18);
+     /* Ensure font styles match if #loading-text styles change */
+     font-size: inherit; /* Inherit size from #loading-text */
+     font-family: inherit;
+     letter-spacing: inherit;
+  }
   #loading-screen.hidden { opacity: 0; pointer-events: none; }
 
-  /* Mobile Loading Text Alignment (Restored Padding/Width) */
+  /* Mobile Loading Text Adjustments */
   @media (max-width: 767px) {
     #loading-text {
       font-size: 1.8rem;
-      /* Removed fixed width */
-      padding-left: 4ch; /* Reduced padding */
-      padding-right: 2ch; /* Added right padding */
+      width: 90vw; /* Use viewport width on mobile */
+      padding-left: 1.5rem; /* Reset padding for mobile */
+      padding-right: 1.5rem;
+      white-space: normal; /* Allow wrapping */
+      overflow: visible;
+      text-overflow: clip;
+      position: relative; /* Override absolute for mobile */
+      top: auto;
+      left: auto;
+      transform: none;
+      text-align: center; /* Center align on mobile */
+      margin: 0 auto; /* Center block */
+     }
+     /* Ensure word wraps correctly on mobile */
+     #loading-word {
+        overflow-wrap: break-word;
+        word-break: break-word;
      }
   }
   @media (max-width: 480px) {
     #loading-text {
       font-size: 1.5rem;
-      /* Removed fixed width */
-      padding-left: 2ch; /* Further reduced padding */
-      padding-right: 1ch; /* Added right padding */
+      width: 95vw; /* Adjust width */
+      padding-left: 1rem; /* Adjust padding */
+      padding-right: 1rem; /* Adjust padding */
     }
   }
 
@@ -270,8 +317,8 @@
   font-size: 0.95rem;
   font-family: var(--font-default);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  /* REVERTED: Default caret color */
-  caret-color: auto; /* Or explicitly var(--color-text-dark) */
+  /* Default caret color */
+  caret-color: auto;
 }
 
 /* Popup Input Focus Style (Orange Glow) */
@@ -300,15 +347,13 @@
   margin-top: 0.5rem;
 }
 
-/* Remove General Popup Button Hover (now handled by specific IDs) */
-/*
+/* General Popup Button Hover - Keep darker orange as default hover */
 .popup-content button:hover,
 .popup-content button:focus {
-  background-color: #e07b15;
+  background-color: #e07b15; /* Darker accent color */
   color: var(--color-text-light, #fff);
   border: none;
 }
-*/
 
 /* Specific style for the 'Continue' button hover/focus (White bg, Black text/border) */
 #popup-next-step:hover,
@@ -320,14 +365,7 @@
   padding: calc(0.7rem - 2px) calc(1.8rem - 2px);
 }
 
-/* Ensure final submit button retains orange background */
-#popup-submit {
-   background-color: var(--color-accent, #ff8c18);
-   color: var(--color-text-light, #fff);
-   border: none;
-   padding: 0.7rem 1.8rem; /* Ensure padding is consistent */
-}
-/* UPDATED: Specific style for the 'Submit' button hover/focus (White bg, Black text/border) */
+/* Specific style for the 'Submit' button hover/focus (White bg, Black text/border) */
 #popup-submit:hover,
 #popup-submit:focus {
    background-color: var(--color-text-light, #fff); /* White background */
@@ -493,9 +531,9 @@ a, button, [onclick], [role="button"], input[type="button"], input[type="submit"
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><circle cx='8' cy='8' r='6' fill='%23ff8c18'/></svg>") 8 8, pointer;
 }
 
-/* Text input cursor (REVERTED to default text cursor) */
+/* Text input cursor (UPDATED back to Orange dot) */
 input[type="text"], input[type="email"], input[type="password"], input[type="search"], input[type="tel"], input[type="url"], textarea {
-    cursor: text; /* Default I-beam cursor */
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><circle cx='8' cy='8' r='6' fill='%23ff8c18'/></svg>") 8 8, pointer; /* Orange dot */
 }
 
 /* Ensure landing button retains its specific cursor if needed */
@@ -576,9 +614,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
         }
          #loading-text { /* Responsive loading text */
             font-size: 1.8rem;
-            /* Removed fixed width */
-            padding-left: 4ch; /* Reduced padding */
-            padding-right: 2ch; /* Added right padding */
+            /* Inherits block centering and left text alignment */
          }
     }
 
@@ -600,9 +636,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
       }
        #loading-text { /* Responsive loading text */
             font-size: 1.5rem;
-            /* Removed fixed width */
-            padding-left: 2ch; /* Further reduced padding */
-            padding-right: 1ch; /* Added right padding */
+            /* Inherits block centering and left text alignment */
         }
    }
 
