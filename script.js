@@ -206,37 +206,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const popupSuccess = document.getElementById('popup-success');
     const popupError = document.getElementById('popup-error');
     const popupCloseButton = document.getElementById('popup-close-button'); // Get close button
-
+    // Download flow indicator and download completion key
+    let isDownloadFlow = false;
+    const STORAGE_KEY_DOWNLOAD = 'downloadGuideCompleted';
 
     // Only proceed if the popup HTML exists on the page
     if (popup && popupStep1 && popupStep2 && popupNameInput && popupEmailInput && popupNextButton && popupSubmitButton && popupSubmitting && popupSuccess && popupError) {
-
-        const TIME_THRESHOLD = 60 * 1000; // 60 seconds
-        const STORAGE_KEY_ELAPSED = 'popupTotalElapsedTime';
-        const STORAGE_KEY_START = 'popupTimerStartTime';
-        const STORAGE_KEY_TRIGGERED = 'popupTriggered';
         const STORAGE_KEY_COMPLETED = 'popupCompleted';
         const STORAGE_KEY_NAME = 'popupCurrentName';
 
-        let timerInterval = null;
-        let pageLoadTime = Date.now();
-
-        const checkTimerAndShowPopup = () => {
-            let totalElapsed = parseInt(localStorage.getItem(STORAGE_KEY_ELAPSED) || '0', 10);
-            let timeSincePageLoad = Date.now() - pageLoadTime;
-            let currentTotalTime = totalElapsed + timeSincePageLoad;
-
-            if (currentTotalTime > TIME_THRESHOLD && !localStorage.getItem(STORAGE_KEY_COMPLETED)) {
-                if (!popup.classList.contains('popup-visible')) {
-                     console.log("Time threshold reached, triggering popup.");
-                     localStorage.setItem(STORAGE_KEY_TRIGGERED, 'true');
-                     showPopup();
-                }
-                if (timerInterval) clearInterval(timerInterval);
-            }
-        };
-
-        // MODIFIED showPopup function
+        // showPopup function
         const showPopup = () => {
             console.log("Showing Popup");
             // 1. Apply CSS classes first to hide overflow
@@ -284,11 +263,32 @@ document.addEventListener('DOMContentLoaded', () => {
         if (joinWaitlistBtn) {
           joinWaitlistBtn.addEventListener('click', e => {
             e.preventDefault();
+            isDownloadFlow = false;
             showPopup();
           });
         }
 
-        // MODIFIED hidePopup function
+        // Trigger popup when clicking "Download Guide" button
+        const downloadGuideBtn = document.getElementById('download-guide-button');
+        if (downloadGuideBtn) {
+          downloadGuideBtn.addEventListener('click', e => {
+            e.preventDefault();
+            isDownloadFlow = true;
+            showPopup();
+          });
+        }
+
+        // Auto‑show popup after 4 minutes on landing page only, and only if user hasn't completed download flow
+        if (!localStorage.getItem(STORAGE_KEY_DOWNLOAD)) {
+          setTimeout(() => {
+            // Only trigger if not already visible or completed
+            if (!popup.classList.contains('popup-visible')) {
+              showPopup();
+            }
+          }, 240000); // 240,000 ms = 4 minutes
+        }
+
+        // hidePopup function
         const hidePopup = () => {
             // Check if lenis exists AND if we are NOT on the landing page
             if (lenis && !document.body.classList.contains('landing-page-body')) {
@@ -301,57 +301,6 @@ document.addEventListener('DOMContentLoaded', () => {
             popup.classList.remove('popup-visible');
             setTimeout(() => { popup.style.display = 'none'; }, 400); // Wait for fade out
         };
-
-        // --- Timer Initialization ---
-        if (!localStorage.getItem(STORAGE_KEY_COMPLETED)) {
-            if (!localStorage.getItem(STORAGE_KEY_START)) {
-                localStorage.setItem(STORAGE_KEY_START, Date.now().toString());
-                localStorage.setItem(STORAGE_KEY_ELAPSED, '0');
-                console.log("Popup timer started (new session).");
-            }
-
-            if (localStorage.getItem(STORAGE_KEY_TRIGGERED) === 'true') {
-                 console.log("Popup was previously triggered, showing now.");
-                 showPopup();
-            } else {
-                timerInterval = setInterval(checkTimerAndShowPopup, 5000);
-                 console.log("Popup timer interval started.");
-            }
-
-            const saveElapsedTime = () => {
-                if (!localStorage.getItem(STORAGE_KEY_COMPLETED)) {
-                    let totalElapsed = parseInt(localStorage.getItem(STORAGE_KEY_ELAPSED) || '0', 10);
-                    let timeSincePageLoad = Date.now() - pageLoadTime;
-                    localStorage.setItem(STORAGE_KEY_ELAPSED, (totalElapsed + timeSincePageLoad).toString());
-                    pageLoadTime = Date.now(); // Reset page load time when saving
-                }
-            };
-
-            window.addEventListener('beforeunload', saveElapsedTime);
-            document.addEventListener('visibilitychange', () => {
-                if (!localStorage.getItem(STORAGE_KEY_COMPLETED)) {
-                    if (document.hidden) {
-                        saveElapsedTime();
-                        if (timerInterval) clearInterval(timerInterval);
-                        console.log("Tab hidden, timer paused.");
-                    } else {
-                        pageLoadTime = Date.now(); // Reset timer on becoming visible
-                        if (timerInterval) clearInterval(timerInterval); // Clear just in case
-                        if (localStorage.getItem(STORAGE_KEY_TRIGGERED) !== 'true') {
-                           timerInterval = setInterval(checkTimerAndShowPopup, 5000);
-                        } else {
-                             // If already triggered but not completed, show it immediately on visibility change
-                             if (!localStorage.getItem(STORAGE_KEY_COMPLETED)) {
-                                 if (!popup.classList.contains('popup-visible')) { showPopup(); }
-                             }
-                        }
-                    }
-                }
-            });
-
-        } else {
-             console.log("Popup already completed according to localStorage.");
-        }
 
         // --- Add Enter Key Submission for Popup Inputs ---
         if (popupNameInput && popupNextButton) {
@@ -434,7 +383,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         successP.style.color = 'var(--color-accent)';
                     }
                     localStorage.setItem(STORAGE_KEY_COMPLETED, 'true');
-                    if (timerInterval) clearInterval(timerInterval);
+                    // If this is the download flow, mark as completed and trigger download
+                    if (isDownloadFlow) {
+                      localStorage.setItem(STORAGE_KEY_DOWNLOAD, 'true');
+                      // Trigger PDF download (replace with actual PDF path)
+                      window.location.href = '/path/to/your-guide.pdf';
+                    }
                     setTimeout(hidePopup, 2000);
 
                 } catch (error) {
@@ -450,7 +404,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-
     } else {
          if (document.getElementById('timer-popup')) {
             console.error("Timer popup inner elements not found. Popup logic cannot run.");
@@ -510,16 +463,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== Marquee Banner JS Animation End =====
 
 
-    // ===== Landing Page Hamburger Menu Toggle Start =====
+    // ===== Hamburger Menu Toggle (All Pages) =====
     const menuToggle = document.querySelector('.landing-menu-toggle');
-    if (menuToggle && document.body.classList.contains('landing-page-body')) {
-        menuToggle.addEventListener('click', () => {
-            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-            menuToggle.setAttribute('aria-expanded', !isExpanded);
-            // Add logic to show/hide actual menu if implemented
-        });
+    const landingNav = document.getElementById('landing-navigation');
+    if (menuToggle && landingNav) {
+      menuToggle.addEventListener('click', () => {
+        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.setAttribute('aria-expanded', String(!isExpanded));
+        const nextDisplay = isExpanded ? 'none' : 'block';
+        landingNav.style.display = nextDisplay;
+        landingNav.setAttribute('aria-hidden', String(isExpanded));
+      });
     }
-    // ===== Landing Page Hamburger Menu Toggle End =====
+    // ===== Hamburger Menu Toggle End =====
 
 
     // ===== Original script.js Logic (Carousel, Sticky Nav, Video Scrub, etc.) Start =====

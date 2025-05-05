@@ -103,7 +103,7 @@ exports.handler = async (event) => {
         process.env.MAILJET_API_KEY,
         process.env.MAILJET_SECRET_KEY
     );
-    const couponCode = "THEORANGECOMPANY"; // Your coupon code
+ //   const couponCode = "THEORANGECOMPANY"; // Your coupon code
     const mailjetRequest = mailjet
         .post("send", { 'version': 'v3.1' })
         .request({
@@ -114,9 +114,9 @@ exports.handler = async (event) => {
                         "Name": "Gordon"
                     },
                     "To": [ { "Email": email, "Name": name } ],
-                    "Subject": "Your Coupon Code!",
-                    "TextPart": `Hi ${name},\n\nThanks for your interest! Here is your coupon code: ${couponCode}`,
-                    "HTMLPart": `<h3>Hi ${name},</h3><p>Thanks for your interest! Here is your coupon code: <strong>${couponCode}</strong></p>`
+                    "Subject": "You won't regret THYS",
+                    "TextPart": `Hi ${name},\n\nThanks for your interest! You have been added to our subscriber list and will be the first to be notified when the product launches.`,
+                    "HTMLPart": `<h3>Hi ${name},</h3><p>Thanks for your interest! You have been added to our subscriber list and will be the first to be notified when the product launches.</strong></p>`
                 }
             ]
         });

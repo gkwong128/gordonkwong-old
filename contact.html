@@ -2,126 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact Gordon Kwong</title>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Manrope', sans-serif;
-      background-color: #000;
-      color: #fff;
-      text-align: center;
-      background-image: linear-gradient(to bottom, #111, #000);
-      animation: fadeIn 1s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .container {
-      max-width: 1000px;
-      margin: 4rem auto;
-      padding: 6rem 4rem;
-      border: 1px solid #222;
-      border-radius: 24px;
-      background-color: rgba(0, 0, 0, 0.85);
-      box-shadow: 0 6px 40px rgba(255, 204, 51, 0.2);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: fadeIn 1.2s ease-out;
-    }
-    img {
-      width: 240px;
-      height: auto;
-      border-radius: 50%;
-      margin-bottom: 2.5rem;
-      border: 5px solid #ffcc33;
-      box-shadow: 0 0 30px rgba(255, 204, 51, 0.4);
-      animation: fadeIn 1.6s ease-in-out;
-    }
-    h1 {
-      font-size: 3.5rem;
-      font-weight: 600;
-      margin-bottom: 1.2rem;
-      letter-spacing: 1.5px;
-    }
-    p {
-      font-size: 1.4rem;
-      margin-bottom: 3rem;
-      color: #ccc;
-    }
-    a.button {
-      display: inline-block;
-      padding: 1.2rem 2.4rem;
-      background-color: transparent;
-      border: 2px solid #ffcc33;
-      color: #ffcc33;
-      font-weight: 600;
-      text-decoration: none;
-      border-radius: 999px;
-      transition: all 0.3s ease;
-      font-size: 1.2rem;
-      margin-bottom: 3rem;
-    }
-    a.button:hover {
-      background-color: #ffcc33;
-      color: #000;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      width: 100%;
-      max-width: 600px;
-      animation: fadeIn 1.8s ease-in-out;
-    }
-    input, textarea {
-      padding: 1.25rem;
-      border: 1px solid #444;
-      border-radius: 12px;
-      background-color: #111;
-      color: #fff;
-      font-size: 1.1rem;
-      width: 100%;
-    }
-    input[type="submit"] {
-      background-color: #ffcc33;
-      color: #000;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    input[type="submit"]:hover {
-      background-color: #e6b800;
-    }
-    @media (max-width: 768px) {
-      .container {
-        padding: 3rem 2rem;
-      }
-      h1 {
-        font-size: 2.5rem;
-      }
-      p {
-        font-size: 1.1rem;
-      }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Guide</title>
+  <link href="favicon.svg" rel="icon" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@400;600&display=swap" rel="stylesheet" />
 </head>
-<body>
-  <div class="container">
-    <img src="profile.png" alt="Gordon Kwong">
-    <h1>Gordon Kwong</h1>
-    <p>Living in Houston, TX</p>
-    <a class="button" href="https://www.instagram.com/gordonkwongphotos" target="_blank">@gordonkwongphotos</a>
 
-    <form name="contact" method="POST" data-netlify="true">
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Your Email" required>
-      <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
-      <input type="submit" value="Send Message">
-    </form>
+<body class="landing-page-body">
+  <div id="loading-screen" role="status" aria-hidden="true">
+    <div id="loading-text">
+      You are <span id="loading-word">friend</span>
+    </div>
   </div>
+
+
+  <!-- Header -->
+  <header class="landing-header" style="position:absolute; top:0; left:0; width:100%; display:flex; align-items:center; justify-content:space-between; padding:1rem 2rem; z-index:1000;">
+    <a href="index.html" class="landing-logo-link" aria-label="Gordon Kwong Homepage">
+      <img src="logo.svg" alt="Gordon Kwong Logo" class="landing-logo"/>
+    </a>
+    <div style="display:flex; align-items:center; margin-left:auto;">
+      <button class="landing-menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke="#000" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <nav id="landing-navigation" class="landing-nav" aria-hidden="true" style="display:none;">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="learnsimple.html">Learn</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main role="main" style="text-align:center; margin-top:0;">
+    <div class="hero-simple" style="position:relative; width:100vw; height:100vh; overflow:hidden;">
+      <img src="contactbackground.webp" alt="Contact Background" draggable="false" style="width:100vw; height:100vh; object-fit:cover; display:block; -webkit-user-drag:none; user-drag:none;">
+      <h1 style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#000; font-family:var(--font-heading); font-size:2rem; margin:0; text-align:center;">
+        Email: gordon@gordonkwong.com
+      </h1>
+      <a href="https://www.instagram.com/gordonkwongphotos/" target="_blank" rel="noopener" style="position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);">
+        <img src="instagramicon.webp" alt="Instagram" style="width:40px; height:auto;">
+      </a>
+    </div>
+
+</main>
+  <script src="script.js" defer></script>
+
 </body>
 </html>

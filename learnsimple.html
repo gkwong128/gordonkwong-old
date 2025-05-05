@@ -3,28 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gordon Kwong - Welcome</title> <link href="favicon.svg" rel="icon" type="image/svg+xml" />
-
+  <title>Product Guide</title>
+  <link href="favicon.svg" rel="icon" type="image/svg+xml" />
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@400;600&display=swap" rel="stylesheet" />
-
 </head>
-<body class="landing-page-body">
+<body>
 
+  <!-- Loading Screen -->
   <div id="loading-screen" role="status" aria-hidden="true">
-    <div id="loading-text">
-      You are <span id="loading-word">friend</span>
-    </div>
+    <div id="loading-text">You are <span id="loading-word">friend</span></div>
   </div>
 
+  <!-- Header -->
   <header class="landing-header" style="position:absolute; top:0; left:0; width:100%; display:flex; align-items:center; justify-content:space-between; padding:1rem 2rem; z-index:1000;">
     <a href="index.html" class="landing-logo-link" aria-label="Gordon Kwong Homepage">
       <img src="logo.svg" alt="Gordon Kwong Logo" class="landing-logo"/>
     </a>
-    <div style="display:flex; align-items:center;">
-      <button id="join-waitlist-button" class="landing-button" style="margin-right:1rem;">
-        Join our waitlist
-      </button>
+    <div style="display:flex; align-items:center; margin-left:auto;">
       <button class="landing-menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke="#fff" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -42,56 +38,44 @@
     </div>
   </header>
 
-  <div class="video-background-container" style="position:fixed; top:0; left:0; width:100%; height:100vh; overflow:hidden; z-index:-1;">
-    <video autoplay loop muted playsinline id="landing-video" style="width:100%; height:100%; object-fit:cover;">
-      <source src="home.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
+  <!-- Main content -->
+  <main role="main" style="text-align:center; margin-top:4rem;">
+    <div class="hero-simple" style="position:fixed; top:0; left:0; width:100vw; height:100vh; overflow:hidden; z-index:-1;">
+      <img src="photo5.webp" alt="Product Guide Preview" draggable="false" style="width:100vw; height:100vh; object-fit:cover; display:block; -webkit-user-drag:none; user-drag:none;">
+      <h1 style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#fff; font-family:var(--font-heading); font-size:2rem; margin:0; padding:0 1rem; text-align:center; z-index:1;">
+        the desire for transformation is by design
+      </h1>
+    </div>
+    <button id="download-guide-button" class="landing-button">
+      Download our product guide
+    </button>
+  </main>
 
-  <div class="landing-text-overlay">
-    <h1 class="landing-headline">world's first motorized heels</h1>
-    <p class="landing-subheadline" style="font-size:1.25rem; line-height:1.2; max-width:600px;">
-      unlimited heights<br>
-      unlimited transformation<br>
-      unlimited you
-    </p>
-  </div>
-  <a href="learnsimple.html" class="landing-button">Elevate with THYS</a>
-
-  <script src="script.js" defer></script>
+  <!-- Popup (reused) -->
   <div id="timer-popup" style="display: none;">
     <div class="popup-content">
       <div id="popup-step-1">
-        <h2>This is THYS</h2>
-        <p>Be notified first! Enter your name to join our community.</p>
+        <h2>Enter your name to download a product guide.</h2>
         <div class="popup-input-group">
           <label for="popup-name">Name:</label>
           <input type="text" id="popup-name" name="name" required>
         </div>
         <button type="button" id="popup-next-step">Continue</button>
       </div>
-  
       <div id="popup-step-2" style="display: none;">
-        <h2>Almost there!</h2>
-        <p>Please enter your email so we can notify you about the launch.</p>
+        <h2>Where should we send it?</h2>
         <div class="popup-input-group">
           <label for="popup-email">Email:</label>
           <input type="email" id="popup-email" name="email" required>
         </div>
-        <button type="submit" id="popup-submit">Submit</button>
+        <button type="button" id="popup-submit">Submit & Download PDF</button>
       </div>
-  
-       <div id="popup-submitting" style="display: none;">
-          <p>Submitting...</p>
-       </div>
-        <div id="popup-success" style="display: none;">
-          <p>Thank you! Your details have been submitted.</p>
-        </div>
-         <div id="popup-error" style="display: none;">
-          <p>Sorry, there was an error. Please try again later.</p>
-        </div>
-  
-    </div> </div> 
+      <div id="popup-submitting" style="display: none;"><p>Submitting...</p></div>
+      <div id="popup-success" style="display: none;"><p>Success! Your PDF is downloading.</p></div>
+      <div id="popup-error" style="display: none;"><p>Error. Please try again later.</p></div>
+    </div>
+  </div>
+
+  <script src="script.js" defer></script>
 </body>
 </html>

@@ -192,6 +192,46 @@
   }
   .landing-menu-toggle { background: none; border: none; padding: 0.5rem; color: var(--color-text-light, #fff); line-height: 0; }
   .landing-menu-toggle svg { display: block; width: 28px; height: 28px; stroke: currentColor; stroke-width: 1.5; }
+
+  /* ===== Hamburger Navigation Menu ===== */
+  .landing-nav {
+    position: absolute;
+    top: 100%;                 /* directly below the header */
+    right: var(--container-padding);
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    display: none;             /* hidden by default */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 102;              /* above all other content */
+  }
+  .landing-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .landing-nav li + li {
+    margin-top: 0.75rem;
+  }
+  .landing-nav a {
+    display: block;
+    text-decoration: none;
+    /* Change font family to Italiana and use a medium weight */
+    font-family: var(--font-heading, 'Italiana', serif);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text-light);
+    transition: color 0.2s ease;
+  }
+  .landing-nav a:hover,
+  .landing-nav a:focus {
+    color: var(--color-accent);
+  }
+
+  /* show the nav when menu is expanded */
+  .landing-menu-toggle[aria-expanded="true"] + .landing-nav {
+    display: block;
+  }
   .landing-text-overlay {
     position: fixed;
     top: 50%;
@@ -402,13 +442,18 @@
   border-radius: 50px; /* Pill shape */
   background-color: #000; /* Black Background */
   color: var(--color-text-light, #fff); /* White Text */
-  font-family: var(--font-default);
+  font-family: var(--font-heading);
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.03em;
   /* cursor: pointer; */ /* Handled by general custom cursor rule */
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   margin-top: 0.5rem;
+}
+
+/* Ensure all buttons use Italiana font */
+button {
+  font-family: var(--font-heading);
 }
 
 /* General Popup Button Hover - Keep darker orange as default hover */
