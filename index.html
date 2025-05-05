@@ -20,6 +20,9 @@
     <a href="index.html" class="landing-logo-link" aria-label="Gordon Kwong Homepage">
       <img alt="Gordon Kwong Logo" class="landing-logo" src="logo.svg" width="120" height="40"/>
     </a>
+    <button id="join-waitlist-button" class="landing-button" style="margin-right:1rem;">
+      Join our waitlist
+    </button>
     <button class="landing-menu-toggle" aria-label="Toggle Menu" aria-expanded="false" aria-controls="landing-navigation">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -37,17 +40,21 @@
   </div>
 
   <div class="landing-text-overlay">
-    <h1 class="landing-headline">This is THYS, the world's first motorized high heels</h1>
-    <p class="landing-subheadline">Heels that work as hard as you do.</p>
+    <h1 class="landing-headline">world's first motorized heels</h1>
+    <p class="landing-subheadline" style="font-size:1.25rem; line-height:1.2; max-width:600px;">
+      unlimited heights<br>
+      unlimited transformation<br>
+      unlimited you
+    </p>
   </div>
-  <a href="learnmore.html" class="landing-button">Learn More</a>
+  <a href="learnmore.html" class="landing-button">Elevate with THYS</a>
 
   <script src="script.js" defer></script>
   <div id="timer-popup" style="display: none;">
     <div class="popup-content">
       <div id="popup-step-1">
         <h2>You seem to be a fan!</h2>
-        <p>Please enter your name so we can improve your experience.</p>
+        <p>Please enter your name to join the waitlist.</p>
         <div class="popup-input-group">
           <label for="popup-name">Name:</label>
           <input type="text" id="popup-name" name="name" required>
@@ -57,12 +64,12 @@
   
       <div id="popup-step-2" style="display: none;">
         <h2>Almost there!</h2>
-        <p>Please enter your email so we can send a pre-order coupon and exclusive access to our VIP community.</p>
+        <p>Please enter your email so we can notify you about the launch.</p>
         <div class="popup-input-group">
           <label for="popup-email">Email:</label>
           <input type="email" id="popup-email" name="email" required>
         </div>
-        <button type="submit" id="popup-submit">Submit & Get Coupon</button>
+        <button type="submit" id="popup-submit">Submit</button>
       </div>
   
        <div id="popup-submitting" style="display: none;">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 33">
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 463.06 463.06">
   <defs>
     <style>
       .cls-1 {
@@ -7,28 +7,14 @@
       }
 
       .cls-2 {
-        fill: #f68c22;
-        stroke: #6e407f;
-        stroke-width: .15px;
-      }
-
-      .cls-2, .cls-3 {
-        stroke-miterlimit: 10;
-      }
-
-      .cls-3 {
         fill: #fff;
-        stroke: #fff;
       }
     </style>
   </defs>
-  <g id="Layer_2" data-name="Layer 2">
-    <rect class="cls-3" x=".5" y=".5" width="32" height="32"/>
-  </g>
-  <g id="Layer_1" data-name="Layer 1">
-    <g>
-      <ellipse class="cls-2" cx="16.5" cy="18.03" rx="11.3" ry="12.33"/>
-      <path class="cls-1" d="M17.52,19.13h-2.06V2.02h-4.29v-.25h10.66v.25h-4.31v17.11Z"/>
-    </g>
-  </g>
+  <circle class="cls-2" cx="231.53" cy="231.53" r="231.53"/>
+  <path class="cls-1" d="M163.4,120.69v212.31h-27.41V120.69h27.41Z"/>
+  <path class="cls-1" d="M217.4,120.69v212.31h-27.41V120.69h27.41Z"/>
+  <path class="cls-1" d="M271.4,120.69v212.31h-27.41V120.69h27.41Z"/>
+  <path class="cls-1" d="M325.4,120.69v212.31h-27.41V120.69h27.41Z"/>
+  <polyline class="cls-1" points="104.56 332.31 118.32 332.31 354.76 120.66 341.34 120.66"/>
 </svg>

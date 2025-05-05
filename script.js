@@ -207,6 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const popupError = document.getElementById('popup-error');
     const popupCloseButton = document.getElementById('popup-close-button'); // Get close button
 
+
     // Only proceed if the popup HTML exists on the page
     if (popup && popupStep1 && popupStep2 && popupNameInput && popupEmailInput && popupNextButton && popupSubmitButton && popupSubmitting && popupSuccess && popupError) {
 
@@ -277,6 +278,15 @@ document.addEventListener('DOMContentLoaded', () => {
             popup.style.display = 'flex';
             setTimeout(() => { popup.classList.add('popup-visible'); }, 10); // Fade in
         };
+
+        // Attach Join Waitlist button to show the popup
+        const joinWaitlistBtn = document.getElementById('join-waitlist-button');
+        if (joinWaitlistBtn) {
+          joinWaitlistBtn.addEventListener('click', e => {
+            e.preventDefault();
+            showPopup();
+          });
+        }
 
         // MODIFIED hidePopup function
         const hidePopup = () => {
