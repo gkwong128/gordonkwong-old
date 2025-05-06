@@ -284,14 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         // Attach Join Waitlist button to show the popup
-        const joinWaitlistBtn = document.getElementById('join-waitlist-button');
-        if (joinWaitlistBtn) {
-          joinWaitlistBtn.addEventListener('click', e => {
-            e.preventDefault();
-            isDownloadFlow = false;
-            showPopup();
-          });
-        }
+        // (REMOVED: This logic is now handled by Mailerjet embed. No longer attach click handler.)
 
         // Trigger popup when clicking "Download Guide" button
         const downloadGuideBtn = document.getElementById('download-guide-button');
