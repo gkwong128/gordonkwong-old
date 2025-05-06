@@ -218,6 +218,31 @@ document.addEventListener('DOMContentLoaded', () => {
         // showPopup function
         const showPopup = () => {
             console.log("Showing Popup");
+            // Adjust popup text for download vs. waitlist flows
+            const step1Heading = popupStep1.querySelector('h2');
+            const step1Paragraph = popupStep1.querySelector('p');
+            const step2Heading = popupStep2.querySelector('h2');
+            const step2Paragraph = popupStep2.querySelector('p');
+
+            if (isDownloadFlow) {
+              step1Heading.textContent = 'Please enter your name';
+              step1Paragraph.textContent = 'Download our product guide.';
+              popupNextButton.textContent = 'Continue';
+
+              step2Heading.textContent = 'Please enter your email';
+              step2Paragraph.textContent = 'We will email you the product guide.';
+              popupSubmitButton.textContent = 'Submit & Email Guide';
+            } else {
+              // Default waitlist copy
+              step1Heading.textContent = 'This is THYS';
+              step1Paragraph.textContent = 'Be notified first! Enter your name to join our community.';
+              popupNextButton.textContent = 'Continue';
+
+              step2Heading.textContent = 'Almost there!';
+              step2Paragraph.textContent = 'Please enter your email so we can notify you about the launch.';
+              popupSubmitButton.textContent = 'Submit';
+            }
+
             // 1. Apply CSS classes first to hide overflow
             document.documentElement.classList.add('popup-open');
             document.body.classList.add('popup-open');
@@ -383,11 +408,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         successP.style.color = 'var(--color-accent)';
                     }
                     localStorage.setItem(STORAGE_KEY_COMPLETED, 'true');
-                    // If this is the download flow, mark as completed and trigger download
+                    // If this is the download flow, mark as completed and trigger email client with PDF link
                     if (isDownloadFlow) {
                       localStorage.setItem(STORAGE_KEY_DOWNLOAD, 'true');
-                      // Trigger PDF download (replace with actual PDF path)
-                      window.location.href = '/path/to/your-guide.pdf';
+                      // Open user's email client with a link to the PDF
+                      const subject = encodeURIComponent('Your Product Guide');
+                      const body = encodeURIComponent(
+                        `Hello ${name},\n\nHere’s your product guide:\n${window.location.origin}/productguide.pdf`
+                      );
+                      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
                     }
                     setTimeout(hidePopup, 2000);
 
