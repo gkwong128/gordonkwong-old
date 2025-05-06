@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
               popupNextButton.textContent = 'Continue';
 
               step2Heading.textContent = 'Please enter your email';
-              step2Paragraph.textContent = 'We will email you the product guide.';
+              step2Paragraph.textContent = 'Where should we send the product guide?';
               popupSubmitButton.textContent = 'Submit & Email Guide';
             } else {
               // Default waitlist copy
@@ -299,6 +299,13 @@ document.addEventListener('DOMContentLoaded', () => {
           downloadGuideBtn.addEventListener('click', e => {
             e.preventDefault();
             isDownloadFlow = true;
+            // Clear any previously saved name so we always ask for name first
+            localStorage.removeItem(STORAGE_KEY_NAME);
+            // Reset to Step 1
+            popupStep1.style.display = 'block';
+            popupStep2.style.display = 'none';
+            popupNextButton.style.display = 'block';
+            popupSubmitButton.style.display = 'none';
             showPopup();
           });
         }
