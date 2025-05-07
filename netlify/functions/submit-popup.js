@@ -112,17 +112,17 @@ exports.handler = async (event) => {
        <meta name="color-scheme" content="light only">
        <meta name="supported-color-schemes" content="light only">
      </head>
-     <body data-ogsc="true" style="margin:0; padding:0; background-color:#ffffff;" bgcolor="#ffffff">
+     <body data-ogsc="true" style="margin:0; padding:0; background-color:#ffffff!important; color:#000000!important;" bgcolor="#ffffff">
        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color:#ffffff;">
          <!-- Header -->
-         <tr bgcolor="#000000">
+         <tr bgcolor="#000000" style="background-color:#000000!important;">
            <td align="center" style="padding:2rem;">
-             <img src="https://www.gordonkwong.com/logo-inverted.png" alt="THYS Logo" style="display:block; max-width:200px; height:auto;">
+             <img src="https://www.gordonkwong.com/logo-inverted.png" alt="THYS Logo" style="display:block; max-width:200px; height:auto; mix-blend-mode: normal !important; filter: none !important;">
            </td>
          </tr>
          <!-- Content -->
          <tr>
-           <td align="center" style="padding:2rem; background-color:#ffffff;">
+           <td align="center" style="padding:2rem; background-color:#ffffff!important; color:#000000!important;">
              <h1 style="font-family:Italiana, serif; margin:0 0 1rem; color:#000000;">Your Product Guide</h1>
              <p style="font-family:Manrope, sans-serif; color:#333333; line-height:1.5; margin:0 0 1.5rem;">
                Hello ${name},<br><br>
@@ -138,7 +138,7 @@ exports.handler = async (event) => {
          <tr bgcolor="#f5f5f5">
            <td align="center" style="padding:1.5rem;">
              <a href="https://www.instagram.com/gordonkwongphotos/" target="_blank" style="text-decoration:none;">
-               <img src="https://www.gordonkwong.com/instagramicon.png" alt="Instagram" style="display:inline-block; width:32px; height:auto; margin:0 0.5rem;">
+               <img src="https://www.gordonkwong.com/instagramicon.png" alt="Instagram" style="display:inline-block; width:32px; height:auto; margin:0 0.5rem; mix-blend-mode: normal !important; filter: none !important;">
              </a>
              <p style="font-family:Manrope, sans-serif; color:#333333; margin:1rem 0 0;">
                <a href="mailto:gordon@gordonkwong.com" style="color:#333333; text-decoration:none;">gordon@gordonkwong.com</a>
@@ -160,17 +160,17 @@ exports.handler = async (event) => {
        <meta name="color-scheme" content="light only">
        <meta name="supported-color-schemes" content="light only">
      </head>
-     <body data-ogsc="true" style="margin:0; padding:0; background-color:#ffffff;" bgcolor="#ffffff">
+     <body data-ogsc="true" style="margin:0; padding:0; background-color:#ffffff!important; color:#000000!important;" bgcolor="#ffffff">
        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color:#ffffff;">
          <!-- Header -->
-         <tr bgcolor="#000000">
+         <tr bgcolor="#000000" style="background-color:#000000!important;">
            <td align="center" style="padding:2rem;">
-             <img src="https://www.gordonkwong.com/logo-inverted.png" alt="THYS Logo" style="display:block; max-width:200px; height:auto;">
+             <img src="https://www.gordonkwong.com/logo-inverted.png" alt="THYS Logo" style="display:block; max-width:200px; height:auto; mix-blend-mode: normal !important; filter: none !important;">
            </td>
          </tr>
          <!-- Content -->
          <tr>
-           <td align="center" style="padding:2rem; background-color:#ffffff;">
+           <td align="center" style="padding:2rem; background-color:#ffffff!important; color:#000000!important;">
              <h1 style="font-family:Italiana, serif; margin:0 0 1rem; color:#000000;">Thanks for Joining Our Waitlist!</h1>
              <p style="font-family:Manrope, sans-serif; color:#333333; line-height:1.5; margin:0 0 1.5rem;">
                Hello ${name},<br><br>
@@ -182,7 +182,7 @@ exports.handler = async (event) => {
          <tr bgcolor="#f5f5f5">
            <td align="center" style="padding:1.5rem;">
              <a href="https://www.instagram.com/gordonkwongphotos/" target="_blank" style="text-decoration:none;">
-               <img src="https://www.gordonkwong.com/instagramicon.png" alt="Instagram" style="display:inline-block; width:32px; height:auto; margin:0 0.5rem;">
+               <img src="https://www.gordonkwong.com/instagramicon.png" alt="Instagram" style="display:inline-block; width:32px; height:auto; margin:0 0.5rem; mix-blend-mode: normal !important; filter: none !important;">
              </a>
              <p style="font-family:Manrope, sans-serif; color:#333333; margin:1rem 0 0;">
                <a href="mailto:gordon@gordonkwong.com" style="color:#333333; text-decoration:none;">gordon@gordonkwong.com</a>
