@@ -400,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const response = await fetch(endpoint, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ name: name, email: email }),
+                        body: JSON.stringify({ name, email, flowType: isDownloadFlow ? 'download' : 'waitlist' }),
                     });
 
                     const result = await response.json(); // Try parsing JSON regardless of status
@@ -418,15 +418,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         successP.style.color = 'var(--color-accent)';
                     }
                     localStorage.setItem(STORAGE_KEY_COMPLETED, 'true');
-                    // If this is the download flow, mark as completed and trigger email client with PDF link
+                    // If this is the download flow, mark as completed
                     if (isDownloadFlow) {
                       localStorage.setItem(STORAGE_KEY_DOWNLOAD, 'true');
-                      // Open user's email client with a link to the PDF
-                      const subject = encodeURIComponent('Your Product Guide');
-                      const body = encodeURIComponent(
-                        `Hello ${name},\n\nHere’s your product guide:\n${window.location.origin}/productguide.pdf`
-                      );
-                      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
                     }
                     setTimeout(hidePopup, 2000);
 

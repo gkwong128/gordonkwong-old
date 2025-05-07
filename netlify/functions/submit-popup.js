@@ -122,7 +122,7 @@ exports.handler = async (event) => {
  <!DOCTYPE html>
  <html lang="en"><body style="font-family:Manrope, sans-serif; color:#333; margin:0; padding:2rem;">
    <div style="background:#000; text-align:center; padding:2rem;">
-     <img src="https://${process.env.SITE_DOMAIN}/logo-inverted.png" alt="THYS Logo" style="max-width:200px;">
+     <img src="https://www.gordonkwong.com/logo-inverted.png" alt="THYS Logo" style="max-width:200px;">
    </div>
    <div style="padding:2rem; text-align:center;">
      <h1 style="font-family:Italiana, serif; margin-bottom:0.5rem;">EXPERIENCE INNOVATION</h1>
@@ -132,7 +132,7 @@ exports.handler = async (event) => {
    </div>
    <div style="background:#f5f5f5; padding:1.5rem; text-align:center;">
      <a href="https://www.instagram.com/gordonkwongphotos/" style="margin:0 0.25rem;">
-       <img src="https://${process.env.SITE_DOMAIN}/instagramicon.png" alt="Instagram" style="width:32px;"/>
+       <img src="https://www.gordonkwong.com/instagramicon.png" alt="Instagram" style="width:32px;"/>
      </a>
      <p>gordon@gordonkwong.com</p>
    </div>
