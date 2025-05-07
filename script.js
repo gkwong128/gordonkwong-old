@@ -310,12 +310,16 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         }
 
-        // Auto‑show popup after 4 minutes on landing page only, and only if user hasn't completed download flow
-        if (!localStorage.getItem(STORAGE_KEY_DOWNLOAD)) {
+        // Auto‑show “This is THYS” only on the landing page and only if no popup has been completed
+        if (
+          document.body.classList.contains('landing-page-body') &&
+          !localStorage.getItem(STORAGE_KEY_DOWNLOAD) &&
+          !localStorage.getItem(STORAGE_KEY_COMPLETED)
+        ) {
           setTimeout(() => {
-            // Only trigger if not already visible or completed
+            // Only trigger if not already visible
             if (!popup.classList.contains('popup-visible')) {
-              // Ensure waitlist popup asks for name first
+              // Ensure waitlist flow (name→email)
               localStorage.removeItem(STORAGE_KEY_NAME);
               isDownloadFlow = false;
               showPopup();
