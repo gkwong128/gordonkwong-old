@@ -121,28 +121,34 @@ exports.handler = async (event) => {
           .footer a { text-decoration:none; color:#000; }
         </style>
       </head>
-      <body>
-        <div class="header">
-          <img src="https://www.gordonkwong.com/logo-inverted.png" alt="THYS Logo">
-        </div>
-        <div class="content">
-          <h1>Your Product Guide</h1>
-          <p>Hello ${name},</p>
-          <p>Thank you for downloading our <strong>Product Guide</strong></p>
-          <p style="text-align:center;">
-            <a href="https://www.gordonkwong.com/productguide.pdf"
-               style="display:inline-block;padding:0.75rem 1.5rem;background:#000;color:#fff;text-decoration:none;border-radius:4px;">
-              View Product Guide
-            </a>
-          </p>
-          <p>If you have any questions or feedback, just reply to this email or reach out at <a href="mailto:gordon@gordonkwong.com">gordon@gordonkwong.com</a>.</p>
-        </div>
-        <div class="footer">
-          <a href="https://www.instagram.com/gordonkwongphotos/" target="_blank">
-            <img src="https://www.gordonkwong.com/instagramicon.png" alt="Instagram">
-          </a>
-          <p><a href="mailto:gordon@gordonkwong.com">gordon@gordonkwong.com</a></p>
-        </div>
+      <body style="margin:0; padding:0; background-color:#ffffff;" bgcolor="#ffffff">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color:#ffffff;">
+          <tr><td align="center">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#000;">
+              <tr><td align="center" style="padding:2rem;">
+                <img src="https://www.gordonkwong.com/logo.png" alt="THYS Logo" style="max-width:200px; display:block;">
+              </td></tr>
+            </table>
+            <div class="content">
+              <h1>Your Product Guide</h1>
+              <p>Hello ${name},</p>
+              <p>Thank you for downloading our <strong>Product Guide</strong></p>
+              <p style="text-align:center;">
+                <a href="https://www.gordonkwong.com/productguide.pdf"
+                   style="display:inline-block;padding:0.75rem 1.5rem;background:#000;color:#fff;text-decoration:none;border-radius:4px;">
+                  View Product Guide
+                </a>
+              </p>
+              <p>If you have any questions or feedback, just reply to this email or reach out at <a href="mailto:gordon@gordonkwong.com">gordon@gordonkwong.com</a>.</p>
+            </div>
+            <div class="footer">
+              <a href="https://www.instagram.com/gordonkwongphotos/" target="_blank">
+                <img src="https://www.gordonkwong.com/instagramicon.png" alt="Instagram">
+              </a>
+              <p><a href="mailto:gordon@gordonkwong.com">gordon@gordonkwong.com</a></p>
+            </div>
+          </td></tr>
+        </table>
       </body>
       </html>`;
     } else {
