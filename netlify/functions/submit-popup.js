@@ -104,75 +104,94 @@ exports.handler = async (event) => {
       subject = "Here’s Your Product Guide";
       textPart = `Hello ${name},\n\nThank you for downloading our Product Guide! We hope you enjoy it.\n\nAccess it here:\nhttps://www.gordonkwong.com/productguide.pdf\n\nFeel free to reach out with any questions at gordon@gordonkwong.com.`;
       htmlPart = `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-          body { margin:0; padding:0; font-family:Manrope, sans-serif; color:#333; }
-          .header { background:#000; text-align:center; padding:2rem; }
-          .header img { max-width:200px; height:auto; }
-          .content { padding:2rem; text-align:center; }
-          .content h1 { font-family:Italiana, serif; margin-bottom:0.5rem; }
-          .content p { line-height:1.5; margin:1rem 0; }
-          .footer { background:#f5f5f5; padding:1.5rem; text-align:center; }
-          .footer img { width:32px; height:auto; margin:0 0.25rem; }
-          .footer a { text-decoration:none; color:#000; }
-        </style>
-      </head>
-      <body style="margin:0; padding:0; background-color:#ffffff;" bgcolor="#ffffff">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color:#ffffff;">
-          <tr><td align="center">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#000;">
-              <tr><td align="center" style="padding:2rem;">
-                <img src="https://www.gordonkwong.com/logo.png" alt="THYS Logo" style="max-width:200px; display:block;">
-              </td></tr>
-            </table>
-            <div class="content">
-              <h1>Your Product Guide</h1>
-              <p>Hello ${name},</p>
-              <p>Thank you for downloading our <strong>Product Guide</strong></p>
-              <p style="text-align:center;">
-                <a href="https://www.gordonkwong.com/productguide.pdf"
-                   style="display:inline-block;padding:0.75rem 1.5rem;background:#000;color:#fff;text-decoration:none;border-radius:4px;">
-                  View Product Guide
-                </a>
-              </p>
-              <p>If you have any questions or feedback, just reply to this email or reach out at <a href="mailto:gordon@gordonkwong.com">gordon@gordonkwong.com</a>.</p>
-            </div>
-            <div class="footer">
-              <a href="https://www.instagram.com/gordonkwongphotos/" target="_blank">
-                <img src="https://www.gordonkwong.com/instagramicon.png" alt="Instagram">
-              </a>
-              <p><a href="mailto:gordon@gordonkwong.com">gordon@gordonkwong.com</a></p>
-            </div>
-          </td></tr>
-        </table>
-      </body>
-      </html>`;
+     <!DOCTYPE html>
+     <html lang="en">
+     <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <meta name="color-scheme" content="light">
+       <meta name="supported-color-schemes" content="light">
+     </head>
+     <body style="margin:0; padding:0; background-color:#ffffff;" bgcolor="#ffffff">
+       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color:#ffffff;">
+         <!-- Header -->
+         <tr bgcolor="#000000">
+           <td align="center" style="padding:2rem;">
+             <img src="https://www.gordonkwong.com/logo-inverted.png" alt="THYS Logo" style="display:block; max-width:200px; height:auto;">
+           </td>
+         </tr>
+         <!-- Content -->
+         <tr>
+           <td align="center" style="padding:2rem; background-color:#ffffff;">
+             <h1 style="font-family:Italiana, serif; margin:0 0 1rem; color:#000000;">Your Product Guide</h1>
+             <p style="font-family:Manrope, sans-serif; color:#333333; line-height:1.5; margin:0 0 1.5rem;">
+               Hello ${name},<br><br>
+               Thank you for downloading our <strong>Product Guide</strong>! We hope you find it insightful.
+             </p>
+             <a href="https://www.gordonkwong.com/productguide.pdf"
+                style="display:inline-block; padding:0.75rem 1.5rem; background-color:#000000; color:#ffffff; text-decoration:none; border-radius:4px; font-family:Manrope, sans-serif;">
+               View Product Guide
+             </a>
+           </td>
+         </tr>
+         <!-- Footer -->
+         <tr bgcolor="#f5f5f5">
+           <td align="center" style="padding:1.5rem;">
+             <a href="https://www.instagram.com/gordonkwongphotos/" target="_blank" style="text-decoration:none;">
+               <img src="https://www.gordonkwong.com/instagramicon.png" alt="Instagram" style="display:inline-block; width:32px; height:auto; margin:0 0.5rem;">
+             </a>
+             <p style="font-family:Manrope, sans-serif; color:#333333; margin:1rem 0 0;">
+               <a href="mailto:gordon@gordonkwong.com" style="color:#333333; text-decoration:none;">gordon@gordonkwong.com</a>
+             </p>
+           </td>
+         </tr>
+       </table>
+     </body>
+     </html>`;
     } else {
       subject = "Thanks for joining the THYS waitlist!";
       textPart = `Hello ${name},\n\nThank you for joining our waitlist! We’ll keep you updated with exclusive news and early access to THYS.`;
       htmlPart = `
- <!DOCTYPE html>
- <html lang="en"><body style="font-family:Manrope, sans-serif; color:#333; margin:0; padding:2rem;">
-   <div style="background:#000; text-align:center; padding:2rem;">
-     <img src="https://www.gordonkwong.com/logo-inverted.png" alt="THYS Logo" style="max-width:200px;">
-   </div>
-   <div style="padding:2rem; text-align:center;">
-     <h1 style="font-family:Italiana, serif; margin-bottom:0.5rem;">EXPERIENCE INNOVATION</h1>
-     <p>Hello ${name},<br><br>
-       Thank you for joining our waitlist! You will be the first to be notified about product updates and early access to THYS.</p>
-     <p>You will not regret THYS! Please stay tuned.</p>
-   </div>
-   <div style="background:#f5f5f5; padding:1.5rem; text-align:center;">
-     <a href="https://www.instagram.com/gordonkwongphotos/" style="margin:0 0.25rem;">
-       <img src="https://www.gordonkwong.com/instagramicon.png" alt="Instagram" style="width:32px;"/>
-     </a>
-     <p>gordon@gordonkwong.com</p>
-   </div>
- </body></html>`;
+     <!DOCTYPE html>
+     <html lang="en">
+     <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <meta name="color-scheme" content="light">
+       <meta name="supported-color-schemes" content="light">
+     </head>
+     <body style="margin:0; padding:0; background-color:#ffffff;" bgcolor="#ffffff">
+       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color:#ffffff;">
+         <!-- Header -->
+         <tr bgcolor="#000000">
+           <td align="center" style="padding:2rem;">
+             <img src="https://www.gordonkwong.com/logo-inverted.png" alt="THYS Logo" style="display:block; max-width:200px; height:auto;">
+           </td>
+         </tr>
+         <!-- Content -->
+         <tr>
+           <td align="center" style="padding:2rem; background-color:#ffffff;">
+             <h1 style="font-family:Italiana, serif; margin:0 0 1rem; color:#000000;">Thanks for Joining Our Waitlist!</h1>
+             <p style="font-family:Manrope, sans-serif; color:#333333; line-height:1.5; margin:0 0 1.5rem;">
+               Hello ${name},<br><br>
+               We’re thrilled to have you. You’ll be the first to receive exclusive updates and early access to THYS.
+             </p>
+           </td>
+         </tr>
+         <!-- Footer -->
+         <tr bgcolor="#f5f5f5">
+           <td align="center" style="padding:1.5rem;">
+             <a href="https://www.instagram.com/gordonkwongphotos/" target="_blank" style="text-decoration:none;">
+               <img src="https://www.gordonkwong.com/instagramicon.png" alt="Instagram" style="display:inline-block; width:32px; height:auto; margin:0 0.5rem;">
+             </a>
+             <p style="font-family:Manrope, sans-serif; color:#333333; margin:1rem 0 0;">
+               <a href="mailto:gordon@gordonkwong.com" style="color:#333333; text-decoration:none;">gordon@gordonkwong.com</a>
+             </p>
+           </td>
+         </tr>
+       </table>
+     </body>
+     </html>`;
     }
 
     // --- Send Waitlist Confirmation Email using Mailjet ---
