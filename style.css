@@ -501,7 +501,7 @@ button {
     font-size: 1rem;
     margin-bottom: 0;
     font-weight: 600;
-    color: var(--color-text-dark, #000); /* Success message in black */
+    color: var(--color-text-dark, #000) !important; /* Force black color */
 }
 #popup-error p {
     font-size: 1rem;

@@ -10,7 +10,7 @@ exports.handler = async (event) => {
 
   try {
     // Parse the incoming data (name and email from the frontend)
-    const { name, email } = JSON.parse(event.body);
+    const { name, email, flowType } = JSON.parse(event.body);
 
     if (!name || !email || !/\S+@\S+\.\S+/.test(email)) { // Basic validation
       return { statusCode: 400, body: 'Missing name or invalid email' };
@@ -98,6 +98,47 @@ exports.handler = async (event) => {
     // --- End Conditional Action ---
 
 
+    // Determine Mailjet email content based on flowType
+    let subject, textPart, htmlPart;
+    if (flowType === 'download') {
+      subject = "Here’s Your Product Guide";
+      textPart = `Hi ${name},\n\nThank you for downloading our Product Guide. You can access it here:\n\nhttps://${process.env.SITE_DOMAIN}/productguide.pdf\n\nEnjoy!`;
+      htmlPart = `
+ <!DOCTYPE html>
+ <html lang="en"><body style="font-family:Manrope, sans-serif; color:#333; margin:0; padding:2rem;">
+   <h2>Hello ${name},</h2>
+   <p>Thank you for downloading our <strong>Product Guide</strong>. Click below to view it:</p>
+   <p style="text-align:center;">
+     <a href="https://${process.env.SITE_DOMAIN}/productguide.pdf"
+        style="display:inline-block;padding:0.75rem 1.5rem;background:#000;color:#fff;text-decoration:none;border-radius:4px;">
+       View Product Guide
+     </a>
+   </p>
+ </body></html>`;
+    } else {
+      subject = "Thanks for joining the THYS waitlist!";
+      textPart = `Hello ${name},\n\nThank you for joining our waitlist! We’ll keep you updated with exclusive news and early access to THYS.`;
+      htmlPart = `
+ <!DOCTYPE html>
+ <html lang="en"><body style="font-family:Manrope, sans-serif; color:#333; margin:0; padding:2rem;">
+   <div style="background:#000; text-align:center; padding:2rem;">
+     <img src="https://${process.env.SITE_DOMAIN}/logo-inverted.png" alt="THYS Logo" style="max-width:200px;">
+   </div>
+   <div style="padding:2rem; text-align:center;">
+     <h1 style="font-family:Italiana, serif; margin-bottom:0.5rem;">EXPERIENCE INNOVATION</h1>
+     <p>Hello ${name},<br><br>
+       Thank you for joining our waitlist! You will be the first to be notified about product updates and early access to THYS.</p>
+     <p>You will not regret THYS! Please stay tuned.</p>
+   </div>
+   <div style="background:#f5f5f5; padding:1.5rem; text-align:center;">
+     <a href="https://www.instagram.com/gordonkwongphotos/" style="margin:0 0.25rem;">
+       <img src="https://${process.env.SITE_DOMAIN}/instagramicon.png" alt="Instagram" style="width:32px;"/>
+     </a>
+     <p>gordon@gordonkwong.com</p>
+   </div>
+ </body></html>`;
+    }
+
     // --- Send Waitlist Confirmation Email using Mailjet ---
     const mailjet = Mailjet.apiConnect(
       process.env.MAILJET_API_KEY,
@@ -113,46 +154,9 @@ exports.handler = async (event) => {
               "Name": "Gordon"
             },
             "To": [ { "Email": email, "Name": name } ],
-            "Subject": "Thanks for joining the THYS waitlist!",
-            "TextPart": `Hello ${name},\n\nThank you for joining our waitlist! We’ll keep you updated with exclusive news and early access to THYS.`,
-            "HTMLPart": `
- <!DOCTYPE html>
- <html lang="en">
- <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <style>
-     body { margin:0; padding:0; font-family:Manrope, sans-serif; color:#333; }
-     .header { background:#000; text-align:center; padding:2rem; }
-     .header img { max-width:200px; height:auto; }
-     .content { padding:2rem; text-align:center; }
-     .content h1 { font-family:Italiana, serif; margin-bottom:0.5rem; }
-     .content p { line-height:1.5; margin:1rem 0; }
-     .footer { background:#f5f5f5; padding:1.5rem; text-align:center; }
-     .social img { width:32px; height:auto; margin:0 0.25rem; }
-     .unsubscribe { font-size:0.75rem; color:#999; margin-top:1rem; }
-   </style>
- </head>
- <body>
-   <div class="header">
-     <img src="https://www.gordonkwong.com/logo-inverted.png" alt="THYS Logo">
-   </div>
-   <div class="content">
-     <h1>EXPERIENCE INNOVATION</h1>
-     <p>Hello ${name},<br><br>
-        Thank you for joining our waitlist! You will be the first to be notified about product updates and early access to THYS.</p>
-     <p>You will not regret THYS! Please stay tuned.</p>
-   </div>
-   <div class="footer">
-     <div class="social">
-       <a href="https://www.instagram.com/gordonkwongphotos/">
-         <img src="https://www.gordonkwong.com/instagramicon.png" alt="Instagram">
-       </a>
-     </div>
-     <p>gordon@gordonkwong.com</p>
-   </div>
- </body>
- </html>`
+            "Subject": subject,
+            "TextPart": textPart,
+            "HTMLPart": htmlPart
           }
         ]
       });
