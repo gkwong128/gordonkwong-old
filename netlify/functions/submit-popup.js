@@ -98,28 +98,68 @@ exports.handler = async (event) => {
     // --- End Conditional Action ---
 
 
-    // --- Send Coupon Email using Mailjet (Runs after sheet operation succeeds) ---
+    // --- Send Waitlist Confirmation Email using Mailjet ---
     const mailjet = Mailjet.apiConnect(
-        process.env.MAILJET_API_KEY,
-        process.env.MAILJET_SECRET_KEY
+      process.env.MAILJET_API_KEY,
+      process.env.MAILJET_SECRET_KEY
     );
- //   const couponCode = "THEORANGECOMPANY"; // Your coupon code
     const mailjetRequest = mailjet
-        .post("send", { 'version': 'v3.1' })
-        .request({
-            "Messages": [
-                {
-                    "From": {
-                        "Email": "gordon@gordonkwong.com", // Your verified Mailjet sender
-                        "Name": "Gordon"
-                    },
-                    "To": [ { "Email": email, "Name": name } ],
-                    "Subject": "You won't regret THYS",
-                    "TextPart": `Hi ${name},\n\nThanks for your interest! You have been added to our subscriber list and will be the first to be notified when the product launches.`,
-                    "HTMLPart": `<h3>Hi ${name},</h3><p>Thanks for your interest! You have been added to our subscriber list and will be the first to be notified when the product launches.</strong></p>`
-                }
-            ]
-        });
+      .post("send", { version: 'v3.1' })
+      .request({
+        "Messages": [
+          {
+            "From": {
+              "Email": "gordon@gordonkwong.com",
+              "Name": "Gordon"
+            },
+            "To": [ { "Email": email, "Name": name } ],
+            "Subject": "Thanks for joining the THYS waitlist!",
+            "TextPart": `Hello ${name},\n\nThank you for joining our waitlist! We’ll keep you updated with exclusive news and early access to THYS.`,
+            "HTMLPart": `
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <style>
+     body { margin:0; padding:0; font-family:Manrope, sans-serif; color:#333; }
+     .header { background:#000; text-align:center; padding:2rem; }
+     .header img { max-width:200px; height:auto; }
+     .content { padding:2rem; text-align:center; }
+     .content h1 { font-family:Italiana, serif; margin-bottom:0.5rem; }
+     .content p { line-height:1.5; margin:1rem 0; }
+     .footer { background:#f5f5f5; padding:1.5rem; text-align:center; }
+     .social img { width:32px; height:auto; margin:0 0.25rem; }
+     .unsubscribe { font-size:0.75rem; color:#999; margin-top:1rem; }
+   </style>
+ </head>
+ <body>
+   <div class="header">
+     <img src="https://www.gordonkwong.com/logo-inverted.svg" alt="THYS Logo">
+   </div>
+   <div class="content">
+     <h1>EXPERIENCE INNOVATION</h1>
+     <p>Hello ${name},<br><br>
+        Thank you for joining our waitlist! You will be the first to be notified about product updates and early access to THYS.</p>
+     <p>You will not regret THYS! Please stay tuned.</p>
+   </div>
+   <div class="footer">
+     <div class="social">
+       <a href="https://www.instagram.com/gordonkwongphotos/">
+         <img src="https://www.gordonkwong.com/instagramicon.webp" alt="Instagram">
+       </a>
+     </div>
+     <p>gordon@gordonkwong.com</p>
+     <p class="unsubscribe">
+       * This e-mail has been sent to {{var:email}}. 
+       <a href="{{unsubscribelink}}">Click here to unsubscribe.</a>
+     </p>
+   </div>
+ </body>
+ </html>`
+          }
+        ]
+      });
 
     try {
         const result = await mailjetRequest;
@@ -128,7 +168,7 @@ exports.handler = async (event) => {
         console.error('Error sending Mailjet email:', emailError.statusCode, emailError.message);
         // Log only, don't cause function to fail if email sending fails
     }
-    // --- End Send Coupon Email ---
+    // --- End Send Waitlist Confirmation Email ---
 
     // Return success response to the frontend (indicates sheet operation was successful)
     return {
