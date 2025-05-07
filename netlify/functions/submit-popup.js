@@ -102,19 +102,40 @@ exports.handler = async (event) => {
     let subject, textPart, htmlPart;
     if (flowType === 'download') {
       subject = "Here’s Your Product Guide";
-      textPart = `Hi ${name},\n\nThank you for downloading our Product Guide. You can access it here:\n\nhttps://${process.env.SITE_DOMAIN}/productguide.pdf\n\nEnjoy!`;
+      textPart = `Hi ${name},\n\nThank you for downloading our Product Guide. You can access it here:\n\nhttps://www.gordonkwong.com/productguide.pdf\n\nEnjoy!`;
       htmlPart = `
- <!DOCTYPE html>
- <html lang="en"><body style="font-family:Manrope, sans-serif; color:#333; margin:0; padding:2rem;">
-   <h2>Hello ${name},</h2>
-   <p>Thank you for downloading our <strong>Product Guide</strong>. Click below to view it:</p>
-   <p style="text-align:center;">
-     <a href="https://${process.env.SITE_DOMAIN}/productguide.pdf"
-        style="display:inline-block;padding:0.75rem 1.5rem;background:#000;color:#fff;text-decoration:none;border-radius:4px;">
-       View Product Guide
-     </a>
-   </p>
- </body></html>`;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { margin:0; padding:0; font-family:Manrope, sans-serif; color:#333; }
+    .header { background:#000; text-align:center; padding:2rem; }
+    .header img { max-width:200px; height:auto; }
+    .content { padding:2rem; text-align:center; }
+    .content h1 { font-family:Italiana, serif; margin-bottom:0.5rem; }
+    .content p { line-height:1.5; margin:1rem 0; }
+    .footer { background:#f5f5f5; padding:1.5rem; text-align:center; }
+    .footer img { width:32px; height:auto; margin:0 0.25rem; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="https://www.gordonkwong.com/logo-inverted.png" alt="THYS Logo">
+  </div>
+  <div class="content">
+    <h1>Success!</h1>
+    <p>Please check your email for the link to the product guide.</p>
+  </div>
+  <div class="footer">
+    <a href="https://www.instagram.com/gordonkwongphotos/">
+      <img src="https://www.gordonkwong.com/instagramicon.png" alt="Instagram">
+    </a>
+    <p>gordon@gordonkwong.com</p>
+  </div>
+</body>
+</html>`;
     } else {
       subject = "Thanks for joining the THYS waitlist!";
       textPart = `Hello ${name},\n\nThank you for joining our waitlist! We’ll keep you updated with exclusive news and early access to THYS.`;
