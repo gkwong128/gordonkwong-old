@@ -135,7 +135,7 @@ exports.handler = async (event) => {
  </head>
  <body>
    <div class="header">
-     <img src="https://www.gordonkwong.com/logo-white.png" alt="THYS Logo">
+     <img src="https://www.gordonkwong.com/logo-inverted.png" alt="THYS Logo">
    </div>
    <div class="content">
      <h1>EXPERIENCE INNOVATION</h1>
