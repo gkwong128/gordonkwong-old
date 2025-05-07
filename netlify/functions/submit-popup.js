@@ -135,7 +135,7 @@ exports.handler = async (event) => {
  </head>
  <body>
    <div class="header">
-     <img src="https://www.gordonkwong.com/logo-inverted.svg" alt="THYS Logo">
+     <img src="https://www.gordonkwong.com/logo-white.svg" alt="THYS Logo">
    </div>
    <div class="content">
      <h1>EXPERIENCE INNOVATION</h1>
@@ -151,8 +151,8 @@ exports.handler = async (event) => {
      </div>
      <p>gordon@gordonkwong.com</p>
      <p class="unsubscribe">
-       * This e-mail has been sent to {{var:email}}. 
-       <a href="{{unsubscribelink}}">Click here to unsubscribe.</a>
+       * This e-mail has been sent to ${email}. 
+       <a href="https://www.gordonkwong.com/unsubscribe?email=${encodeURIComponent(email)}">Click here to unsubscribe.</a>
      </p>
    </div>
  </body>

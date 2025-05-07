@@ -501,7 +501,7 @@ button {
     font-size: 1rem;
     margin-bottom: 0;
     font-weight: 600;
-    color: var(--color-accent); /* Accent color for success */
+    color: var(--color-text-dark, #000); /* Success message in black */
 }
 #popup-error p {
     font-size: 1rem;
