@@ -109,10 +109,10 @@ exports.handler = async (event) => {
      <head>
        <meta charset="UTF-8">
        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <meta name="color-scheme" content="light">
-       <meta name="supported-color-schemes" content="light">
+       <meta name="color-scheme" content="light only">
+       <meta name="supported-color-schemes" content="light only">
      </head>
-     <body style="margin:0; padding:0; background-color:#ffffff;" bgcolor="#ffffff">
+     <body data-ogsc="true" style="margin:0; padding:0; background-color:#ffffff;" bgcolor="#ffffff">
        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color:#ffffff;">
          <!-- Header -->
          <tr bgcolor="#000000">
@@ -157,10 +157,10 @@ exports.handler = async (event) => {
      <head>
        <meta charset="UTF-8">
        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <meta name="color-scheme" content="light">
-       <meta name="supported-color-schemes" content="light">
+       <meta name="color-scheme" content="light only">
+       <meta name="supported-color-schemes" content="light only">
      </head>
-     <body style="margin:0; padding:0; background-color:#ffffff;" bgcolor="#ffffff">
+     <body data-ogsc="true" style="margin:0; padding:0; background-color:#ffffff;" bgcolor="#ffffff">
        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color:#ffffff;">
          <!-- Header -->
          <tr bgcolor="#000000">
