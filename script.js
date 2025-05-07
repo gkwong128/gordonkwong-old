@@ -315,6 +315,9 @@ document.addEventListener('DOMContentLoaded', () => {
           setTimeout(() => {
             // Only trigger if not already visible or completed
             if (!popup.classList.contains('popup-visible')) {
+              // Ensure waitlist popup asks for name first
+              localStorage.removeItem(STORAGE_KEY_NAME);
+              isDownloadFlow = false;
               showPopup();
             }
           }, 240000); // 240,000 ms = 4 minutes
