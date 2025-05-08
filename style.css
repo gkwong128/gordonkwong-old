@@ -1,3 +1,31 @@
+/* ========================================
+   Waitlist Button Text Swap & Elevate Text Centering
+   ======================================== */
+.join-waitlist-button .desktop-text { display: inline; }
+.join-waitlist-button .mobile-text { display: none; }
+
+/* Header actions layout */
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* Mobile: stack join button above menu toggle */
+@media (max-width: 767px) {
+  .header-actions {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .join-waitlist-button {
+    order: 1;
+    margin: 1rem 0 0.5rem 0 !important;
+  }
+  .landing-menu-toggle {
+    order: 2;
+    margin: 0 !important;
+  }
+}
+
 /* style.css */
 
 /* ========================================
@@ -171,7 +199,24 @@
    ======================================== */
 
    .landing-page-body { overflow: hidden; margin: 0; background-color: #000; }
-  .video-background-container { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+  .video-background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh + env(safe-area-inset-top));
+    margin-top: calc(-1 * env(safe-area-inset-top));
+    z-index: -1;
+    overflow: hidden;
+  }
+
+/* Full-screen background cover on mobile, including safe area */
+@media (max-width: 767px) {
+  .video-background-container {
+    top: 0 !important;
+    height: calc(100vh + env(safe-area-inset-top)) !important;
+  }
+}
   #landing-video { width: 100%; height: 100%; object-fit: cover; object-position: center center; }
   .landing-header {
     position: fixed;
@@ -594,11 +639,26 @@ button {
     section p { line-height: 1.6; font-size: 0.9rem; margin-top: 0; margin-bottom: 1rem; }
    section p:last-child { margin-bottom: 0; }
   /* Footer */
-  .footer { font-family: var(--font-default); background-color: var(--color-background); padding: 2rem 0; margin-top: var(--section-vertical-margin);}
+.footer {
+  font-family: var(--font-default);
+  background-color: var(--color-background);
+  padding: 2rem 0 calc(2rem + env(safe-area-inset-bottom));
+  margin-top: var(--section-vertical-margin);
+}
   .footer .container { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 2rem; font-size: 0.65rem; }
   .footer-section { display: flex; flex-direction: column; gap: 0.4rem; }
   .footer-section strong { margin-bottom: 0.3rem; font-weight: 600; font-size: 0.7rem; }
-  .footer-section a { color: var(--color-text-dark); font-size: 0.6rem; font-weight: 400; text-decoration: none; transition: color 0.3s ease; }
+.footer-section a {
+  color: var(--color-text-dark);
+  font-size: clamp(0.5rem, 2.5vw, 0.8rem);
+  font-weight: 400;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: inline-block;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
   .footer-section a:hover {
       text-decoration: underline;
       /* REMOVED color change: color: var(--color-accent); */
@@ -938,4 +998,13 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
   #navbar .nav-links,
   .sticky-navbar .nav-links { max-width: var(--navbar-links-max-width); }
   .video-pin-wrapper { top: 10vh; }
+}
+
+@media (max-width: 767px) {
+  /* Swap waitlist button text on mobile */
+  .join-waitlist-button .desktop-text { display: none; }
+  .join-waitlist-button .mobile-text { display: inline; }
+
+  /* Center the "Elevate with THYS" heading */
+  .elevate-text { text-align: center; }
 }
