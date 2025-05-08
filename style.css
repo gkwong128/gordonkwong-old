@@ -89,11 +89,19 @@
     background-color: #000; color: #fff;
     font-family: var(--font-heading, serif); /* Base font for children */
     letter-spacing: 0.03em; /* Base letter spacing */
-    display: flex; align-items: center; justify-content: center; /* Center content block */
+    display: none; /* Hide loading screen by default */
+    /* align-items: center; justify-content: center; */ /* Center content block - now controlled by .show */
     z-index: 9999; pointer-events: auto;
     opacity: 1; transition: opacity 0.6s ease-out;
     padding: 1rem; /* General padding for screen edges */
     overflow: hidden; /* Prevent potential overflow issues */
+  }
+
+  /* Show loading screen when not hidden by default */
+  #loading-screen.show {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
   }
 
   /* Base (Desktop) Loading Text Style - Absolute Position Centering */

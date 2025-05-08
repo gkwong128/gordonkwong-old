@@ -114,17 +114,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.body.classList.contains('landing-page-body')) { // Check if we are on the landing page
         if (sessionStorage.getItem(loadingSessionKey)) {
             if (loadingScreen) {
+                // Only on subsequent visits: hide the loader immediately (keep initial hiding logic direct for safety)
                 loadingScreen.style.opacity = '0';
                 loadingScreen.style.pointerEvents = 'none';
-                setTimeout(() => { loadingScreen.style.display = 'none'; }, 0);
+                setTimeout(() => { loadingScreen.classList.remove('show'); }, 0);
             }
         } else if (loadingScreen && loadingTextElement) {
             console.log("First visit to landing page this session, showing loading screen.");
             sessionStorage.setItem(loadingSessionKey, 'true'); // Set the key
 
-            loadingScreen.style.opacity = '1';
-            loadingScreen.style.display = 'flex';
-            loadingScreen.classList.remove('hidden');
+            // Show loader using CSS class
+            loadingScreen.classList.add('show');
             loadingTextElement.innerHTML = 'You are a <span id="loading-word">friend</span>';
             const loadingWordSpan = document.getElementById('loading-word');
 
@@ -162,20 +162,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     await delay(400);
                     if (loadingScreen) loadingScreen.classList.add('hidden');
                     await delay(600);
-                    if (loadingScreen) loadingScreen.style.display = 'none';
+                    if (loadingScreen) loadingScreen.classList.remove('show');
                   } catch (error) {
                       console.error("Error loading anim:", error);
                       if (loadingScreen) {
-                          loadingScreen.style.opacity = '0';
-                          loadingScreen.style.pointerEvents = 'none';
-                          loadingScreen.style.display = 'none';
+                          // On error, just hide loader
+                          loadingScreen.classList.remove('show');
                       }
                   }
                 };
                 animateWords();
             } else {
                  console.error("#loading-word span not found after reset!");
-                 if (loadingScreen) loadingScreen.style.display = 'none';
+                 if (loadingScreen) loadingScreen.classList.remove('show');
             }
         } else {
              let missing = [];
@@ -184,11 +183,11 @@ document.addEventListener('DOMContentLoaded', () => {
              if (missing.length > 0 && document.body.classList.contains('landing-page-body')) {
                 console.error(`Loading screen HTML elements not found: ${missing.join(', ')}`);
              }
-             if (loadingScreen) loadingScreen.style.display = 'none';
+             if (loadingScreen) loadingScreen.classList.remove('show');
         }
     } else {
         if (loadingScreen) {
-             loadingScreen.style.display = 'none';
+             loadingScreen.classList.remove('show');
         }
     }
     // ===== Loading Screen Logic End =====
