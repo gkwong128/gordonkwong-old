@@ -271,7 +271,7 @@
     text-decoration: none;
     /* Change font family to Italiana and use a medium weight */
     font-family: var(--font-heading, 'Italiana', serif);
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 500;
     color: var(--color-text-light);
     transition: color 0.2s ease;
@@ -1015,4 +1015,9 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
 
   /* Center the "Elevate with THYS" heading */
   .elevate-text { text-align: center; }
+  /* Make mobile menu items larger and bolder */
+  .landing-nav a {
+    font-size: 1.6rem !important;
+    font-weight: 700 !important;
+  }
 }
