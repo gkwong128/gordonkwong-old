@@ -1017,7 +1017,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
   .elevate-text { text-align: center; }
   /* Make mobile menu items larger and bolder */
   .landing-nav a {
-    font-size: 1.6rem !important;
+    font-size: 1.5rem !important;
     font-weight: 700 !important;
   }
 }
