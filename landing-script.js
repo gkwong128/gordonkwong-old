@@ -81,68 +81,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // ===== Loading Screen Logic End =====
   
-  
-    // ===== Marquee Banner JS Animation REMOVED =====
-  
+
   
     // ===== Landing Page Hamburger Menu Toggle Start =====
     const menuToggle = document.querySelector('.landing-menu-toggle');
-    // const landingNav = document.getElementById('landing-navigation'); // Get nav if it exists
-  
-    if (menuToggle) {
-        menuToggle.addEventListener('click', () => {
-            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-            menuToggle.setAttribute('aria-expanded', !isExpanded);
-            // Add logic to show/hide your actual navigation menu here
-            // e.g., document.body.classList.toggle('landing-nav-open');
-            // if (landingNav) landingNav.classList.toggle('is-open');
-            console.log("Landing menu toggled. Expanded:", !isExpanded);
-            // You'll need to add the actual menu HTML and CSS separately
-        });
+    const landingNav = document.getElementById('landing-navigation');
+
+    if (menuToggle && landingNav) {
+      menuToggle.addEventListener('click', () => {
+        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        // Toggle ARIA state
+        menuToggle.setAttribute('aria-expanded', String(!isExpanded));
+        // Toggle visibility class on nav
+        landingNav.classList.toggle('open', !isExpanded);
+        landingNav.setAttribute('aria-hidden', String(isExpanded));
+      });
     }
     // ===== Landing Page Hamburger Menu Toggle End =====
-
-    // ===== Learnsimple Page “You are human” Animation =====
-    if (window.location.pathname.endsWith('learnsimple.html')) {
-      const loadingText = document.getElementById('loading-text');
-      if (loadingText) {
-        // Ensure text is white
-        loadingText.style.color = '#fff';
-
-        // Original-timing sequence with delays
-        const wordsSequence = [
-          { word: "a dreamer", delay: 600 }, { word: "a leader", delay: 560 },
-          { word: "a storyteller", delay: 520 }, { word: "a lover", delay: 470 },
-          { word: "a rebel", delay: 420 }, { word: "a collaborator", delay: 360 },
-          { word: "a daughter", delay: 300 }, { word: "a mentor", delay: 250 },
-          { word: "a woman", delay: 210 }, { word: "a mother", delay: 180 },
-          { word: "a sister", delay: 150 }, { word: "a creator", delay: 130 },
-          { word: "a doer", delay: 110 }, { word: "a trend setter", delay: 95 },
-          { word: "a fashionista", delay: 80 }, { word: "a care taker", delay: 70 },
-          { word: "a visionary", delay: 60 }, { word: "a trailblazer", delay: 55 },
-          { word: "a healer", delay: 50 }, { word: "a protector", delay: 50 },
-          { word: "a listener", delay: 50 }, { word: "a multitasker", delay: 50 },
-          { word: "a fighter", delay: 50 }, { word: "a nurturer", delay: 50 },
-          { word: "a strategist", delay: 50 }, { word: "a explorer", delay: 50 },
-          { word: "a provider", delay: 50 }, { word: "a student", delay: 50 },
-          { word: "human", delay: 50 }
-        ];
-        const delay = ms => new Promise(res => setTimeout(res, ms));
-
-        // Looping async animation with original timings
-        (async function loopHuman() {
-          for (const item of wordsSequence) {
-            loadingText.textContent = 'You are ' + item.word;
-            await delay(item.delay);
-          }
-          // Final colored "human"
-          loadingText.innerHTML = 'You are <span style="color:#fff">human</span>';
-          await delay(1000);
-          // Repeat
-          loopHuman();
-        })();
-      }
-    }
-    // ===== End Learnsimple “You are human” Animation =====
   
   }); // End DOMContentLoaded

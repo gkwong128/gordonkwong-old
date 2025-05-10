@@ -43,6 +43,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // --- End Conditional Lenis Initialization ---
 
+
+    // ===== Learnsimple Page “You are human” Animation =====
+    if (window.location.pathname.endsWith('learnsimple.html')) {
+        const loadingText = document.getElementById('loading-text');
+        if (loadingText) {
+          // Ensure text is white
+          loadingText.style.color = '#fff';
+  
+          // Original-timing sequence with delays
+          const wordsSequence = [
+            { word: "a dreamer", delay: 600 }, { word: "a leader", delay: 560 },
+            { word: "a storyteller", delay: 520 }, { word: "a lover", delay: 470 },
+            { word: "a rebel", delay: 420 }, { word: "a collaborator", delay: 360 },
+            { word: "a daughter", delay: 300 }, { word: "a mentor", delay: 250 },
+            { word: "a woman", delay: 210 }, { word: "a mother", delay: 180 },
+            { word: "a sister", delay: 150 }, { word: "a creator", delay: 130 },
+            { word: "a doer", delay: 110 }, { word: "a trend setter", delay: 95 },
+            { word: "a fashionista", delay: 80 }, { word: "a care taker", delay: 70 },
+            { word: "a visionary", delay: 60 }, { word: "a trailblazer", delay: 55 },
+            { word: "a healer", delay: 50 }, { word: "a protector", delay: 50 },
+            { word: "a listener", delay: 50 }, { word: "a multitasker", delay: 50 },
+            { word: "a fighter", delay: 50 }, { word: "a nurturer", delay: 50 },
+            { word: "a strategist", delay: 50 }, { word: "a explorer", delay: 50 },
+            { word: "a provider", delay: 50 }, { word: "a student", delay: 50 },
+            { word: "human", delay: 50 }
+          ];
+          const delay = ms => new Promise(res => setTimeout(res, ms));
+  
+          // Looping async animation with original timings
+          (async function loopHuman() {
+            for (const item of wordsSequence) {
+              loadingText.textContent = 'You are ' + item.word;
+              await delay(item.delay);
+            }
+            // Final colored "human"
+            loadingText.innerHTML = 'You are <span style="color:#fff">human</span>';
+            await delay(1000);
+            // Repeat
+            loopHuman();
+          })();
+        }
+      }
+      // ===== End Learnsimple “You are human” Animation =====
+
     // ===== Footer Newsletter Form Handling =====
     const footerForm = document.getElementById('footer-newsletter-form');
     const footerEmailInput = document.getElementById('footer-email-input');
@@ -126,56 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Show loader using CSS class
             loadingScreen.classList.add('show');
             loadingTextElement.innerHTML = 'You are a <span id="loading-word">friend</span>';
-            const loadingWordSpan = document.getElementById('loading-word');
-
-            if (loadingWordSpan) {
-                const wordsSequence = [ /* ... words sequence ... */
-                    { word: "dreamer", delay: 600 }, { word: "leader", delay: 560 },
-                    { word: "storyteller", delay: 520 }, { word: "lover", delay: 470 },
-                    { word: "rebel", delay: 420 }, { word: "collaborator", delay: 360 },
-                    { word: "daughter", delay: 300 }, { word: "mentor", delay: 250 },
-                    { word: "woman", delay: 210 }, { word: "mother", delay: 180 },
-                    { word: "sister", delay: 150 }, { word: "creator", delay: 130 },
-                    { word: "doer", delay: 110 }, { word: "trend setter", delay: 95 },
-                    { word: "fashionista", delay: 80 }, { word: "care taker", delay: 70 },
-                    { word: "visionary", delay: 60 }, { word: "trailblazer", delay: 55 },
-                    { word: "healer", delay: 50 }, { word: "protector", delay: 50 },
-                    { word: "listener", delay: 50 }, { word: "multitasker", delay: 50 },
-                    { word: "storyteller", delay: 50 }, { word: "fighter", delay: 50 },
-                    { word: "nurturer", delay: 50 }, { word: "strategist", delay: 50 },
-                    { word: "explorer", delay: 50 }, { word: "provider", delay: 50 },
-                    { word: "student", delay: 50 }, { word: "human", delay: 50 },
-                ];
-                const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-                const animateWords = async () => {
-                  try {
-                    for (const item of wordsSequence) {
-                      const effectiveDelay = Math.max(item.delay, 0);
-                      await delay(effectiveDelay);
-                      const currentWordSpan = document.getElementById('loading-word');
-                      if (!currentWordSpan) return;
-                      currentWordSpan.textContent = item.word;
-                    }
-                    if (loadingTextElement) {
-                        loadingTextElement.innerHTML = 'You are <span class="accent-word">human</span>';
-                    }
-                    await delay(400);
-                    if (loadingScreen) loadingScreen.classList.add('hidden');
-                    await delay(600);
-                    if (loadingScreen) loadingScreen.classList.remove('show');
-                  } catch (error) {
-                      console.error("Error loading anim:", error);
-                      if (loadingScreen) {
-                          // On error, just hide loader
-                          loadingScreen.classList.remove('show');
-                      }
-                  }
-                };
-                animateWords();
-            } else {
-                 console.error("#loading-word span not found after reset!");
-                 if (loadingScreen) loadingScreen.classList.remove('show');
-            }
         } else {
              let missing = [];
              if (!loadingScreen) missing.push("#loading-screen");
@@ -499,19 +493,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== Marquee Banner JS Animation End =====
 
 
-    // ===== Hamburger Menu Toggle (All Pages) =====
-    const menuToggle = document.querySelector('.landing-menu-toggle');
-    const landingNav = document.getElementById('landing-navigation');
-    if (menuToggle && landingNav) {
-      menuToggle.addEventListener('click', () => {
-        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-        menuToggle.setAttribute('aria-expanded', String(!isExpanded));
-        const nextDisplay = isExpanded ? 'none' : 'block';
-        landingNav.style.display = nextDisplay;
-        landingNav.setAttribute('aria-hidden', String(isExpanded));
-      });
-    }
-    // ===== Hamburger Menu Toggle End =====
 
 
     // ===== Original script.js Logic (Carousel, Sticky Nav, Video Scrub, etc.) Start =====
@@ -675,3 +656,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== Original script.js Logic End =====
 
 }); // End DOMContentLoaded
+
+
+// ===== Learnsimple Page “You are human” Animation =====
+// (Block intentionally removed; see landing-script.js for this animation.)
+// ===== End Learnsimple “You are human” Animation =====

@@ -32,6 +32,14 @@
    Base Styles & Variables (STANDARD 1x Scale)
    ======================================== */
    :root {
+  /* Landing navigation hidden by default */
+  .landing-nav {
+    display: none !important;
+  }
+  /* Show landing navigation when open */
+  .landing-nav.open {
+    display: block !important;
+  }
     --font-default: 'Manrope', sans-serif;
     --font-heading: 'Italiana', serif;
     --color-text-dark: #000;
@@ -281,10 +289,6 @@
     color: var(--color-accent);
   }
 
-  /* show the nav when menu is expanded */
-  .landing-menu-toggle[aria-expanded="true"] + .landing-nav {
-    display: block;
-  }
   .landing-text-overlay {
     position: fixed;
     top: 50%;
