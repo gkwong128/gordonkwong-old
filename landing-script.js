@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
       loadingTextElement.innerHTML = '<span id="typed"></span>';
       const typed = document.getElementById('typed');
       let lineIndex = 0, charIndex = 0;
-      const typeSpeed = 100; // milliseconds per character
+      const typeSpeed = 30; // even faster typing speed
 
       const typeLine = () => {
         const line = lines[lineIndex];
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
               setTimeout(() => {
                 if (loadingScreen) loadingScreen.style.display = 'none';
               }, 600);
-            }, 500);
+            }, 1500);
           }
         }
       };
@@ -104,34 +104,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ===== Learnsimple Page “You are human” Animation =====
     if (window.location.pathname.endsWith('learnsimple.html')) {
-      const lsLoadingScreen = document.getElementById('loading-screen');
-      const lsLoadingText = document.getElementById('loading-text');
-      if (lsLoadingScreen && lsLoadingText) {
-        // show the screen
-        lsLoadingScreen.style.display = 'flex';
-        lsLoadingScreen.style.opacity = '1';
-        lsLoadingScreen.classList.remove('hidden');
-        // define words sequence
-        const humanWords = [
-          "dreamer", "leader", "storyteller", "lover", "rebel",
-          "collaborator", "daughter", "mentor", "woman", "mother",
-          "sister", "creator", "doer", "trend setter", "fashionista",
-          "care taker", "visionary", "trailblazer", "healer", "protector",
-          "listener", "multitasker", "storyteller", "fighter", "nurturer",
-          "strategist", "explorer", "provider", "student", "human"
+      const loadingText = document.getElementById('loading-text');
+      if (loadingText) {
+        // Ensure text is white
+        loadingText.style.color = '#fff';
+
+        // Original-timing sequence with delays
+        const wordsSequence = [
+          { word: "a dreamer", delay: 600 }, { word: "a leader", delay: 560 },
+          { word: "a storyteller", delay: 520 }, { word: "a lover", delay: 470 },
+          { word: "a rebel", delay: 420 }, { word: "a collaborator", delay: 360 },
+          { word: "a daughter", delay: 300 }, { word: "a mentor", delay: 250 },
+          { word: "a woman", delay: 210 }, { word: "a mother", delay: 180 },
+          { word: "a sister", delay: 150 }, { word: "a creator", delay: 130 },
+          { word: "a doer", delay: 110 }, { word: "a trend setter", delay: 95 },
+          { word: "a fashionista", delay: 80 }, { word: "a care taker", delay: 70 },
+          { word: "a visionary", delay: 60 }, { word: "a trailblazer", delay: 55 },
+          { word: "a healer", delay: 50 }, { word: "a protector", delay: 50 },
+          { word: "a listener", delay: 50 }, { word: "a multitasker", delay: 50 },
+          { word: "a fighter", delay: 50 }, { word: "a nurturer", delay: 50 },
+          { word: "a strategist", delay: 50 }, { word: "a explorer", delay: 50 },
+          { word: "a provider", delay: 50 }, { word: "a student", delay: 50 },
+          { word: "human", delay: 50 }
         ];
-        let idx = 0;
         const delay = ms => new Promise(res => setTimeout(res, ms));
-        (async function animateHuman() {
-          for (; idx < humanWords.length; idx++) {
-            lsLoadingText.querySelector('#loading-word').textContent = humanWords[idx];
-            await delay(Math.max(600 - idx * 20, 50));
+
+        // Looping async animation with original timings
+        (async function loopHuman() {
+          for (const item of wordsSequence) {
+            loadingText.textContent = 'You are ' + item.word;
+            await delay(item.delay);
           }
-          lsLoadingText.innerHTML = 'You are <span class="accent-word">human</span>';
-          await delay(400);
-          lsLoadingScreen.classList.add('hidden');
-          await delay(600);
-          lsLoadingScreen.style.display = 'none';
+          // Final colored "human"
+          loadingText.innerHTML = 'You are <span style="color:#fff">human</span>';
+          await delay(1000);
+          // Repeat
+          loopHuman();
         })();
       }
     }
