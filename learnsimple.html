@@ -45,6 +45,11 @@
       <h1 style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#fff; font-family:var(--font-heading); font-size:2rem; margin:0; padding:0 1rem; text-align:center; z-index:1;">
         the desire for transformation is by design
       </h1>
+      <!-- Learn page “You are human” animation -->
+      <div id="loading-screen" role="status" aria-hidden="true" 
+           style="position:absolute; top:60%; left:50%; transform:translate(-50%,0); z-index:1; color:#fff; font-family:var(--font-heading); font-size:2rem; text-align:center;">
+        <div id="loading-text">You are <span id="loading-word">human</span></div>
+      </div>
     </div>
     <button id="download-guide-button" class="landing-button">
       Download our product guide
@@ -80,6 +85,7 @@
     </div>
   </div>
 
+  <script src="landing-script.js" defer></script>
   <script src="script.js" defer></script>
 </body>
 </html>

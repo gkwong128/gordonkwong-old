@@ -30,63 +30,46 @@ document.addEventListener('DOMContentLoaded', () => {
       loadingScreen.style.opacity = '1';
       loadingScreen.style.display = 'flex';
       loadingScreen.classList.remove('hidden');
-      loadingTextElement.innerHTML = 'You are a <span id="loading-word">friend</span>';
-      const loadingWordSpan = document.getElementById('loading-word'); // Get span after setting innerHTML
-  
-      if (loadingWordSpan) {
-          // Use the latest word sequence
-          const wordsSequence = [
-              { word: "dreamer", delay: 600 }, { word: "leader", delay: 560 },
-              { word: "storyteller", delay: 520 }, { word: "lover", delay: 470 },
-              { word: "rebel", delay: 420 }, { word: "collaborator", delay: 360 },
-              { word: "daughter", delay: 300 }, { word: "mentor", delay: 250 },
-              { word: "woman", delay: 210 }, { word: "mother", delay: 180 },
-              { word: "sister", delay: 150 }, { word: "creator", delay: 130 },
-              { word: "doer", delay: 110 }, { word: "trend setter", delay: 95 },
-              { word: "fashionista", delay: 80 }, { word: "care taker", delay: 70 },
-              { word: "visionary", delay: 60 }, { word: "trailblazer", delay: 55 },
-              { word: "healer", delay: 50 }, { word: "protector", delay: 50 },
-              { word: "listener", delay: 50 }, { word: "multitasker", delay: 50 },
-              { word: "storyteller", delay: 50 }, { word: "fighter", delay: 50 },
-              { word: "nurturer", delay: 50 }, { word: "strategist", delay: 50 },
-              { word: "explorer", delay: 50 }, { word: "provider", delay: 50 },
-              { word: "student", delay: 50 }, { word: "human", delay: 50 },
-          ];
-          const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-  
-          const animateWords = async () => {
-            try {
-              for (const item of wordsSequence) {
-                const effectiveDelay = Math.max(item.delay, 0);
-                await delay(effectiveDelay);
-                const currentWordSpan = document.getElementById('loading-word');
-                if (!currentWordSpan) return;
-                currentWordSpan.textContent = item.word;
-              }
-              if (loadingTextElement) {
-                  loadingTextElement.innerHTML = 'You are <span class="accent-word">human</span>';
-              }
-              await delay(400);
+      // Typing animation for three lines with colored "you"
+      const lines = [
+        'unlimited heights',
+        'unlimited transformation',
+        'unlimited you'
+      ];
+      // Clear and prepare text container
+      loadingTextElement.innerHTML = '<span id="typed"></span>';
+      const typed = document.getElementById('typed');
+      let lineIndex = 0, charIndex = 0;
+      const typeSpeed = 100; // milliseconds per character
+
+      const typeLine = () => {
+        const line = lines[lineIndex];
+        if (charIndex < line.length) {
+          typed.innerHTML += line.charAt(charIndex);
+          charIndex++;
+          setTimeout(typeLine, typeSpeed);
+        } else {
+          lineIndex++;
+          charIndex = 0;
+          if (lineIndex < lines.length) {
+            typed.innerHTML += '<br>';
+            setTimeout(typeLine, typeSpeed);
+          } else {
+            // Color the final word "you"
+            typed.innerHTML = typed.innerHTML.replace(/you$/, '<span class="accent-word">you</span>');
+            // Fade out after typing completes
+            setTimeout(() => {
               if (loadingScreen) loadingScreen.classList.add('hidden');
-              await delay(600);
-              if (loadingScreen) loadingScreen.style.display = 'none';
-              console.log("Loading animation complete, screen hidden.");
-            } catch (error) {
-                console.error("Error during loading animation:", error);
-                // Simplified error handling: just hide the screen
-                if (loadingScreen) {
-                   loadingScreen.style.opacity = '0';
-                   loadingScreen.style.pointerEvents = 'none';
-                   loadingScreen.style.display = 'none';
-                }
-            }
-          };
-          // Start the animation immediately
-          animateWords();
-      } else {
-          console.error("#loading-word span not found after reset!");
-          if (loadingScreen) loadingScreen.style.display = 'none'; // Hide if essential part missing
-      }
+              setTimeout(() => {
+                if (loadingScreen) loadingScreen.style.display = 'none';
+              }, 600);
+            }, 500);
+          }
+        }
+      };
+
+      // Start typing animation
+      typeLine();
     } else {
         // Handle missing loading screen elements on landing page
         let missing = [];
@@ -118,6 +101,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     // ===== Landing Page Hamburger Menu Toggle End =====
+
+    // ===== Learnsimple Page “You are human” Animation =====
+    if (window.location.pathname.endsWith('learnsimple.html')) {
+      const lsLoadingScreen = document.getElementById('loading-screen');
+      const lsLoadingText = document.getElementById('loading-text');
+      if (lsLoadingScreen && lsLoadingText) {
+        // show the screen
+        lsLoadingScreen.style.display = 'flex';
+        lsLoadingScreen.style.opacity = '1';
+        lsLoadingScreen.classList.remove('hidden');
+        // define words sequence
+        const humanWords = [
+          "dreamer", "leader", "storyteller", "lover", "rebel",
+          "collaborator", "daughter", "mentor", "woman", "mother",
+          "sister", "creator", "doer", "trend setter", "fashionista",
+          "care taker", "visionary", "trailblazer", "healer", "protector",
+          "listener", "multitasker", "storyteller", "fighter", "nurturer",
+          "strategist", "explorer", "provider", "student", "human"
+        ];
+        let idx = 0;
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+        (async function animateHuman() {
+          for (; idx < humanWords.length; idx++) {
+            lsLoadingText.querySelector('#loading-word').textContent = humanWords[idx];
+            await delay(Math.max(600 - idx * 20, 50));
+          }
+          lsLoadingText.innerHTML = 'You are <span class="accent-word">human</span>';
+          await delay(400);
+          lsLoadingScreen.classList.add('hidden');
+          await delay(600);
+          lsLoadingScreen.style.display = 'none';
+        })();
+      }
+    }
+    // ===== End Learnsimple “You are human” Animation =====
   
   }); // End DOMContentLoaded
-  
