@@ -10,11 +10,6 @@
 </head>
 <body class="landing-page-body">
 
-  <!-- Loading Screen -->
-  <div id="loading-screen" role="status" aria-hidden="true">
-    <div id="loading-text">You are <span id="loading-word">friend</span></div>
-  </div>
-
   <!-- Header -->
   <header class="landing-header" style="position:absolute; top:0; left:0; width:100%; display:flex; align-items:center; justify-content:space-between; padding:1rem 2rem; z-index:1000;">
     <a href="index.html" class="landing-logo-link" aria-label="Gordon Kwong Homepage">
@@ -42,11 +37,11 @@
   <main role="main" style="text-align:center; margin-top:4rem;">
     <div class="hero-simple" style="position:fixed; top:0; left:0; width:100vw; height:100vh; overflow:hidden; z-index:-1;">
       <img src="productpagebackground.webp" alt="Product Guide Preview" draggable="false" style="width:100vw; height:100vh; object-fit:cover; display:block; -webkit-user-drag:none; user-drag:none;">
-      <h1 style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#fff; font-family:var(--font-heading); font-size:2rem; margin:0; padding:0 1rem; text-align:center; z-index:1;">
+      <h1 style="position:absolute; top:40%; left:50%; transform:translate(-50%,-50%); color:#fff; font-family:var(--font-heading); font-size:2rem; margin:0; padding:0 1rem; text-align:center; z-index:1;">
         the desire for transformation is by design
       </h1>
       <!-- Learn page “You are human” animation -->
-      <div id="loading-screen" role="status" aria-hidden="true" 
+      <div class="hero-human-animation" role="status" aria-hidden="true" 
            style="position:absolute; top:60%; left:50%; transform:translate(-50%,0); z-index:1; color:#fff; font-family:var(--font-heading); font-size:2rem; text-align:center;">
         <div id="loading-text">You are <span id="loading-word">human</span></div>
       </div>
